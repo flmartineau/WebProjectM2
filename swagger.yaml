@@ -1,0 +1,1298 @@
+swagger: "2.0"
+info:
+  description: "Site de gestion de projets destiné à des étudiants/développeurs, permettant de gérer et de récupérer toutes les informations relatives à leurs projet."
+  version: "1.0.0"
+  title: "Projet de programmation Web - Master 2"
+
+tags:
+- name: "project"
+  description: "Projects management"
+- name: "user"
+  description: "Operations about user"
+- name: "agenda"
+  description: "Management of a project agenda"
+- name: "slack"
+  description: "Slack integration"
+- name: "discord"
+  description: "Discord integration"
+- name: "trello"
+  description: "Trello integration"
+- name: "contacts"
+  description: "Contacts management"
+- name: "notes"
+  description: "Notes management"
+- name: "documentation"
+  description: "Differents documentation integration"
+
+
+schemes:
+- "https"
+- "http"
+
+
+
+paths:
+  /project:
+    post:
+      tags:
+      - "project"
+      summary: "Create a new project"
+      description: ""
+      operationId: "addProject"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Project object to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/Project"
+      responses:
+        405:
+          description: "Invalid input"
+
+        
+    put:
+      tags:
+      - "project"
+      summary: "Update an existing project"
+      description: ""
+      operationId: "updateProject"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Project object to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/Project"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Project not found"
+        405:
+          description: "Validation exception"
+
+  
+  /project/{projectId}:
+    get:
+      tags:
+      - "project"
+      summary: "Find project by ID"
+      description: "Returns a single project"
+      operationId: "getProjectById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Project"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Project not found"
+
+    
+    delete:
+      tags:
+      - "project"
+      summary: "Deletes a project"
+      description: ""
+      operationId: "deleteProject"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Project id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Project not found"
+
+  
+  /user:
+    post:
+      tags:
+      - "user"
+      summary: "Create user"
+      description: "This can only be done by the logged in user."
+      operationId: "createUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+  
+  /user/login:
+    get:
+      tags:
+      - "user"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "string"
+          headers:
+            X-Rate-Limit:
+              type: "integer"
+              format: "int32"
+              description: "calls per hour allowed by the user"
+            X-Expires-After:
+              type: "string"
+              format: "date-time"
+              description: "date in UTC when token expires"
+        400:
+          description: "Invalid username/password supplied"
+  /user/logout:
+    get:
+      tags:
+      - "user"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "logoutUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters: []
+      responses:
+        default:
+          description: "successful operation"
+  /user/{userId}:
+    get:
+      tags:
+      - "user"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "getUserByName"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "The name that needs to be fetched."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+    put:
+      tags:
+      - "user"
+      summary: "Updated user"
+      description: "This can only be done by the logged in user."
+      operationId: "updateUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "name that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        400:
+          description: "Invalid user supplied"
+        404:
+          description: "User not found"
+    delete:
+      tags:
+      - "user"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Invalid id supplied"
+        404:
+          description: "User not found"
+          
+          
+  /project/{projectId}/agenda:
+    post:
+      tags:
+      - "agenda"
+      summary: "Add an event"
+      description: "Add an event to the project"
+      operationId: "addEvent"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the event is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Created agendaEvent object"
+        required: true
+        schema:
+          $ref: "#/definitions/AgendaEvent"
+      responses:
+        default:
+          description: "successful operation"
+    
+  /project/{projectId}/agenda/{eventId}:
+    get:
+      tags:
+      - "agenda"
+      summary: "Get an event by id"
+      description: "Get an event by id in the project"
+      operationId: "getEvent"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the event is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "path"
+        name: "eventId"
+        description: "ID of event"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/AgendaEvent"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Event not found"
+    put:
+      tags:
+      - "agenda"
+      summary: "Update an event"
+      description: "Update an event in the project"
+      operationId: "updateEvent"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the event is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "path"
+        name: "eventId"
+        description: "ID of updated event"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Updated agendaEvent object"
+        required: true
+        schema:
+          $ref: "#/definitions/AgendaEvent"
+      responses:
+        default:
+          description: "successful operation"
+    delete:
+      tags:
+      - "agenda"
+      summary: "Delete an event"
+      description: "Update an event in the project"
+      operationId: "deleteEvent"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the event is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "path"
+        name: "eventId"
+        description: "ID of event to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid id supplied"
+        404:
+          description: "Event not found"
+          
+  /project/{projectId}/slack:
+    post:
+      tags:
+      - "slack"
+      summary: "Add a Slack reference"
+      description: "Add a Slack reference to the project"
+      operationId: "addSlack"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Slack reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Created Slack reference"
+        required: true
+        schema:
+          $ref: "#/definitions/APIReference"
+      responses:
+        default:
+          description: "successful operation"
+    get:
+      tags:
+      - "slack"
+      summary: "Get Slack reference"
+      description: "Get Slack reference of the project"
+      operationId: "getSlack"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Slack reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/APIReference"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Slack not found"
+    put:
+      tags:
+      - "slack"
+      summary: "Edit Slack reference"
+      description: "Edit Slack reference of the project"
+      operationId: "updateSlack"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Slack reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Updated Slack reference"
+        required: true
+        schema:
+          $ref: "#/definitions/APIReference"
+      responses:
+        default:
+          description: "successful operation"
+    delete:
+      tags:
+      - "slack"
+      summary: "Delete Slack reference"
+      description: "Delete Slack reference of the project"
+      operationId: "deleteSlack"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Slack reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid id supplied"
+        404:
+          description: "Slack not found"
+        
+          
+  /project/{projectId}/discord:
+    post:
+      tags:
+      - "discord"
+      summary: "Add a Discord reference"
+      description: "Add a Discord reference to the project"
+      operationId: "addDiscord"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Discord reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Created Discord reference"
+        required: true
+        schema:
+          $ref: "#/definitions/APIReference"
+      responses:
+        default:
+          description: "successful operation" 
+    get:
+      tags:
+      - "discord"
+      summary: "Get Discord reference"
+      description: "Get Discord reference of the project"
+      operationId: "getDiscord"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Discord reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/APIReference"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Discord not found"
+    put:
+      tags:
+      - "discord"
+      summary: "Edit Discord reference"
+      description: "Edit Discord reference of the project"
+      operationId: "updateDiscord"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Discord reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Updated Discord reference"
+        required: true
+        schema:
+          $ref: "#/definitions/APIReference"
+      responses:
+        default:
+          description: "successful operation"
+    delete:
+      tags:
+      - "discord"
+      summary: "Delete Discord reference"
+      description: "Delete Discord reference of the project"
+      operationId: "deleteDiscord"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Discord reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid id supplied"
+        404:
+          description: "Discord not found"
+          
+  /project/{projectId}/trello:
+    post:
+      tags:
+      - "trello"
+      summary: "Add a Trello reference"
+      description: "Add a Trello reference to the project"
+      operationId: "addTrello"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Trello reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Created Trello reference"
+        required: true
+        schema:
+          $ref: "#/definitions/APIReference"
+      responses:
+        default:
+          description: "successful operation" 
+    get:
+      tags:
+      - "trello"
+      summary: "Get Trello reference"
+      description: "Get Trello reference of the project"
+      operationId: "getTrello"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Trello reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/APIReference"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Trello not found"
+    put:
+      tags:
+      - "trello"
+      summary: "Edit Trello reference"
+      description: "Edit Trello reference of the project"
+      operationId: "updateTrello"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Trello reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Updated Trello reference"
+        required: true
+        schema:
+          $ref: "#/definitions/APIReference"
+      responses:
+        default:
+          description: "successful operation"
+    delete:
+      tags:
+      - "trello"
+      summary: "Delete Trello reference"
+      description: "Delete Trello reference of the project"
+      operationId: "deleteTrello"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Trello reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid id supplied"
+        404:
+          description: "Trello not found"
+  /project/{projectId}/contacts:
+    post:
+      tags:
+      - "contacts"
+      summary: "Add a contact"
+      description: "Add a contact for the project"
+      operationId: "addContact"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project contact is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Created contact"
+        required: true
+        schema:
+          $ref: "#/definitions/Contact"
+      responses:
+        default:
+          description: "successful operation"    
+    get:
+      tags:
+      - "contacts"
+      summary: "Get contacts"
+      description: "Get contacts of the project"
+      operationId: "getContacts"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the contacts are part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Contact"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Contacts not found"
+  /project/{projectId}/contacts/:idContact:
+    get:
+      tags:
+      - "contacts"
+      summary: "Get contact by id"
+      description: "Get contact of the project by id"
+      operationId: "getContact"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the contacts are part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "contactId"
+        in: "path"
+        description: "ID of the contact"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+              $ref: "#/definitions/Contact"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Contact not found"
+    put:
+      tags:
+      - "contacts"
+      summary: "Update contact by id"
+      description: "Update contact of the project by id"
+      operationId: "updateContact"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the contacts are part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "contactId"
+        in: "path"
+        description: "ID of the contact"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Updated Contact"
+        required: true
+        schema:
+          $ref: "#/definitions/Contact"
+      responses:
+        default:
+          description: "successful operation"   
+    delete:
+      tags:
+      - "contacts"
+      summary: "Delete contact by id"
+      description: "Delete contact of the project by id"
+      operationId: "deleteContact"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the contacts are part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "contactId"
+        in: "path"
+        description: "ID of the contact"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid id supplied"
+        404:
+          description: "Contact not found"   
+  /project/{projectId}/notes:
+    post:
+      tags:
+      - "notes"
+      summary: "Add a note"
+      description: "Add a note for the project"
+      operationId: "addNote"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the note is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Created note"
+        required: true
+        schema:
+          $ref: "#/definitions/Note"
+      responses:
+        default:
+          description: "successful operation"    
+    get:
+      tags:
+      - "notes"
+      summary: "Get notes"
+      description: "Get notes of the project"
+      operationId: "getNotes"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the notes are part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Contact"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Notes not found"
+  /project/{projectId}/notes/:idNote:
+    get:
+      tags:
+      - "notes"
+      summary: "Get note by id"
+      description: "Get note of the project by id"
+      operationId: "getNote"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the notes are part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "noteId"
+        in: "path"
+        description: "ID of the contact"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+              $ref: "#/definitions/Note"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Note not found"
+    put:
+      tags:
+      - "notes"
+      summary: "Update note by id"
+      description: "Update note of the project by id"
+      operationId: "updateNote"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the notes are part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "noteId"
+        in: "path"
+        description: "ID of the note"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Updated Note"
+        required: true
+        schema:
+          $ref: "#/definitions/Note"
+      responses:
+        default:
+          description: "successful operation"   
+    delete:
+      tags:
+      - "notes"
+      summary: "Delete note by id"
+      description: "Delete note of the project by id"
+      operationId: "deleteNote"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the notes are part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "noteId"
+        in: "path"
+        description: "ID of the note"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid id supplied"
+        404:
+          description: "Note not found"
+  /project/{projectId}/documentation:
+    get:
+      tags:
+      - "documentation"
+      summary: "Get all documentation"
+      description: "Get documentation of the project"
+      operationId: "getDocumentation"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the documentation is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/APIReference"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "documentation not found"        
+  /project/{projectId}/documentation/googledocs:
+    post:
+      tags:
+      - "documentation"
+      summary: "Add a Google doc reference"
+      description: "Add a Google doc reference to the project"
+      operationId: "addGoogleDoc"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Google doc reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Created Google doc reference"
+        required: true
+        schema:
+          $ref: "#/definitions/APIReference"
+      responses:
+        default:
+          description: "successful operation" 
+    get:
+      tags:
+      - "documentation"
+      summary: "Get Google doc reference"
+      description: "Get Google doc reference of the project"
+      operationId: "getGoogleDoc"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Google doc reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/APIReference"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Google doc not found"
+    put:
+      tags:
+      - "documentation"
+      summary: "Edit Google doc reference"
+      description: "Edit Google doc reference of the project"
+      operationId: "updateGoogleDoc"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Google doc reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Updated Google doc reference"
+        required: true
+        schema:
+          $ref: "#/definitions/APIReference"
+      responses:
+        default:
+          description: "successful operation"
+    delete:
+      tags:
+      - "documentation"
+      summary: "Delete Google doc reference"
+      description: "Delete Google doc reference of the project"
+      operationId: "deleteGoogleDoc"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project the Google doc reference is part of."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid id supplied"
+        404:
+          description: "Google doc not found"        
+definitions:
+  
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      
+    xml:
+      name: "User"
+  
+  Project:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      githubRepository: 
+        type : "string"
+      overleafLink:
+        type: "string"
+      slack:
+        $ref: '#/definitions/APIReference'
+      discord:
+        $ref: '#/definitions/APIReference'
+    xml:
+      name: "Project"
+      
+      
+  AgendaEvent:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      date: 
+        type : "string"
+    xml:
+      name: "AgendaEvent"
+      
+  Contact:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+    xml:
+      name: "Contact"
+      
+  Note:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      title:
+        type: "string"
+      description:
+        type: "string"
+
+    xml:
+      name: "Note"
+      
+  APIReference:
+    type: "object"
+    required:
+    - "link"
+    - "tokenAPI"
+    properties:
+      link:
+        type: "string"
+      tokenAPI: 
+        type : "string"
+    xml:
+      name: "APIReference"
+  

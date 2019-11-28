@@ -9,6 +9,7 @@ Site de gestion de projets destiné à des étudiants/développeurs, permettant 
 
 - Les informations du dépôt GitHub (API GitHub) : données des commits, etc...
 - Les outils de conversation (Slack/Discord...)
+- La gestion du projet avec Trello
 - La gestion des contacts + prises de RDVs + dates importantes (Agenda)
 - Les informations de documentations/rapports/presentations (projet Overleaf, Google doc...)
 - Ajout de notes diverses
@@ -24,7 +25,7 @@ Technologies utilisées
 Configuration
 =============
 
-Pour lancer le front, aller dans le dossier front et tapez : 
+Pour lancer le front, aller dans le dossier front et tapez :
 
 `npm install`
 `ng serve --open`
