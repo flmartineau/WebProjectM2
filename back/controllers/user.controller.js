@@ -1,12 +1,12 @@
 module.exports.createUser = (req, res, next) => {
-
+    console.log(req.body);
 };
 
 module.exports.deleteUser = (req, res, next) => {
 
 };
 
-module.exports.getUserByName = (req, res, next) => {
+module.exports.getUser = (req, res, next) => {
 
 };
 

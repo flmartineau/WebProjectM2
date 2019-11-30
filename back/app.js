@@ -8,11 +8,15 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const app = express();
 
+const userRouter = require('./routers/user.router');
+const projectRouter = require('./routers/project.router');
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors({origin:true,credentials: true}));
 
-
+app.use('/api', userRouter);
+app.use('/api/project', projectRouter);
 
 
 app.use((err, req, res, next) => {

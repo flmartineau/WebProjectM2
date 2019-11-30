@@ -56,7 +56,7 @@ paths:
         405:
           description: "Invalid input"
 
-        
+
     put:
       tags:
       - "project"
@@ -84,7 +84,7 @@ paths:
         405:
           description: "Validation exception"
 
-  
+
   /project/{projectId}:
     get:
       tags:
@@ -112,7 +112,7 @@ paths:
         404:
           description: "Project not found"
 
-    
+
     delete:
       tags:
       - "project"
@@ -135,7 +135,7 @@ paths:
         404:
           description: "Project not found"
 
-  
+
   /user:
     post:
       tags:
@@ -156,7 +156,7 @@ paths:
       responses:
         default:
           description: "successful operation"
-  
+
   /user/login:
     get:
       tags:
@@ -212,16 +212,16 @@ paths:
     get:
       tags:
       - "user"
-      summary: "Get user by user name"
+      summary: "Get user by id"
       description: ""
-      operationId: "getUserByName"
+      operationId: "getUser"
       produces:
       - "application/xml"
       - "application/json"
       parameters:
       - name: "userId"
         in: "path"
-        description: "The name that needs to be fetched."
+        description: "The id that needs to be fetched."
         required: true
         type: "string"
       responses:
@@ -230,7 +230,7 @@ paths:
           schema:
             $ref: "#/definitions/User"
         400:
-          description: "Invalid username supplied"
+          description: "Invalid id supplied"
         404:
           description: "User not found"
     put:
@@ -279,8 +279,8 @@ paths:
           description: "Invalid id supplied"
         404:
           description: "User not found"
-          
-          
+
+
   /project/{projectId}/agenda:
     post:
       tags:
@@ -310,7 +310,7 @@ paths:
       responses:
         default:
           description: "successful operation"
-    
+
   /project/{projectId}/agenda/{eventId}:
     get:
       tags:
@@ -410,7 +410,7 @@ paths:
           description: "Invalid id supplied"
         404:
           description: "Event not found"
-          
+
   /project/{projectId}/slack:
     post:
       tags:
@@ -520,8 +520,8 @@ paths:
           description: "Invalid id supplied"
         404:
           description: "Slack not found"
-        
-          
+
+
   /project/{projectId}/discord:
     post:
       tags:
@@ -550,7 +550,7 @@ paths:
           $ref: "#/definitions/APIReference"
       responses:
         default:
-          description: "successful operation" 
+          description: "successful operation"
     get:
       tags:
       - "discord"
@@ -631,7 +631,7 @@ paths:
           description: "Invalid id supplied"
         404:
           description: "Discord not found"
-          
+
   /project/{projectId}/trello:
     post:
       tags:
@@ -660,7 +660,7 @@ paths:
           $ref: "#/definitions/APIReference"
       responses:
         default:
-          description: "successful operation" 
+          description: "successful operation"
     get:
       tags:
       - "trello"
@@ -769,7 +769,7 @@ paths:
           $ref: "#/definitions/Contact"
       responses:
         default:
-          description: "successful operation"    
+          description: "successful operation"
     get:
       tags:
       - "contacts"
@@ -800,7 +800,7 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "Contacts not found"
-  /project/{projectId}/contacts/:idContact:
+  /project/{projectId}/contacts/{contactId}:
     get:
       tags:
       - "contacts"
@@ -868,7 +868,7 @@ paths:
           $ref: "#/definitions/Contact"
       responses:
         default:
-          description: "successful operation"   
+          description: "successful operation"
     delete:
       tags:
       - "contacts"
@@ -898,7 +898,7 @@ paths:
         400:
           description: "Invalid id supplied"
         404:
-          description: "Contact not found"   
+          description: "Contact not found"
   /project/{projectId}/notes:
     post:
       tags:
@@ -927,7 +927,7 @@ paths:
           $ref: "#/definitions/Note"
       responses:
         default:
-          description: "successful operation"    
+          description: "successful operation"
     get:
       tags:
       - "notes"
@@ -958,7 +958,7 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "Notes not found"
-  /project/{projectId}/notes/:idNote:
+  /project/{projectId}/notes/{noteId}:
     get:
       tags:
       - "notes"
@@ -1026,7 +1026,7 @@ paths:
           $ref: "#/definitions/Note"
       responses:
         default:
-          description: "successful operation"   
+          description: "successful operation"
     delete:
       tags:
       - "notes"
@@ -1085,7 +1085,7 @@ paths:
         400:
           description: "Invalid ID supplied"
         404:
-          description: "documentation not found"        
+          description: "documentation not found"
   /project/{projectId}/documentation/googledocs:
     post:
       tags:
@@ -1114,7 +1114,7 @@ paths:
           $ref: "#/definitions/APIReference"
       responses:
         default:
-          description: "successful operation" 
+          description: "successful operation"
     get:
       tags:
       - "documentation"
@@ -1194,9 +1194,9 @@ paths:
         400:
           description: "Invalid id supplied"
         404:
-          description: "Google doc not found"        
+          description: "Google doc not found"
 definitions:
-  
+
   User:
     type: "object"
     properties:
@@ -1213,10 +1213,10 @@ definitions:
         type: "string"
       password:
         type: "string"
-      
+
     xml:
       name: "User"
-  
+
   Project:
     type: "object"
     required:
@@ -1227,7 +1227,7 @@ definitions:
         format: "int64"
       name:
         type: "string"
-      githubRepository: 
+      githubRepository:
         type : "string"
       overleafLink:
         type: "string"
@@ -1237,8 +1237,8 @@ definitions:
         $ref: '#/definitions/APIReference'
     xml:
       name: "Project"
-      
-      
+
+
   AgendaEvent:
     type: "object"
     required:
@@ -1249,11 +1249,11 @@ definitions:
         format: "int64"
       name:
         type: "string"
-      date: 
+      date:
         type : "string"
     xml:
       name: "AgendaEvent"
-      
+
   Contact:
     type: "object"
     properties:
@@ -1268,7 +1268,7 @@ definitions:
         type: "string"
     xml:
       name: "Contact"
-      
+
   Note:
     type: "object"
     properties:
@@ -1282,7 +1282,7 @@ definitions:
 
     xml:
       name: "Note"
-      
+
   APIReference:
     type: "object"
     required:
@@ -1291,8 +1291,7 @@ definitions:
     properties:
       link:
         type: "string"
-      tokenAPI: 
+      tokenAPI:
         type : "string"
     xml:
       name: "APIReference"
-  
