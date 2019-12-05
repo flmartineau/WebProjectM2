@@ -10,17 +10,17 @@
                 <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Pseudo</label>
-                        <input type="email" name="pseudo" class="form-control" #pseudo="ngModel" [(ngModel)]="this.authService.user.name"
+                        <input type="email" name="pseudo" class="form-control" [(ngModel)]="this.authService.user.name"
                             placeholder="Entrez un pseudonyme">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Adresse email</label>
-                        <input type="email" name="email" class="form-control" #email="ngModel" [(ngModel)]="this.authService.user.email"
+                        <input type="email" name="email" class="form-control" [(ngModel)]="this.authService.user.email"
                             placeholder="Entrez une adresse email valide">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Mot de passe</label>
-                        <input type="password" name="password" class="form-control" #password="ngModel" [(ngModel)]="this.authService.user.password"
+                        <input type="password" name="password" class="form-control"  [(ngModel)]="this.authService.user.password"
                             placeholder="Entrez un mot de passe">
                     </div>
                     <div class="col-md-12 text-center mb-3">

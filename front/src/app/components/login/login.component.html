@@ -7,15 +7,15 @@
                         <h1>Connexion</h1>
                     </div>
                 </div>
-                <form action="" method="post" name="login">
+                <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Adresse email</label>
-                        <input type="email" name="email" class="form-control" id="email"
+                        <input type="email" name="email" class="form-control" id="email" [(ngModel)]="this.authService.user.email"
                             placeholder="Entrez une adresse email valide">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Mot de passe</label>
-                        <input type="password" name="password" id="password" class="form-control"
+                        <input type="password" name="password" id="password" class="form-control" [(ngModel)]="this.authService.user.password"
                             placeholder="Entrez un mot de passe">
                     </div>
                     <div class="col-md-12 text-center ">
