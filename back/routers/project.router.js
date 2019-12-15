@@ -14,6 +14,7 @@ router.post('', projectController.addProject);
 router.put('', projectController.updateProject);
 router.get('/:projectId',projectController.getProjectById);
 router.delete('/:projectId', projectController.deleteProject);
+router.get('', projectController.getAllProjects);
 
 router.post('/:projectId/agenda', agendaController.addEvent);
 router.get('/:projectId/agenda/:eventId', agendaController.getEvent);
