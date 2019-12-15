@@ -11,6 +11,8 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
+import { ProfileComponent } from './components/home/profile/profile.component';
+import { ProjectsComponent } from './components/home/projects/projects.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { HomeComponent } from './components/home/home.component';
     AppComponent,
     RegisterComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    ProjectsComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

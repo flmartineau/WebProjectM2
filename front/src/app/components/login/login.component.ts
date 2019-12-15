@@ -17,14 +17,14 @@ export class LoginComponent implements OnInit {
   onSubmit(form: NgForm) {
     this.authService.login(form.value).subscribe(
       res => {
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('/home/projects');
       },
       err => {
-       
+
       }
     );
     console.log(form.value);
-    this.router.navigateByUrl('/home');//tmp
+    this.router.navigateByUrl('/home/projects');//tmp
 
   }
 

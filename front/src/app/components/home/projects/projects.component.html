@@ -1,0 +1,74 @@
+<div class="jumbotron">
+    <h1 class="display-4">Mes projets</h1>
+    <p class="lead">Créez et gérez vos projets en groupe !</p>
+    <a class="btn btn-primary btn-lg" href="#collapseNewProject" role="button" data-toggle="collapse">Créer un nouveau
+        projet <em class="fa fa-plus"></em></a>
+
+    <div class="collapse" id="collapseNewProject">
+        <div class="card card-body">
+            <form>
+                <div class="form-group">
+                    <label for="nameNewProject">Nom du projet</label>
+                    <input type="email" class="form-control" id="nameNewProject">
+                </div>
+                <div class="form-group">
+                    <label for="decriptionNewProject">Description du projet</label>
+                    <textarea class="form-control" id="decriptionNewProject" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Valider</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div class="row card-group">
+    <!--TEMPORAIRE !-->
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Project 1</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Project 2</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Project 3</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Project 4</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="row card-group">
+    <div class="col-4"  *ngFor="let project of projects">
+        <div class="card">
+            <a [routerLink]="['/presentation', presentation._id]">{{presentation.title}}</a>
+        </div>
+    </div>
+</div>
+-->
