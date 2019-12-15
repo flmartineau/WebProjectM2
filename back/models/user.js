@@ -16,3 +16,6 @@ const userSchema = new mongoose.Schema({
         minlength: [8, 'Le mot de passe doit contenir au moins 8 caractères']
     }
 });
+
+
+module.exports = mongoose.model('User', userSchema);

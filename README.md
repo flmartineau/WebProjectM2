@@ -25,7 +25,17 @@ Technologies utilisées
 Configuration
 =============
 
-Pour lancer le front, aller dans le dossier front et tapez :
+Pour lancer le front, aller dans le dossier /front et tapez :
 
 `npm install`
 `ng serve --open`
+
+
+Pour demarrer la base de données MongoDB :
+
+`docker-compose up -d mongodb`
+
+Ensuite pour démarrer le back, dans le dossier /back :
+
+`node app.js`
+

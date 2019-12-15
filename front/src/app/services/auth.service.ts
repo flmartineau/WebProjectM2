@@ -16,10 +16,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   addUser(user: User) {
-    return this.http.post('/api/login', user);
+    return this.http.post('http://localhost:3002/api/user', user);
   }
 
   login(infos) {
-    return this.http.post('/api/login', infos);
+    return this.http.post('http://localhost:3002/api/user/login', infos);
   }
 }
