@@ -23,5 +23,9 @@ export class ProjetService {
     return this.httpClient.delete('http://localhost:3002/api/project/' + id);
   }
 
+  getProjectById(id) {
+    return this.httpClient.get<Project>('http://localhost:3002/api/project/' + id);
+  }
+
 
 }

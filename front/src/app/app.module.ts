@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/home/profile/profile.component';
 import { ProjectsComponent } from './components/home/projects/projects.component';
+import { ProjectComponent } from './components/home/project/project.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { ProjectsComponent } from './components/home/projects/projects.component
     LoginComponent,
     HomeComponent,
     ProjectsComponent,
-    ProfileComponent
+    ProfileComponent,
+    ProjectComponent
   ],
   imports: [
     BrowserModule,

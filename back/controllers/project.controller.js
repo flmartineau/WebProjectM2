@@ -38,7 +38,16 @@ module.exports.deleteProject = (req, res) => {
 };
 
 module.exports.getProjectById = (req, res, next) => {
-
+    Project.findOne({ _id: req.params.projectId }).then(
+        (project) => {
+            res.status(200).json(project);
+        }).catch(
+            (error) => {
+                res.status(404).json({
+                    error: error
+                })
+            }
+        );
 };
 
 module.exports.updateProject = (req, res, next) => {
