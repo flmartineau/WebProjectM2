@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/home/profile/profile.component';
 import { ProjectsComponent } from './components/home/projects/projects.component';
 import { ProjectComponent } from './components/home/project/project.component';
+import { GithubComponent } from './components/home/github/github.component';
 
 
 const routes: Routes = [
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path : 'home', component: HomeComponent,
   children: [
     { path: 'projects', component: ProjectsComponent },
-    { path: 'projects/:id', component: ProjectComponent},
+    { path: 'projects/:id', component: ProjectComponent },
+    { path: 'projects/:id/github', component: GithubComponent},
     { path: 'profile', component: ProfileComponent}]
   }
 ];

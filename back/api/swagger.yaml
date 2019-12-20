@@ -129,12 +129,37 @@ paths:
         required: true
         type: "integer"
         format: "int64"
+      - name : "githubRepository"
+        in: "query"
+        type: "string"
+        description : "URL of the Github repository"
+        required: true
       responses:
         400:
           description: "Invalid ID supplied"
         404:
           description: "Project not found"
-
+  
+  /project/{projectId}/github:
+    put:
+      tags:
+      - "project"
+      summary: "Modify the Github URL of the project"
+      operationId: "updateProjectGithub"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Project id"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Project not found"
 
   /user:
     post:
@@ -1226,6 +1251,8 @@ definitions:
         type: "integer"
         format: "int64"
       name:
+        type: "string"
+      description:
         type: "string"
       githubRepository:
         type : "string"

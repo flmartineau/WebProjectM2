@@ -27,8 +27,8 @@ export class ProjectComponent implements OnInit {
 
 
   getProject() {
-    this.projectService.getProjectById(this.projectId).subscribe(data => this.project = data);
+    this.projectService.getProjectById(this.projectId)
+        .subscribe(data => {this.project = data; console.log(data)});
   }
-
 
 }

@@ -1,0 +1,23 @@
+<ng-template #popupRepository id = "popupRepository" let-c="close" let-d="dismiss" >
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Ajoutez un dépot GitHub</h5>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #updateProject="ngForm" (ngSubmit)="newProject.valid">
+            <div class="form-group">
+                <label for="githubRepository">URL GitHub</label>
+                <input type="email" class="form-control" id="githubRepository" name="githubRepository" [(ngModel)]="model.githubRepository"
+                placeholder="https://github.com/<Username>/<Repository>">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+        <button type="submit" class="btn btn-primary" (click)="onSubmit(updateProject)" (click)="c('Confirm click')">Valider</button>
+    </div>
+</ng-template>
+
+<h3 class="display-4">URL GitHub : {{githubRepository}}</h3>

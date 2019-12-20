@@ -27,5 +27,12 @@ export class ProjetService {
     return this.httpClient.get<Project>('http://localhost:3002/api/project/' + id);
   }
 
+  updateProject(id, project) {
+    return this.httpClient.put('http://localhost:3002/api/project/' + id, project);
+  }
+
+  updateProjectGithub(id, githubUrl) {
+    return this.httpClient.put('http://localhost:3002/api/project/' + id + '/github', githubUrl);
+  }
 
 }

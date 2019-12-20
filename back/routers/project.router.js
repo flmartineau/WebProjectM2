@@ -11,10 +11,12 @@ const noteController = require('../controllers/note.controller');
 const documentationController = require('../controllers/documentation.controller');
 
 router.post('', projectController.addProject);
-router.put('', projectController.updateProject);
+router.put('/:projectId', projectController.updateProject);
 router.get('/:projectId',projectController.getProjectById);
 router.delete('/:projectId', projectController.deleteProject);
 router.get('', projectController.getAllProjects);
+
+router.put('/:projectId/github', projectController.updateProjectGithub);
 
 router.post('/:projectId/agenda', agendaController.addEvent);
 router.get('/:projectId/agenda/:eventId', agendaController.getEvent);
