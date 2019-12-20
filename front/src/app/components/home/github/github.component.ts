@@ -4,6 +4,7 @@ import { ProjetService } from 'src/app/services/projet.service';
 import { Project } from 'src/app/models/project.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
+import { GithubService } from 'src/app/services/github.service';
 
 @Component({
   selector: 'app-github',
@@ -16,9 +17,16 @@ export class GithubComponent implements OnInit, AfterViewInit {
   public projectId;
   public githubRepository;
 
+  public githubOwner;
+  public githubRepo;
+
+
+  public githubCommits;
+
   constructor(private route: ActivatedRoute,
               public projectService: ProjetService,
-              public modalService: NgbModal) { }
+              public modalService: NgbModal,
+              public githubService: GithubService) { }
 
   model = { githubRepository: ''};
 
@@ -28,15 +36,25 @@ export class GithubComponent implements OnInit, AfterViewInit {
       const id = 'id';
       this.projectId = params[id];
     });
-    this.getProjectRepo();
   }
 
   ngAfterViewInit(){
     this.openModal();
+    this.getProjectRepo();
   }
 
   getProjectRepo() {
-    this.projectService.getProjectById(this.projectId).subscribe(data => this.githubRepository = data.githubRepository);
+    this.projectService.getProjectById(this.projectId).subscribe(data => {
+      this.githubRepository = data.githubRepository;
+      console.log(this.githubRepository.split('/'));
+      this.githubOwner = this.githubRepository.split('/')[3];
+      this.githubRepo = this.githubRepository.split('/')[4];
+
+      this.githubService.getAllCommits(this.githubOwner,this.githubRepo).subscribe(
+        data => {this.githubCommits = data;
+        console.log(data)})
+    });
+
   }
 
   openModal() {

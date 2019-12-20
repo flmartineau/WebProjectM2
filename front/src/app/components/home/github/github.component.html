@@ -20,4 +20,24 @@
     </div>
 </ng-template>
 
-<h3 class="display-4">URL GitHub : {{githubRepository}}</h3>
+<h1 class="display-4"> <em id="backArrow"class="fa fa-arrow-left" routerLink="../"></em>  {{githubOwner}} / {{githubRepo}}</h1>
+
+<table class="table table-striped">
+    <thead class="thead">
+        <tr>
+            <th scope="col">Titre</th>
+            <th scope="col">Auteur</th>
+            <th scope="col">Date</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let commit of githubCommits">
+            <td>{{commit?.commit?.message}}</td>
+            <td>{{commit?.author?.login}}</td>
+            <td>{{commit?.commit?.author?.date}}</td>
+            <td><a href={{commit?.html_url}}>Lien</a></td>
+        </tr>
+    </tbody>
+</table>
