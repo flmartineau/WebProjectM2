@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 require('../models/project');
 const Project = mongoose.model('Project');
 
+
+/**
+ * Create a new project.
+ */
 module.exports.addProject = (req, res) => {
     const project = new Project();
     project.name = req.body.name;
@@ -21,6 +25,9 @@ module.exports.addProject = (req, res) => {
     );
 };
 
+/**
+ * Delete a project.
+ */
 module.exports.deleteProject = (req, res) => {
     Project.deleteOne({_id: req.params.projectId}).then(
         () => {
@@ -37,6 +44,9 @@ module.exports.deleteProject = (req, res) => {
     );
 };
 
+/**
+ * Get a project from its id.
+ */
 module.exports.getProjectById = (req, res) => {
     Project.findOne({ _id: req.params.projectId }).then(
         (project) => {
@@ -50,6 +60,9 @@ module.exports.getProjectById = (req, res) => {
         );
 };
 
+/**
+ * Modify the Github URL of the project.
+ */
 module.exports.updateProjectGithub = (req, res) => {
     Project.findOne({ _id: req.params.projectId }, (err, project) => {
         if (!project) res.status(404).json({ status: false, message: 'Projet non trouvé' });
@@ -63,7 +76,9 @@ module.exports.updateProjectGithub = (req, res) => {
     });
 };
 
-
+/**
+ * Update a project.
+ */
 module.exports.updateProject = (req, res) => {
     const project = new Project({
         _id: req.params.projectId,
@@ -90,7 +105,9 @@ module.exports.updateProject = (req, res) => {
     );
 };
 
-
+/**
+ * Get all the projects.
+ */
 module.exports.getAllProjects = (req, res) => {
     Project.find().then(
         (projects) => {

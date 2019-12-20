@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const User = require('../models/user');
 const passport = require('passport');
 
-
+/**
+ * Create a new user.
+ */
 module.exports.createUser = (req, res, next) => {
     const user = new User();
     user.name = req.body.name;
@@ -22,10 +24,14 @@ module.exports.createUser = (req, res, next) => {
     });
 };
 
+/**
+ * Log user.
+ */
 module.exports.loginUser = (req, res, next) => {
     console.log("login");
     //passport.authenticate
 };
+
 
 module.exports.deleteUser = (req, res, next) => {
 

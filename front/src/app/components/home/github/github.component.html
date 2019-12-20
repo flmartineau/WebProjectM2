@@ -20,24 +20,21 @@
     </div>
 </ng-template>
 
-<h1 class="display-4"> <em id="backArrow"class="fa fa-arrow-left" routerLink="../"></em>  {{githubOwner}} / {{githubRepo}}</h1>
 
-<table class="table table-striped">
-    <thead class="thead">
-        <tr>
-            <th scope="col">Titre</th>
-            <th scope="col">Auteur</th>
-            <th scope="col">Date</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
+<h1 class="display-4"> <em id="backArrow" class="fa fa-arrow-left" routerLink="../">
+    </em> {{githubOwner}} / {{githubRepo}} <em id="editIcon" class="fa fa-edit" (click)="openModalEdit()"></em>
+</h1>
 
-    <tbody>
-        <tr *ngFor="let commit of githubCommits">
-            <td>{{commit?.commit?.message}}</td>
-            <td>{{commit?.author?.login}}</td>
-            <td>{{commit?.commit?.author?.date}}</td>
-            <td><a href={{commit?.html_url}}>Lien</a></td>
-        </tr>
-    </tbody>
-</table>
+<div class="list-group">
+    <a class="list-group-item list-group-item-action" *ngFor="let commit of githubCommits">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{commit?.commit?.message}} <span class="badge badge-info">{{commit?.sha | slice:0:7}}</span></h5>
+            <small>{{commit?.commit?.author?.date | date:"dd/MM/yyyy, h:mm:ss a"}}</small>
+        </div>
+        <p class="mb-1"><img src={{commit?.author?.avatar_url}} width="20" height="20"/> {{commit?.author?.login}}</p>
+        <small><a href={{commit?.html_url}}>Lien</a></small>
+    </a>
+</div>
+
+
+

@@ -25,7 +25,9 @@ export class ProjectComponent implements OnInit {
     this.getProject();
   }
 
-
+  /**
+   * Get the selected project info.
+   */
   getProject() {
     this.projectService.getProjectById(this.projectId)
         .subscribe(data => {this.project = data; console.log(data)});

@@ -43,6 +43,9 @@ export class GithubComponent implements OnInit, AfterViewInit {
     this.getProjectRepo();
   }
 
+  /**
+   * Get the Github repository info.
+   */
   getProjectRepo() {
     this.projectService.getProjectById(this.projectId).subscribe(data => {
       this.githubRepository = data.githubRepository;
@@ -57,6 +60,9 @@ export class GithubComponent implements OnInit, AfterViewInit {
 
   }
 
+  /**
+   * Open the Github URL add form popup.
+   */
   openModal() {
     this.projectService.getProjectById(this.projectId).subscribe(data => {
       this.githubRepository = data.githubRepository;
@@ -64,6 +70,13 @@ export class GithubComponent implements OnInit, AfterViewInit {
         this.modalService.open(this.popupRepository, { centered: true });
       }
     });
+  }
+
+  /**
+   * Open the Github URL edit form popup.
+   */
+  openModalEdit() {
+    this.modalService.open(this.popupRepository, { centered: true });
   }
 
   onSubmit(form: NgForm) {

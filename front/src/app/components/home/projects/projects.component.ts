@@ -21,11 +21,17 @@ export class ProjectsComponent implements OnInit {
     this.getProjects();
   }
 
-
+  /**
+   * Get all the projects info.
+   */
   getProjects() {
     this.projectService.getProjects().subscribe(data => this.projects = data);
   }
 
+  /**
+   * Delete a project from id.
+   * @param id id of the project to delete.
+   */
   deleteProject(id) {
     this.projectService.deleteProject(id).subscribe(data => this.getProjects());
   }
