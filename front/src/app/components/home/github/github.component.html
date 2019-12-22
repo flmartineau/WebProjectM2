@@ -8,9 +8,19 @@
     <div class="modal-body">
         <form #updateProject="ngForm" (ngSubmit)="newProject.valid">
             <div class="form-group">
-                <label for="githubRepository">URL GitHub</label>
-                <input type="email" class="form-control" id="githubRepository" name="githubRepository" [(ngModel)]="model.githubRepository"
+                <label for="githubLink">URL GitHub</label>
+                <input type="email" class="form-control" id="githubLink" name="githubLink" [(ngModel)]="model.githubLink"
                 placeholder="https://github.com/<Username>/<Repository>">
+            </div>
+            <div class="form-group">
+                <label for="githubUsername">Username GitHub</label>
+                <input type="email" class="form-control" id="githubUsername" name="githubUsername" [(ngModel)]="model.githubUsername"
+                placeholder="Username">
+            </div>
+            <div class="form-group">
+                <label for="githubUsername">GitHub password or token</label>
+                <input type="password" class="form-control" id="githubToken" name="githubToken" [(ngModel)]="model.githubToken"
+                placeholder="Password or token">
             </div>
         </form>
     </div>

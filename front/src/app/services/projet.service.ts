@@ -52,12 +52,21 @@ export class ProjetService {
   }
 
   /**
-   * Update the Github URL of the project.
+   * Update the Github Reference of the project.
    * @param id id of the project.
-   * @param githubUrl new GitHub URL for the project.
+   * @param githubRef new GitHub Reference for the project.
    */
-  updateProjectGithub(id, githubUrl) {
-    return this.httpClient.put(environment.API_URL+'/project/' + id + '/github', githubUrl);
+  updateProjectGithub(id, githubRef) {
+    return this.httpClient.put(environment.API_URL+'/project/' + id + '/github', githubRef);
+  }
+
+    /**
+   * Add a Github Reference to the project.
+   * @param id id of the project.
+   * @param githubRef new GitHub Reference for the project.
+   */
+  addProjectGithub(id, githubRef) {
+    return this.httpClient.post(environment.API_URL+'/project/' + id + '/github', githubRef);
   }
 
 }

@@ -15,10 +15,12 @@ export class GithubComponent implements OnInit, AfterViewInit {
   @ViewChild('popupRepository', {static: false}) popupRepository;
 
   public projectId;
-  public githubRepository;
+  public githubRef;
 
   public githubOwner;
   public githubRepo;
+  public githubUsername;
+  public githubToken;
 
 
   public githubCommits;
@@ -30,7 +32,11 @@ export class GithubComponent implements OnInit, AfterViewInit {
               public modalService: NgbModal,
               public githubService: GithubService) { }
 
-  model = { githubRepository: ''};
+  model = {
+    githubLink: '',
+    githubUsername: '',
+    githubToken: ''
+  };
 
 
   ngOnInit() {
@@ -50,14 +56,17 @@ export class GithubComponent implements OnInit, AfterViewInit {
    */
   getProjectRepo() {
     this.projectService.getProjectById(this.projectId).subscribe(data => {
-      this.githubRepository = data.githubRepository;
-      console.log(this.githubRepository.split('/'));
-      this.githubOwner = this.githubRepository.split('/')[3];
-      this.githubRepo = this.githubRepository.split('/')[4];
+      if(data.githubRepository != undefined){
+        this.githubRef = data.githubRepository;
+        console.log(this.githubRef.link.split('/'));
+        this.githubOwner = this.githubRef.link.split('/')[3];
+        this.githubRepo = this.githubRef.link.split('/')[4];
+        this.githubUsername = this.githubRef.usernameAPI;
+        this.githubToken = this.githubRef.tokenAPI;
 
-      this.githubService.getAllCommits(this.githubOwner,this.githubRepo).subscribe(
-        data => {this.githubCommits = data;
-        console.log(data)});
+        this.githubService.getAllCommits(this.githubOwner,this.githubRepo, this.githubUsername, this.githubToken).subscribe(
+          data => {this.githubCommits = data});
+      }
     });
 
   }
@@ -67,8 +76,7 @@ export class GithubComponent implements OnInit, AfterViewInit {
    */
   openModal() {
     this.projectService.getProjectById(this.projectId).subscribe(data => {
-      this.githubRepository = data.githubRepository;
-      if(this.githubRepository == undefined){
+      if(data.githubRepository == undefined){
         this.modalService.open(this.popupRepository, { centered: true });
       }
     });
@@ -82,7 +90,8 @@ export class GithubComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(form: NgForm) {
-        this.projectService.updateProjectGithub(this.projectId, form.value).subscribe(
+        console.log(form.value)
+        this.projectService.addProjectGithub(this.projectId, form.value).subscribe(
           res => {
             this.getProjectRepo();
           },
@@ -97,8 +106,7 @@ export class GithubComponent implements OnInit, AfterViewInit {
    * @param sha id of the commit.
    */
   getCommitDetails(sha){
-    console.log(sha);
-    this.githubService.getCommitDetails(this.githubOwner, this.githubRepo, sha).subscribe(
+    this.githubService.getCommitDetails(this.githubOwner, this.githubRepo, sha, this.githubUsername, this.githubToken).subscribe(
       data => {this.commitDetails = data['files'];
       console.log(this.commitDetails)})
   }

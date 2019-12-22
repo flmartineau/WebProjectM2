@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const projectSchema = new mongoose.Schema({
     name: {
@@ -9,16 +10,19 @@ const projectSchema = new mongoose.Schema({
         type: String
     },
     githubRepository: {
-        type: String
+        type: Schema.Types.ObjectId,
+        ref: 'APIReference'
     },
     overleafLink: {
         type: String
     },
     slack: {
-        type: String //temp
+        type: Schema.Types.ObjectId,
+        ref: 'APIReference'
     },
     discord: {
-        type: String //temp
+        type: Schema.Types.ObjectId,
+        ref: 'APIReference'
     }
 });
 

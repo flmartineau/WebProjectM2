@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 require('../models/project');
+require('../models/apiReference');
 const Project = mongoose.model('Project');
+const APIReference = mongoose.model('APIReference');
 
 
 /**
@@ -13,7 +15,7 @@ module.exports.addProject = (req, res) => {
     project.save().then(
         () => {
             res.status(201).json({
-                message: 'Proect added successfully!'
+                message: 'Project added successfully!'
             });
         }
     ).catch(
@@ -48,11 +50,13 @@ module.exports.deleteProject = (req, res) => {
  * Get a project from its id.
  */
 module.exports.getProjectById = (req, res) => {
-    Project.findOne({ _id: req.params.projectId }).then(
+    console.log(req.params)
+    Project.findOne({ _id: req.params.projectId }).populate('githubRepository').then(
         (project) => {
             res.status(200).json(project);
         }).catch(
             (error) => {
+                console.log(error)
                 res.status(404).json({
                     error: error
                 })
@@ -61,18 +65,24 @@ module.exports.getProjectById = (req, res) => {
 };
 
 /**
- * Modify the Github URL of the project.
+ * Add a Github Reference to the project.
  */
-module.exports.updateProjectGithub = (req, res) => {
-    Project.findOne({ _id: req.params.projectId }, (err, project) => {
-        if (!project) res.status(404).json({ status: false, message: 'Projet non trouvé' });
-        else {
-            project.githubRepository = req.body.githubRepository
-            project.save(function (err) {
-                if (!err)
-                    res.send({ success: 'Updated with success' });
-            });
-        }
+module.exports.addProjectGithub = (req, res) => {
+    const githubRepository = new APIReference();
+    githubRepository.link = req.body.githubLink;
+    githubRepository.tokenAPI = req.body.githubToken;
+    githubRepository.usernameAPI = req.body.githubUsername;
+    githubRepository.save().then(()=> {
+        Project.findOne({ _id: req.params.projectId }, (err, project) => {
+            if (!project) res.status(404).json({ status: false, message: 'Projet non trouvé' });
+            else {
+                project.githubRepository = githubRepository;
+                project.save(function (err) {
+                    if (!err)
+                        res.send({ success: 'Created with success' });
+                });
+            }
+        })
     });
 };
 
