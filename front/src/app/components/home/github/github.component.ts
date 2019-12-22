@@ -23,6 +23,8 @@ export class GithubComponent implements OnInit, AfterViewInit {
 
   public githubCommits;
 
+  public commitDetails; //TODO : change to array to fix view bug
+
   constructor(private route: ActivatedRoute,
               public projectService: ProjetService,
               public modalService: NgbModal,
@@ -55,7 +57,7 @@ export class GithubComponent implements OnInit, AfterViewInit {
 
       this.githubService.getAllCommits(this.githubOwner,this.githubRepo).subscribe(
         data => {this.githubCommits = data;
-        console.log(data)})
+        console.log(data)});
     });
 
   }
@@ -89,4 +91,16 @@ export class GithubComponent implements OnInit, AfterViewInit {
           }
         );
   }
+
+  /**
+   * Get details about a commit.
+   * @param sha id of the commit.
+   */
+  getCommitDetails(sha){
+    console.log(sha);
+    this.githubService.getCommitDetails(this.githubOwner, this.githubRepo, sha).subscribe(
+      data => {this.commitDetails = data['files'];
+      console.log(this.commitDetails)})
+  }
+
 }

@@ -16,10 +16,18 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   * Add a new user.
+   * @param user user to add.
+   */
   addUser(user: User) {
     return this.http.post(environment.API_URL+'/user', user);
   }
 
+  /**
+   * Login user from info.
+   * @param infos info from the login form.
+   */
   login(infos) {
     return this.http.post(environment.API_URL+'/user/login', infos);
   }
