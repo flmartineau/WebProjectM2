@@ -15,6 +15,7 @@ const routes: Routes = [
   {path : '', component: LoginComponent},
   {path : 'home', component: HomeComponent,
   children: [
+    { path: '', redirectTo: 'projects', pathMatch: 'full' },
     { path: 'projects', component: ProjectsComponent },
     { path: 'projects/:id', component: ProjectComponent },
     { path: 'projects/:id/github', component: GithubComponent},

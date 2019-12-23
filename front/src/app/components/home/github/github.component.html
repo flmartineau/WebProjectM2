@@ -36,8 +36,8 @@
 </h1>
 
 <div class="list-group">
-    <a data-toggle="collapse" href="#collapse{{commit?.sha}}" role="button" (click)="getCommitDetails(commit?.sha)"
-        class="list-group-item list-group-item-action" *ngFor="let commit of githubCommits">
+    <a data-toggle="collapse" href="#collapse{{commit?.sha}}" role="button" (click)="getCommitDetails(commit?.sha, i)"
+        class="list-group-item list-group-item-action" *ngFor="let commit of githubCommits; let i = index">
         <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">{{commit?.commit?.message}} <span
                     class="badge badge-info">{{commit?.sha | slice:0:7}}</span></h5>
@@ -48,7 +48,7 @@
 
         <div class="collapse" id="collapse{{commit?.sha}}">
             <div class="card card-body">
-                <div *ngFor="let file of commitDetails">
+                <div *ngFor="let file of commitDetails[i]">
                     <p>{{file?.filename}} <span class="badge" [ngClass]="{'badge-primary': file?.status=='modified',
                                                                         'badge-danger': file?.status=='removed',
                                                                         'badge-success': file?.status=='added'}">{{file?.status}}</span>
@@ -62,5 +62,8 @@
 
 </div>
 
+<div class="alert alert-success" role="alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+</div>
 
 

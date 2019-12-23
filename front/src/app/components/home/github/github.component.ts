@@ -15,17 +15,17 @@ export class GithubComponent implements OnInit, AfterViewInit {
   @ViewChild('popupRepository', {static: false}) popupRepository;
 
   public projectId;
-  public githubRef;
 
+  public githubRef;
   public githubOwner;
   public githubRepo;
   public githubUsername;
   public githubToken;
 
-
   public githubCommits;
+  public commitDetails = [];
 
-  public commitDetails; //TODO : change to array to fix view bug
+  public errorMessage;
 
   constructor(private route: ActivatedRoute,
               public projectService: ProjetService,
@@ -56,7 +56,7 @@ export class GithubComponent implements OnInit, AfterViewInit {
    */
   getProjectRepo() {
     this.projectService.getProjectById(this.projectId).subscribe(data => {
-      if(data.githubRepository != undefined){
+      if (data.githubRepository != undefined) {
         this.githubRef = data.githubRepository;
         console.log(this.githubRef.link.split('/'));
         this.githubOwner = this.githubRef.link.split('/')[3];
@@ -64,11 +64,21 @@ export class GithubComponent implements OnInit, AfterViewInit {
         this.githubUsername = this.githubRef.usernameAPI;
         this.githubToken = this.githubRef.tokenAPI;
 
-        this.githubService.getAllCommits(this.githubOwner,this.githubRepo, this.githubUsername, this.githubToken).subscribe(
-          data => {this.githubCommits = data});
+        this.githubService.getAllCommits(this.githubOwner, this.githubRepo, this.githubUsername, this.githubToken).subscribe(
+          data => { this.githubCommits = data; this.errorMessage = ''},
+          err => {
+            if(err.status == '401'){
+              this.errorMessage = "Github credentials are invalid, please check the repository URL or the login information"
+            }
+            else if(err.status == '404'){
+              this.errorMessage = "Github repository not found. The repository may be private : please provide valid Github login credentials"
+            } else {
+            console.log("err : ", err);
+            this.errorMessage = err.error.message;
+            }
+          });
       }
     });
-
   }
 
   /**
@@ -105,10 +115,11 @@ export class GithubComponent implements OnInit, AfterViewInit {
    * Get details about a commit.
    * @param sha id of the commit.
    */
-  getCommitDetails(sha){
+  getCommitDetails(sha, index){
+    console.log(index)
     this.githubService.getCommitDetails(this.githubOwner, this.githubRepo, sha, this.githubUsername, this.githubToken).subscribe(
-      data => {this.commitDetails = data['files'];
-      console.log(this.commitDetails)})
+      data => {this.commitDetails[index] = data['files'];
+      console.log(this.commitDetails[index])})
   }
 
 }
