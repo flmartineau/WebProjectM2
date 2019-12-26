@@ -15,6 +15,9 @@ import { ProfileComponent } from './components/home/profile/profile.component';
 import { ProjectsComponent } from './components/home/projects/projects.component';
 import { ProjectComponent } from './components/home/project/project.component';
 import { GithubComponent } from './components/home/github/github.component';
+import { AgendaComponent } from './components/home/agenda/agenda.component';
+import { SlackComponent } from './components/home/slack/slack.component';
+import { DiscordComponent } from './components/home/discord/discord.component';
 
 
 @NgModule({
@@ -26,7 +29,10 @@ import { GithubComponent } from './components/home/github/github.component';
     ProjectsComponent,
     ProfileComponent,
     ProjectComponent,
-    GithubComponent
+    GithubComponent,
+    AgendaComponent,
+    SlackComponent,
+    DiscordComponent
   ],
   imports: [
     BrowserModule,

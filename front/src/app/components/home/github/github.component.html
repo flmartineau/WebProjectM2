@@ -1,3 +1,11 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="../..">Projects</a></li>
+        <li class="breadcrumb-item"><a routerLink="../">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">GitHub</li>
+    </ol>
+</nav>
+
 <ng-template #popupRepository id = "popupRepository" let-c="close" let-d="dismiss" >
     <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Ajoutez un dépot GitHub</h5>
@@ -9,8 +17,7 @@
         <form #updateProject="ngForm" (ngSubmit)="newProject.valid">
             <div class="form-group">
                 <label for="githubLink">URL GitHub</label>
-                <input type="email" class="form-control" id="githubLink" name="githubLink" [(ngModel)]="model.githubLink"
-                placeholder="https://github.com/<Username>/<Repository>">
+                <input type="text" class="form-control" id="githubLink" name="githubLink" [(ngModel)]="model.githubLink">
             </div>
             <div class="form-group">
                 <label for="githubUsername">Username GitHub</label>
@@ -31,9 +38,7 @@
 </ng-template>
 
 
-<h1 class="display-4"> <em id="backArrow" class="fa fa-arrow-left" routerLink="../">
-    </em> {{githubOwner}} / {{githubRepo}} <em id="editIcon" class="fa fa-edit" (click)="openModalEdit()"></em>
-</h1>
+<h1 class="display-4">{{githubOwner}} / {{githubRepo}} <em id="editIcon" class="fa fa-edit" (click)="openModalEdit()"></em></h1>
 
 <div class="list-group">
     <a data-toggle="collapse" href="#collapse{{commit?.sha}}" role="button" (click)="getCommitDetails(commit?.sha, i)"

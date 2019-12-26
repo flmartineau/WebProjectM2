@@ -1,5 +1,46 @@
-<div class="jumbotron">
-    <h1 class="display-4 text-center">{{project?.name}}</h1>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="../">Projects</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+    </ol>
+</nav>
+
+<ng-template #popupUpdateProject id = "popupUpdateProject" let-c="close" let-d="dismiss" >
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Editer le projet</h5>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #updateProject="ngForm" (ngSubmit)="editProject.valid">
+            <div class="form-group">
+                <label for="nameUpdateProject">Nom du projet</label>
+                <input type="email" class="form-control" id="nameUpdateProject" name="name" [(ngModel)]="model.name">
+            </div>
+            <div class="form-group">
+                <label for="descUpdateProject">Description du projet</label>
+                <textarea class="form-control" [(ngModel)]="model.description" rows="3" id="descUpdateProject" name="description"></textarea>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+        <button type="submit" class="btn btn-primary" (click)="onSubmit(updateProject)" (click)="c('Confirm click')">Valider</button>
+    </div>
+</ng-template>
+
+
+<div class="jumbotron" style="padding-top: 10px;padding-bottom: 10px;">
+    <div class="dropdown">
+        <button class="btn btn-light fa fa-cogs" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" (click)="openModal()">Editer le projet</a>
+        </div>
+    </div>
+    <h1 class="display-4 text-center">{{project?.name | titlecase}}</h1>
     <p class="lead text-center">{{project?.description}}</p>
 </div>
 
@@ -31,13 +72,13 @@
     </div>
     <div class="col-sm-3">
         <div class="card shadow-lg p-3 mb-5 bg-white rounded w-50 mx-auto">
-            <a routerLink="settings"><img src="../../..//../assets/logo_settings.png" class="card-img-top" alt="Settings Logo"></a>
+            <a routerLink="discord"><img src="../../..//../assets/logo_discord.png" class="card-img-top" alt="Discord Logo"></a>
             <div class="card-body">
-                <h5 class="card-title text-center">Réglages du projet</h5>
+                <h5 class="card-title text-center">Discord</h5>
             </div>
         </div>
     </div>
 
-    <!--TODO : DISCORD / OVERLEAF / GOOGLE DOC / NOTES -->
+    <!--TODO : OVERLEAF / GOOGLE DOC / NOTES -->
 
 </div>

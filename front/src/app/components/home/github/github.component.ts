@@ -64,6 +64,10 @@ export class GithubComponent implements OnInit, AfterViewInit {
         this.githubUsername = this.githubRef.usernameAPI;
         this.githubToken = this.githubRef.tokenAPI;
 
+        this.model.githubLink = this.githubRef.link;
+        this.model.githubToken = this.githubToken;
+        this.model.githubUsername = this.githubUsername;
+
         this.githubService.getAllCommits(this.githubOwner, this.githubRepo, this.githubUsername, this.githubToken).subscribe(
           data => { this.githubCommits = data; this.errorMessage = ''},
           err => {
@@ -114,6 +118,7 @@ export class GithubComponent implements OnInit, AfterViewInit {
   /**
    * Get details about a commit.
    * @param sha id of the commit.
+   * @param index index of the commit details array.
    */
   getCommitDetails(sha, index){
     console.log(index)
