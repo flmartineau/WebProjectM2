@@ -50,7 +50,15 @@ export class ProjectComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    console.log("test")
+    console.log(form.value);
+    this.projectService.updateProject(this.projectId,form.value).subscribe(
+      res => {
+        this.getProject();
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
 }

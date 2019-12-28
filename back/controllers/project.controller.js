@@ -90,29 +90,17 @@ module.exports.addProjectGithub = (req, res) => {
  * Update a project.
  */
 module.exports.updateProject = (req, res) => {
-    const project = new Project({
-        _id: req.params.projectId,
-        name: req.body.name,
-        description: req.body.description,
-        githubRepository: req.body.githubRepository,
-        overleafLink: req.body.overleafLink,
-        slack: req.body.slack,
-        discord: req.body.discord
+    Project.findOne({ _id: req.params.projectId }, (err, project) => {
+        if (!project) res.status(404).json({ status: false, message: 'Projet non trouvé' });
+        else {
+            project.name = req.body.name;
+            project.description = req.body.description;
+            project.save(function (err) {
+                if (!err)
+                    res.send({ success: 'Updated with success' });
+            });
+        }
     });
-
-    Project.updateOne(({ _id: req.params.projectId }, project)).then(
-        () => {
-            res.status(201).json({
-                message: 'Project updated successfully!'
-            });
-        }
-    ).catch(
-        (error) => {
-            res.status(400).json({
-                error: error
-            });
-        }
-    );
 };
 
 /**
