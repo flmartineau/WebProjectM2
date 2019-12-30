@@ -6,7 +6,29 @@
     </ol>
 </nav>
 
-
-<p>agenda works!</p>
-
-<div id='agenda'></div>
+<div id='agenda'>
+    <div id='calendar'>
+        <div class="box bg-dark text-white">
+            <div class="header">
+                <a class="prev" href="{{calendar.getPreviousLink()}}">Précédent</a>
+                    <span class="title">{{calendar.getCurrent()}}</span>
+                <a class="next" href="{{calendar.getNextLink()}}">Suivant</a>
+            </div>
+        </div>    
+        <div class="box-content">
+            <ul class="label">
+                <li *ngFor="let dayLabel of calendar.dayLabels; let index = index;" class="title">
+                    {{ dayLabel }}
+                </li>
+            </ul>
+            <div class="clear"></div> 
+            <ul class="dates">  
+                <li *ngFor="let day of calendar.getDays(null,null); let index = index;" id="{{ day[1] }}">
+                    {{ day[0] }}
+                </li>
+                <!--li id="li-" class=""></li-->
+            </ul>
+            <div class="clear"></div>   
+        </div>
+    </div>
+</div>
