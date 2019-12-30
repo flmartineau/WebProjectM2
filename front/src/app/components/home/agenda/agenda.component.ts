@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-agenda',
@@ -8,12 +9,33 @@ import { Component, OnInit } from '@angular/core';
 export class AgendaComponent implements OnInit {
 
   public calendar:Calendar;
+  public year:number;
+  public month:number;
 
-  constructor() {
-    this.calendar = new Calendar(null,null);
-   }
+  constructor(private route: ActivatedRoute) {
+    
+  }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      const year = 'year';
+      const month = 'month';
+      this.year = params[year];
+      this.month = params[month];
+    });
+    this.calendar = new Calendar(this.year,this.month);
+  }
+
+  prevMonth() {
+    let prev = this.calendar.getPreviousYearMonth();
+    console.log(prev);
+    this.calendar = new Calendar(prev[0], prev[1]);
+  }
+
+  nextMonth() {
+    let next = this.calendar.getNextYearMonth();
+    console.log(next);
+    this.calendar = new Calendar(next[0], next[1]);
   }
 
 }
@@ -55,22 +77,23 @@ class Calendar {
     let table = null;
     for(let i=0; i< weeksInMonth; ++i){
       //Create days in a week
-      for(let j=0;j<=7;++j){
+      for(let j=1;j<=7;++j){
         cellNumber =  i*7 + j;
         
-        let firstDayOfTheWeek = (new Date(this.currentYear, this.currentMonth-1, 1).getUTCDay());        
         if(currentDay==0){
-            //let firstDayOfTheWeek = new Date(this.currentYear, this.currentMonth, 0).getUTCDay();        
-            if(cellNumber == firstDayOfTheWeek){
-                currentDay=1;
-            }
+          let firstDayOfTheWeek = (new Date(this.currentYear, this.currentMonth-1, 1).getUTCDay()) +1; 
+          if(cellNumber == firstDayOfTheWeek){
+              currentDay=1;
+          }
         }
         
         if( (currentDay!=0)&&(currentDay<= this.daysInMonth) ){
-            table = [currentDay, "cell-" + this.currentYear + "-" + this.currentMonth + "-" + currentDay];
-            currentDay++;  
+          table = [currentDay, this.currentYear + "-" + this.currentMonth + "-" + currentDay];
+          currentDay++;  
         }else{
-            table = ["", "cell-" + cellNumber];
+          table = ["", cellNumber];
+          //If we start a new line of cell but the first cell is empty we quit
+          if(i!=0 && j==1) break;
         }
 
         result.push(table);
@@ -82,26 +105,26 @@ class Calendar {
   /**
   * return the link to the next month
   */
-  public getPreviousLink() {
-    let preMonth = this.currentMonth==1?12:this.currentMonth-1; 
-    let preYear = this.currentMonth==1?this.currentYear-1:this.currentYear;
-    return "/planning/" + preYear.toString() + "/" + preMonth.toString().padStart(2, '0');
+  public getPreviousYearMonth() {
+    let preMonth = this.currentMonth==1?12:parseInt(this.currentMonth.toString())-1; 
+    let preYear = this.currentMonth==1?parseInt(this.currentYear.toString())-1:this.currentYear;
+    return [preYear.toString(), preMonth.toString().padStart(2, '0')];
   }
 
   /**
   * return the month/year
   */
   public getCurrent() {
-    return this.currentMonth.toString() + "/" + this.currentYear.toString();
+    return this.currentMonth.toString().padStart(2, '0') + "/" + this.currentYear.toString();
   }
 
   /**
   * return the link to the next month
   */
-  public getNextLink() {
-    let nextMonth = this.currentMonth==12?1:this.currentMonth+1;
-    let nextYear = this.currentMonth==12?this.currentYear+1:this.currentYear;
-    return "/planning/" + nextYear.toString() + "/" + nextMonth.toString().padStart(2, '0');
+  public getNextYearMonth() {
+    let nextMonth = this.currentMonth==12?1:parseInt(this.currentMonth.toString())+1;
+    let nextYear = this.currentMonth==12?parseInt(this.currentYear.toString())+1:this.currentYear;
+    return [nextYear.toString(), nextMonth.toString().padStart(2, '0')];
   }
 
   /********************* PRIVATE **********************/  
@@ -113,14 +136,14 @@ class Calendar {
       // find number of days in this month
       let daysInMonths = this.daysInMonth; 
       let numOfweeks = (daysInMonths%7==0?0:1) + (daysInMonths/7);
-      let monthEndingDay= new Date(this.currentYear,this.currentMonth, daysInMonths-1).getUTCDay();
-      let monthStartDay = new Date(this.currentYear,this.currentMonth, 0).getUTCDay();
+      let monthEndingDay= new Date(this.currentYear,this.currentMonth-1, daysInMonths-1).getUTCDay();
+      let monthStartDay = new Date(this.currentYear,this.currentMonth-1, 0).getUTCDay();
        
       if(monthEndingDay < monthStartDay){  
         numOfweeks++;
       }
        
-      return parseInt(numOfweeks.toString());
+      return Math.ceil(numOfweeks);
   }
 
   /**

@@ -10,9 +10,9 @@
     <div id='calendar'>
         <div class="box bg-dark text-white">
             <div class="header">
-                <a class="prev" href="{{calendar.getPreviousLink()}}">Précédent</a>
+                <span id="prev-month" (click)="prevMonth()" class="prev">Précédent</span>
                     <span class="title">{{calendar.getCurrent()}}</span>
-                <a class="next" href="{{calendar.getNextLink()}}">Suivant</a>
+                <span id="next-month" (click)="nextMonth()" class="next">Suivant</span>
             </div>
         </div>    
         <div class="box-content">
@@ -23,7 +23,7 @@
             </ul>
             <div class="clear"></div> 
             <ul class="dates">  
-                <li *ngFor="let day of calendar.getDays(null,null); let index = index;" id="{{ day[1] }}">
+                <li *ngFor="let day of calendar.getDays(null,null); let index = index;" id="cell-{{ day[1] }}">
                     {{ day[0] }}
                 </li>
                 <!--li id="li-" class=""></li-->
