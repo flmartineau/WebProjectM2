@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AgendaEvent } from 'src/app/models/agendaEvent.model';
+import { Project } from 'src/app/models/project.model';
+import { AgendaService } from 'src/app/services/agenda.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-agenda',
@@ -8,51 +13,108 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AgendaComponent implements OnInit {
 
+  public eventId;
+  public event: AgendaEvent;
+  public events = [];
+  public projectId;
+  public project: Project;
   public calendar:Calendar;
   public year:number;
   public month:number;
+  public today:string;
 
-  constructor(private route: ActivatedRoute) {
-    
-  }
+  constructor(private route: ActivatedRoute, public agendaService: AgendaService, public modalService: NgbModal) { }
+  @ViewChild('popupUpdateAgendaEvent', {static: false}) popupUpdateAgendaEvent;
+
+  model = {
+    name: '',
+    description: '',
+    date: null,
+  };
 
   ngOnInit() {
+    let today = new Date();
+    let year = today.getFullYear(); 
+    let month = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    
+    this.today = year + "-" + month + "-" + today.getUTCDate().toString().padStart(2, '0');
+
+    this.calendar = new Calendar(year,month);
+
     this.route.params.subscribe(params => {
-      const year = 'year';
-      const month = 'month';
-      this.year = params[year];
-      this.month = params[month];
+      const idProject = 'id';
+      this.projectId = params[idProject];
+      const idEvent = 'eventId';
+      this.eventId = params[idEvent];
     });
-    this.calendar = new Calendar(this.year,this.month);
   }
 
   prevMonth() {
     let prev = this.calendar.getPreviousYearMonth();
-    console.log(prev);
     this.calendar = new Calendar(prev[0], prev[1]);
   }
 
   nextMonth() {
     let next = this.calendar.getNextYearMonth();
-    console.log(next);
     this.calendar = new Calendar(next[0], next[1]);
   }
 
-}
+  /**
+   * Get the selected event info.
+   */
+  getEvent() {
+    this.agendaService.getEventById(this.projectId, this.eventId)
+        .subscribe(data => {
+          this.event = data;
+          console.log(data);
+          this.model.name = this.event.name;
+          this.model.description = this.event.description;
+          this.model.date = this.event.date;
+        });
+  }
 
+  /**
+   * Get all the events info.
+   */
+  getEvents() {
+    this.agendaService.getEvents(this.projectId).subscribe(data => this.events = data);
+  }
+
+  openModal() {
+    this.modalService.open(this.popupUpdateAgendaEvent, { centered: true });
+  }
+  
+  onAddSubmit(form: NgForm) {
+    console.log(form);
+    this.agendaService.addEvent(this.projectId, form.value).subscribe(
+      res => {
+        this.getEvent();
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  onUpdateSubmit(form: NgForm) {
+    console.log(form.value);
+    this.agendaService.updateEvent(this.projectId, this.eventId,form.value).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+}
 
 class Calendar {     
   /**
    * Constructor
    */
   constructor(year, month) {
-    let today = new Date();
-    if(year  == null){
-      year = today.getFullYear(); 
-    }          
-    if(month == null){
-      month = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    } 
     this.currentYear=year;
     this.currentMonth=month;
     this.daysInMonth = this._daysInMonth();
@@ -88,11 +150,11 @@ class Calendar {
         }
         
         if( (currentDay!=0)&&(currentDay<= this.daysInMonth) ){
-          table = [currentDay, this.currentYear + "-" + this.currentMonth + "-" + currentDay];
+          table = [currentDay, this.currentYear + "-" + this.currentMonth + "-" + currentDay.toString().padStart(2, '0')];
           currentDay++;  
         }else{
           table = ["", cellNumber];
-          //If we start a new line of cell but the first cell is empty we quit
+          //If we start a new line of cells but the first cell is empty we quit
           if(i!=0 && j==1) break;
         }
 

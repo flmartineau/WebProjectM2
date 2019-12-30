@@ -19,9 +19,10 @@ router.get('', projectController.getAllProjects);
 router.post('/:projectId/github', projectController.addProjectGithub);
 
 router.post('/:projectId/agenda', agendaController.addEvent);
-router.get('/:projectId/agenda/:eventId', agendaController.getEvent);
+router.get('/:projectId/agenda/:eventId', agendaController.getEventById);
 router.put('/:projectId/agenda/:eventId', agendaController.updateEvent);
 router.delete('/:projectId/agenda/:eventId', agendaController.deleteEvent);
+router.get('/:projectId/agenda', agendaController.getAllEvents);
 
 router.post('/:projectId/slack', slackController.addSlack);
 router.get('/:projectId/slack', slackController.getSlack);

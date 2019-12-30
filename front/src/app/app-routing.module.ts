@@ -23,6 +23,7 @@ const routes: Routes = [
     { path: 'projects/:id', component: ProjectComponent },
     { path: 'projects/:id/github', component: GithubComponent},
     { path: 'projects/:id/agenda', component: AgendaComponent},
+    { path: 'projects/:id/agenda/:eventId', component: AgendaComponent},    
     { path: 'projects/:id/slack', component: SlackComponent},
     { path: 'projects/:id/discord', component: DiscordComponent},
     { path: 'profile', component: ProfileComponent}]

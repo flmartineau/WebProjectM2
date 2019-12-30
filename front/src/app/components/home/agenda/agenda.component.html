@@ -6,6 +6,33 @@
     </ol>
 </nav>
 
+<div class="jumbotron">
+    <h1 class="display-4">Mes évènements</h1>
+    <p class="lead">Créez et gérez vos évènement en groupe !</p>
+    <a class="btn btn-primary btn-lg" href="#collapseNewEvent" role="button" data-toggle="collapse">Créer un nouvel
+        évènement <em class="fa fa-plus"></em></a>
+
+    <div class="collapse" id="collapseNewEvent">
+        <div class="card card-body">
+            <form #newEvent="ngForm" (ngSubmit)="newEvent.valid">
+                <div class="form-group">
+                    <label for="nameNewEvent">Nom de l'évènement</label>
+                    <input id="nameNewEvent" class="form-control" type="text" name="name" [(ngModel)]="model.name"/>
+                </div>
+                <div class="form-group">
+                    <label for="decriptionNewEvent">Description de l'évènement</label>
+                    <textarea id="decriptionNewEvent" class="form-control" rows="3" type="text" name="description" [(ngModel)]="model.description"></textarea>
+                </div>
+                <div class="form-group">
+                        <label for="dateNewEvent">Date de l'évènement</label>
+                        <input id="dateNewEvent" class="form-control" type="date" name="date" [(ngModel)]="model.date"/>
+                    </div>
+                <button type="submit" class="btn btn-primary" (click)="onAddSubmit(newEvent)" data-toggle="collapse" href="#collapseNewEvent">Valider</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div id='agenda'>
     <div id='calendar'>
         <div class="box bg-dark text-white">
@@ -23,7 +50,7 @@
             </ul>
             <div class="clear"></div> 
             <ul class="dates">  
-                <li *ngFor="let day of calendar.getDays(null,null); let index = index;" id="cell-{{ day[1] }}">
+                <li *ngFor="let day of calendar.getDays(null,null); let index = index;" id="cell-{{ day[1] }}" class="{{day[1] == today ? 'current' : ''}}">
                     {{ day[0] }}
                 </li>
                 <!--li id="li-" class=""></li-->
