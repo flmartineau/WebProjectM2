@@ -6,7 +6,6 @@ const AgendaEvent = mongoose.model('AgendaEvent');
  * Create a new event.
  */
 module.exports.addEvent = (req, res, next) => {
-    console.log("tartanpion");
     const event = new AgendaEvent();
     event.name = req.body.name;
     event.description = req.body.description;
@@ -87,6 +86,27 @@ module.exports.updateEvent = (req, res, next) => {
  */
 module.exports.getAllEvents = (req, res) => {
     AgendaEvent.find().then(
+        (events) => {
+            res.status(200).json(events);
+        }
+    ).catch(
+        (error) => {
+            res.status(400).json({
+                error: error
+            });
+        }
+    );
+};
+
+/**
+ * Get all the events in year-month.
+ */
+module.exports.getEventsByYearMonth = (req, res) => {
+    let numberOfDays = new Date(req.params.year, req.params.month , 0).getDate();
+    let first = req.params.year + '-' + req.params.month + '-01';
+    let last = req.params.year + '-' + req.params.month + '-' + numberOfDays;
+
+    AgendaEvent.find({ date: { $gte: first, $lte: last} }).then(
         (events) => {
             res.status(200).json(events);
         }

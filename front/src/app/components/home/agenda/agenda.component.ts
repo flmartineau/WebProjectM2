@@ -16,12 +16,13 @@ export class AgendaComponent implements OnInit {
   public eventId;
   public event: AgendaEvent;
   public events = [];
+
   public projectId;
   public project: Project;
+
   public calendar:Calendar;
-  public year:number;
-  public month:number;
-  public today:string;
+  public year:string;
+  public month:string;
 
   constructor(private route: ActivatedRoute, public agendaService: AgendaService, public modalService: NgbModal) { }
   @ViewChild('popupUpdateAgendaEvent', {static: false}) popupUpdateAgendaEvent;
@@ -34,12 +35,11 @@ export class AgendaComponent implements OnInit {
 
   ngOnInit() {
     let today = new Date();
-    let year = today.getFullYear(); 
-    let month = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    
-    this.today = year + "-" + month + "-" + today.getUTCDate().toString().padStart(2, '0');
+    this.year = today.getFullYear().toString(); 
+    this.month = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    this.calendar = new Calendar(this.year, this.month, new Set([]));
 
-    this.calendar = new Calendar(year,month);
+    this.loadEventByYearMonth();
 
     this.route.params.subscribe(params => {
       const idProject = 'id';
@@ -47,16 +47,41 @@ export class AgendaComponent implements OnInit {
       const idEvent = 'eventId';
       this.eventId = params[idEvent];
     });
+
+    if(this.eventId != null) {
+      this.getEvent();
+    }
+    this.getEvents();
   }
 
   prevMonth() {
     let prev = this.calendar.getPreviousYearMonth();
-    this.calendar = new Calendar(prev[0], prev[1]);
+    this.year = prev[0];
+    this.month = prev[1];
+    this.loadEventByYearMonth();
   }
 
   nextMonth() {
     let next = this.calendar.getNextYearMonth();
-    this.calendar = new Calendar(next[0], next[1]);
+    this.year = next[0];
+    this.month = next[1];
+    this.loadEventByYearMonth();
+  }
+
+  loadEventByYearMonth() {
+    this.agendaService.getEventsByYearMonth(this.projectId, this.year, this.month).subscribe(data => {
+      this.events = data;
+      this.updateCalendar();
+    });
+  }
+
+  updateCalendar(){
+    let days = new Set([]);
+    this.events.forEach(event => {
+      let day = event['date'].toString().substring(8,10);
+      if(!days.has(day)) days.add(day);
+    } );
+    this.calendar = new Calendar(this.year, this.month, days);
   }
 
   /**
@@ -66,7 +91,6 @@ export class AgendaComponent implements OnInit {
     this.agendaService.getEventById(this.projectId, this.eventId)
         .subscribe(data => {
           this.event = data;
-          console.log(data);
           this.model.name = this.event.name;
           this.model.description = this.event.description;
           this.model.date = this.event.date;
@@ -88,7 +112,7 @@ export class AgendaComponent implements OnInit {
     console.log(form);
     this.agendaService.addEvent(this.projectId, form.value).subscribe(
       res => {
-        this.getEvent();
+        console.log(res);
       },
       err => {
         console.log(err);
@@ -114,10 +138,11 @@ class Calendar {
   /**
    * Constructor
    */
-  constructor(year, month) {
+  constructor(year, month, events) {
     this.currentYear=year;
     this.currentMonth=month;
     this.daysInMonth = this._daysInMonth();
+    this.events = events;
   }
    
   /********************* PROPERTY ********************/  
@@ -125,6 +150,7 @@ class Calendar {
   public currentYear=0;
   public currentMonth=0;
   private daysInMonth=0;
+  private events = new Set([]);
    
   /********************* PUBLIC **********************/  
 
@@ -150,7 +176,7 @@ class Calendar {
         }
         
         if( (currentDay!=0)&&(currentDay<= this.daysInMonth) ){
-          table = [currentDay, this.currentYear + "-" + this.currentMonth + "-" + currentDay.toString().padStart(2, '0')];
+          table = [currentDay, this.currentYear + "-" + this.currentMonth + "-" + currentDay.toString().padStart(2, '0'), this.events.has(currentDay.toString().padStart(2, '0'))];
           currentDay++;  
         }else{
           table = ["", cellNumber];

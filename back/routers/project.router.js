@@ -23,6 +23,7 @@ router.get('/:projectId/agenda/:eventId', agendaController.getEventById);
 router.put('/:projectId/agenda/:eventId', agendaController.updateEvent);
 router.delete('/:projectId/agenda/:eventId', agendaController.deleteEvent);
 router.get('/:projectId/agenda', agendaController.getAllEvents);
+router.get('/:projectId/agenda/:year/:month', agendaController.getEventsByYearMonth);
 
 router.post('/:projectId/slack', slackController.addSlack);
 router.get('/:projectId/slack', slackController.getSlack);

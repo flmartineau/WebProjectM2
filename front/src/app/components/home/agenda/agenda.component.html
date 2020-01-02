@@ -24,9 +24,9 @@
                     <textarea id="decriptionNewEvent" class="form-control" rows="3" type="text" name="description" [(ngModel)]="model.description"></textarea>
                 </div>
                 <div class="form-group">
-                        <label for="dateNewEvent">Date de l'évènement</label>
-                        <input id="dateNewEvent" class="form-control" type="date" name="date" [(ngModel)]="model.date"/>
-                    </div>
+                    <label for="dateNewEvent">Date de l'évènement</label>
+                    <input id="dateNewEvent" class="form-control" type="date" name="date" [(ngModel)]="model.date"/>
+                </div>
                 <button type="submit" class="btn btn-primary" (click)="onAddSubmit(newEvent)" data-toggle="collapse" href="#collapseNewEvent">Valider</button>
             </form>
         </div>
@@ -51,7 +51,8 @@
             <div class="clear"></div> 
             <ul class="dates">  
                 <li *ngFor="let day of calendar.getDays(null,null); let index = index;" id="cell-{{ day[1] }}" class="{{day[1] == today ? 'current' : ''}}">
-                    {{ day[0] }}
+                    {{ day[0] }} 
+                    <img src="../../..//../assets/planning_star.svg" alt="Evenement" class="{{day[2] ? 'event' : 'notEvent' }}" style="max-width: 25px; margin-top: -50px;  margin-right: -20px;">
                 </li>
                 <!--li id="li-" class=""></li-->
             </ul>

@@ -16,7 +16,7 @@ export class AgendaService {
    * @param projectId id of the project
    */
   getEvents(projectId): Observable<AgendaEvent[]>{
-    return this.httpClient.get<AgendaEvent[]>(environment.API_URL + '/projects/' + projectId + '/agenda');
+    return this.httpClient.get<AgendaEvent[]>(environment.API_URL + '/project/' + projectId + '/agenda');
   }
 
   /**
@@ -25,7 +25,7 @@ export class AgendaService {
    * @param event event to be added.
    */
   addEvent(projectId, event) {
-    return this.httpClient.post(environment.API_URL + '/projects/' + projectId + '/agenda', event);
+    return this.httpClient.post(environment.API_URL + '/project/' + projectId + '/agenda', event);
   }
 
   /**
@@ -34,7 +34,7 @@ export class AgendaService {
    * @param id id of the event to delete.
    */
   deleteEvent(projectId, id) {
-    return this.httpClient.delete(environment.API_URL + '/projects/' + projectId + '/agenda/' + id);
+    return this.httpClient.delete(environment.API_URL + '/project/' + projectId + '/agenda/' + id);
   }
 
   /**
@@ -43,7 +43,7 @@ export class AgendaService {
    * @param id id of the event to get.
    */
   getEventById(projectId, id) {
-    return this.httpClient.get<AgendaEvent>(environment.API_URL + '/projects/' + projectId + '/agenda/' + id);
+    return this.httpClient.get<AgendaEvent>(environment.API_URL + '/project/' + projectId + '/agenda/' + id);
   }
 
   /**
@@ -53,7 +53,17 @@ export class AgendaService {
    * @param event updated event details.
    */
   updateEvent(projectId, id, event) {
-    return this.httpClient.put(environment.API_URL + '/projects/' + projectId + '/agenda/' + id, event);
+    return this.httpClient.put(environment.API_URL + '/project/' + projectId + '/agenda/' + id, event);
+  }
+
+  /**
+   * Get a events from <month,year>.
+   * @param projectId id of the project.
+   * @param year year of the event to get.
+   * @param month month of the event to get.
+   */
+  getEventsByYearMonth(projectId, year, month) {
+    return this.httpClient.get<AgendaEvent[]>(environment.API_URL + '/project/' + projectId + '/agenda/' + year + '/' + month);
   }
 
 }
