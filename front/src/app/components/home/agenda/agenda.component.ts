@@ -26,7 +26,7 @@ export class AgendaComponent implements OnInit {
   public today :string;
 
   constructor(private route: ActivatedRoute, public agendaService: AgendaService, public modalService: NgbModal) { }
-  @ViewChild('popupUpdateAgendaEvent', {static: false}) popupUpdateAgendaEvent;
+  @ViewChild('popupUpdateEvent', {static: false}) popupUpdateEvent;
 
   model = {
     name: '',
@@ -117,16 +117,13 @@ export class AgendaComponent implements OnInit {
   getEvents() {
     this.agendaService.getEvents(this.projectId).subscribe(data => this.events = data);
   }
-
-  openModal() {
-    this.modalService.open(this.popupUpdateAgendaEvent, { centered: true });
-  }
   
   onAddSubmit(form: NgForm) {
     console.log(form);
     this.agendaService.addEvent(this.projectId, form.value).subscribe(
       res => {
         console.log(res);
+        this.loadEventByYearMonth();
       },
       err => {
         console.log(err);
@@ -139,11 +136,44 @@ export class AgendaComponent implements OnInit {
     this.agendaService.updateEvent(this.projectId, this.eventId,form.value).subscribe(
       res => {
         console.log(res);
+        this.loadEventByYearMonth();
       },
       err => {
         console.log(err);
       }
     );
+  }
+
+  /**
+   * Delete the selected event by id.
+   */
+  deleteEvent(id) {
+    console.log("Delete request");
+    this.agendaService.deleteEvent(this.projectId, id).subscribe(
+      res => {
+        console.log(res);
+        this.loadEventByYearMonth();
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  /**
+   * Update the selected event by id.
+   */
+  updateEvent(id) {
+    console.log("Update request");
+    this.eventId = id;
+    this.agendaService.getEventById(this.projectId, this.eventId)
+        .subscribe(data => {
+          this.event = data;
+          this.model.name = this.event.name;
+          this.model.description = this.event.description;
+          this.model.date = this.event.date;
+          this.modalService.open(this.popupUpdateEvent, { centered: true });
+        });
   }
 
 }

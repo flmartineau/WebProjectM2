@@ -6,6 +6,35 @@
     </ol>
 </nav>
 
+<ng-template #popupUpdateEvent id="popupUpdateEvent" let-c="close" let-d="dismiss" >
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Editer l'évènement</h5>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form #updateEvent="ngForm" (ngSubmit)="updateEvent.valid">
+                <div class="form-group">
+                    <label for="nameUpdateEvent">Nom</label>
+                    <input id="nameUpdateEvent" class="form-control" name="name" [(ngModel)]="model.name" type="text"/>
+                </div>
+                <div class="form-group">
+                    <label for="descUpdateEvent">Description</label>
+                    <textarea id="descUpdateEvent" class="form-control" name="description" [(ngModel)]="model.description" rows="3" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="dateUpdateEvent">Date</label>
+                    <input id="dateUpdateEvent" class="form-control" name="date" [(ngModel)]="model.date" type="date" />
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+            <button type="submit" class="btn btn-primary" (click)="onUpdateSubmit(updateEvent)" (click)="c('Confirm click')">Valider</button>
+        </div>
+    </ng-template>
+
 <div class="jumbotron">
     <h1 class="display-4">Mes évènements</h1>
     <p class="lead">Créez et gérez vos évènement en groupe !</p>
@@ -67,8 +96,12 @@
         <div class="modal-content">
             <div class="scroll modal-body">
                 <div *ngFor="let anEvent of eventsOdTheDay.value" class="card card-body eventDetails {{anEvent.date.substring(8,10)}}">
-                    <h4>{{ anEvent.name }} </h4>
-                    <p>{{ anEvent.description }} </p>
+                    <h5 class="card-title">{{anEvent.name | titlecase}}</h5>
+                    <p class="card-text">{{ anEvent.description}}</p>
+                    <button (click)="updateEvent(anEvent._id)" routerLinkActive="router-link-active"  class="btn btn-info"
+                            data-toggle="modal" [attr.data-target]="'#event-list-' + eventsOdTheDay.key"><em class="fa fa-edit"></em></button>
+                    <button (click)="deleteEvent(anEvent._id)" routerLinkActive="router-link-active"  class="btn btn-danger"
+                            data-toggle="modal" [attr.data-target]="'#event-list-' + eventsOdTheDay.key"><em class="fa fa-trash"></em></button>
                 </div>
             </div>
         </div>
