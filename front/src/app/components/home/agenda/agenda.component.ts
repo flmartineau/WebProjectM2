@@ -35,11 +35,11 @@ export class AgendaComponent implements OnInit {
 
   ngOnInit() {
     let today = new Date();
-    this.year = today.getFullYear().toString(); 
+    this.year = today.getFullYear().toString();
     this.month = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     this.calendar = new Calendar(this.year, this.month, new Set([]));
 
-    this.loadEventByYearMonth();
+    
 
     this.route.params.subscribe(params => {
       const idProject = 'id';
@@ -47,7 +47,7 @@ export class AgendaComponent implements OnInit {
       const idEvent = 'eventId';
       this.eventId = params[idEvent];
     });
-
+    this.loadEventByYearMonth();
     if(this.eventId != null) {
       this.getEvent();
     }

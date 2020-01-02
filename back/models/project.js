@@ -23,7 +23,11 @@ const projectSchema = new mongoose.Schema({
     discord: {
         type: Schema.Types.ObjectId,
         ref: 'APIReference'
-    }
+    },
+    agendaEvents: [{
+        type: Schema.Types.ObjectId,
+        ref: 'AgendaEvent'
+    }]
 });
 
 

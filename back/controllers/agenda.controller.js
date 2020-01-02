@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 require('../models/agendaEvent');
+const Project = mongoose.model('Project');
 const AgendaEvent = mongoose.model('AgendaEvent');
 
 /**
@@ -12,8 +13,12 @@ module.exports.addEvent = (req, res, next) => {
     event.date = req.body.date;
     event.save().then(
         () => {
-            res.status(201).json({
-                message: 'Event added successfully!'
+            Project.findOne({ _id: req.params.projectId }, (err, project) => {
+                if (project) {
+                    project.agendaEvents.push(event);
+                    project.save();
+                    res.status(201).json({ message: 'Event added successfully!' });
+                }
             });
         }
     ).catch(
@@ -68,7 +73,7 @@ module.exports.deleteEvent = (req, res, next) => {
 module.exports.updateEvent = (req, res, next) => {
     AgendaEvent.findOne({ _id: req.params.eventId }, (err, event) => {
         if (!event) {
-         res.status(404).json({ status: false, message: 'Event not found' });
+            res.status(404).json({ status: false, message: 'Event not found' });
         } else {
             event.name = req.body.name;
             event.description = req.body.description;
@@ -85,17 +90,12 @@ module.exports.updateEvent = (req, res, next) => {
  * Get all the events.
  */
 module.exports.getAllEvents = (req, res) => {
-    AgendaEvent.find().then(
-        (events) => {
-            res.status(200).json(events);
-        }
-    ).catch(
-        (error) => {
-            res.status(400).json({
-                error: error
-            });
-        }
-    );
+    Project.findOne({ _id: req.params.projectId })
+        .populate('agendaEvents')
+        .exec(function (err, project) {
+            if (err) res.json({ error: 'error' });
+            res.json({ events: project.agendaEvents });
+        });
 };
 
 /**
@@ -105,16 +105,23 @@ module.exports.getEventsByYearMonth = (req, res) => {
     let numberOfDays = new Date(req.params.year, req.params.month , 0).getDate();
     let first = req.params.year + '-' + req.params.month + '-01';
     let last = req.params.year + '-' + req.params.month + '-' + numberOfDays;
+    Project.findOne({ _id: req.params.projectId })
+        .populate('agendaEvents')
+        .exec(function (err, project) {
+            if (err) {res.json({ error: 'error' });}
+                //AJOUTER CONDITION POUR RECUPERER DANS PROJET
+                AgendaEvent.find({ date: { $gte: first, $lte: last} }).then(
+                    (events) => {
+                        console.log(events)
+                        res.status(200).json(events);
+                    }
+                ).catch(
+                    (error) => {
+                        res.status(400).json({
+                            error: error
+                        });
+                    }
+                );
+        });
 
-    AgendaEvent.find({ date: { $gte: first, $lte: last} }).then(
-        (events) => {
-            res.status(200).json(events);
-        }
-    ).catch(
-        (error) => {
-            res.status(400).json({
-                error: error
-            });
-        }
-    );
 };
