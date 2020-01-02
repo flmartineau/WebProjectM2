@@ -15,7 +15,7 @@ export class AgendaComponent implements OnInit {
 
   public eventId;
   public event: AgendaEvent;
-  public events = [];
+  public events = {};
 
   public projectId;
   public project: Project;
@@ -23,6 +23,7 @@ export class AgendaComponent implements OnInit {
   public calendar:Calendar;
   public year:string;
   public month:string;
+  public today :string;
 
   constructor(private route: ActivatedRoute, public agendaService: AgendaService, public modalService: NgbModal) { }
   @ViewChild('popupUpdateAgendaEvent', {static: false}) popupUpdateAgendaEvent;
@@ -35,11 +36,10 @@ export class AgendaComponent implements OnInit {
 
   ngOnInit() {
     let today = new Date();
-    this.year = today.getFullYear().toString();
+    this.year = today.getFullYear().toString(); 
     this.month = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    this.today = this.year + '-' + this.month + '-' + today.getDate().toString().padStart(2, '0');
     this.calendar = new Calendar(this.year, this.month, new Set([]));
-
-    
 
     this.route.params.subscribe(params => {
       const idProject = 'id';
@@ -47,13 +47,16 @@ export class AgendaComponent implements OnInit {
       const idEvent = 'eventId';
       this.eventId = params[idEvent];
     });
+
     this.loadEventByYearMonth();
     if(this.eventId != null) {
       this.getEvent();
     }
-    this.getEvents();
   }
 
+  /**
+   * Select the previous month to the current
+   */
   prevMonth() {
     let prev = this.calendar.getPreviousYearMonth();
     this.year = prev[0];
@@ -61,6 +64,9 @@ export class AgendaComponent implements OnInit {
     this.loadEventByYearMonth();
   }
 
+  /**
+   * Select the next month to the current
+   */
   nextMonth() {
     let next = this.calendar.getNextYearMonth();
     this.year = next[0];
@@ -68,20 +74,28 @@ export class AgendaComponent implements OnInit {
     this.loadEventByYearMonth();
   }
 
+  /**
+   * Reload the events and calendar
+   */
   loadEventByYearMonth() {
+    this.events = {};
     this.agendaService.getEventsByYearMonth(this.projectId, this.year, this.month).subscribe(data => {
-      this.events = data;
+      data.forEach(event => {
+        if(this.events[event.date.toString().substring(8,10)]){
+          this.events[event.date.toString().substring(8,10)].add(event);
+        } else {
+          this.events[event.date.toString().substring(8,10)] = new Set([event]);
+        }
+      } );
       this.updateCalendar();
     });
   }
 
+  /**
+   * Reload the calendar
+   */
   updateCalendar(){
-    let days = new Set([]);
-    this.events.forEach(event => {
-      let day = event['date'].toString().substring(8,10);
-      if(!days.has(day)) days.add(day);
-    } );
-    this.calendar = new Calendar(this.year, this.month, days);
+    this.calendar = new Calendar(this.year, this.month, this.events);
   }
 
   /**
@@ -150,7 +164,7 @@ class Calendar {
   public currentYear=0;
   public currentMonth=0;
   private daysInMonth=0;
-  private events = new Set([]);
+  private events= {};
    
   /********************* PUBLIC **********************/  
 
@@ -176,7 +190,7 @@ class Calendar {
         }
         
         if( (currentDay!=0)&&(currentDay<= this.daysInMonth) ){
-          table = [currentDay, this.currentYear + "-" + this.currentMonth + "-" + currentDay.toString().padStart(2, '0'), this.events.has(currentDay.toString().padStart(2, '0'))];
+          table = [currentDay, this.currentYear + "-" + this.currentMonth + "-" + currentDay.toString().padStart(2, '0'), this.events[currentDay.toString().padStart(2, '0')] != null];
           currentDay++;  
         }else{
           table = ["", cellNumber];

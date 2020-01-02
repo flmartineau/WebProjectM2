@@ -13,7 +13,7 @@
         évènement <em class="fa fa-plus"></em></a>
 
     <div class="collapse" id="collapseNewEvent">
-        <div class="card card-body">
+        <div class="card card-body" style="margin-top:15px;">
             <form #newEvent="ngForm" (ngSubmit)="newEvent.valid">
                 <div class="form-group">
                     <label for="nameNewEvent">Nom de l'évènement</label>
@@ -50,13 +50,27 @@
             </ul>
             <div class="clear"></div> 
             <ul class="dates">  
-                <li *ngFor="let day of calendar.getDays(null,null); let index = index;" id="cell-{{ day[1] }}" class="{{day[1] == today ? 'current' : ''}}">
+                <li *ngFor="let day of calendar.getDays(null,null); let index = index;" id="cell-{{ day[1] }}" class="cell {{day[1] == today ? 'current' : ''}}" 
+                        [attr.data-toggle]="day[2] ? 'modal' : null" [attr.data-target]="day[2] ? '#event-list-' + day[1].substring(8,10) : null" [style.cursor]="day[2] ? 'pointer' : null">
                     {{ day[0] }} 
-                    <img src="../../..//../assets/planning_star.svg" alt="Evenement" class="{{day[2] ? 'event' : 'notEvent' }}" style="max-width: 25px; margin-top: -50px;  margin-right: -20px;">
+                    <img *ngIf="day[2]" src="../../..//../assets/planning_star.svg" alt="Evenement" style="max-width: 25px; margin-top: -50px;  margin-right: -20px;">
                 </li>
                 <!--li id="li-" class=""></li-->
             </ul>
             <div class="clear"></div>   
+        </div>
+    </div>
+</div>
+
+<div *ngFor="let eventsOdTheDay of events | keyvalue" class="modal fade" id="event-list-{{eventsOdTheDay.key}}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="scroll modal-body">
+                <div *ngFor="let anEvent of eventsOdTheDay.value" class="card card-body eventDetails {{anEvent.date.substring(8,10)}}">
+                    <h4>{{ anEvent.name }} </h4>
+                    <p>{{ anEvent.description }} </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>

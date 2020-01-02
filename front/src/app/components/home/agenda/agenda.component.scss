@@ -2,9 +2,14 @@
     margin-bottom: 15%;
 }
 
-.notEvent {
-    display : none;
+.eventDetails:hover {
+    background-color: rgb(221, 221, 221, 0.5);
 }
+
+.scroll {
+    max-height: 450px;
+    overflow-y: scroll;
+  }
 
 /*******************************Calendar Top Navigation*********************************/
 div#calendar{
