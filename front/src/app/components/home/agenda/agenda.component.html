@@ -70,23 +70,23 @@
                     <span class="title">{{calendar.getCurrent()}}</span>
                 <span id="next-month" (click)="nextMonth()" class="next">Suivant</span>
             </div>
-        </div>    
+        </div>
         <div class="box-content">
             <ul class="label">
                 <li *ngFor="let dayLabel of calendar.dayLabels; let index = index;" class="title">
                     {{ dayLabel }}
                 </li>
             </ul>
-            <div class="clear"></div> 
-            <ul class="dates">  
+            <div class="clear"></div>
+            <ul class="dates">
                 <li *ngFor="let day of calendar.getDays(null,null); let index = index;" id="cell-{{ day[1] }}" class="cell {{day[1] == today ? 'current' : ''}}" 
                         [attr.data-toggle]="day[2] ? 'modal' : null" [attr.data-target]="day[2] ? '#event-list-' + day[1].substring(8,10) : null" [style.cursor]="day[2] ? 'pointer' : null">
-                    {{ day[0] }} 
+                    {{ day[0] }}
                     <img *ngIf="day[2]" src="../../..//../assets/planning_star.svg" alt="Evenement" style="max-width: 25px; margin-top: -50px;  margin-right: -20px;">
                 </li>
                 <!--li id="li-" class=""></li-->
             </ul>
-            <div class="clear"></div>   
+            <div class="clear"></div>
         </div>
     </div>
 </div>
