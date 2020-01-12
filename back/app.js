@@ -1,15 +1,16 @@
 require('./config/config');
 require('./config/database');
+require('./config/passport.config');
 
 const express = require('express');
 
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const jwtVerify = require('./config/jwt.verify') ;
 const cors = require('cors');
 const app = express();
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
 
 const userRouter = require('./routers/user.router');
 const projectRouter = require('./routers/project.router');
@@ -20,7 +21,7 @@ app.use(cors({origin:true,credentials: true}));
 app.use(passport.initialize());
 
 app.use('/api', userRouter);
-app.use('/api/project', projectRouter);
+app.use('/api/project', jwtVerify.verifyJwtToken, projectRouter);
 
 
 app.use((err, req, res, next) => {
@@ -35,18 +36,4 @@ app.listen(process.env.PORT, () => {
     console.log('Démarrage du serveur sur le port :' + process.env.PORT);
 });
 
-
-passport.use(new LocalStrategy({ usernameField: 'email' },
-    function (username, password, done) {
-        User.findOne({ username: username }, function (err, user) {
-            if (err) { return done(err); }
-            if (!user) {
-                return done(null, false, { message: 'Incorrect username.' });
-            }
-            if (!user.validPassword(password)) {
-                return done(null, false, { message: 'Incorrect password.' });
-            }
-            return done(null, user);
-        });
-    }
-));
+module.exports = app;

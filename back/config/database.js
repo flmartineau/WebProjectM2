@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/projetWeb';
 
 
-mongoose.connect(MONGO_URL)
+mongoose.connect(MONGO_URL, { useNewUrlParser: true,
+                              useUnifiedTopology: true,
+                              useCreateIndex: true })
   .then(() => {
     console.log('Successfully connected to MongoDB!');
   })

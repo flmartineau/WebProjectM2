@@ -26,6 +26,9 @@
                                 routerLinkActive="router-link-active" id="signup">Inscrivez-vous ici</a></p>
                     </div>
                 </form>
+                <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+                    {{ errorMessage }}
+                </div>
             </div>
         </div>
     </div>

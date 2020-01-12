@@ -31,4 +31,13 @@ export class AuthService {
   login(infos) {
     return this.http.post(environment.API_URL+'/user/login', infos);
   }
+
+
+  /**
+   * Logout the current user.
+   */
+  logout() {
+    return this.http.get(environment.API_URL + '/user/logout');
+  }
+
 }

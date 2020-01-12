@@ -50,7 +50,6 @@ module.exports.deleteProject = (req, res) => {
  * Get a project from its id.
  */
 module.exports.getProjectById = (req, res) => {
-    console.log(req.params)
     Project.findOne({ _id: req.params.projectId }).populate('githubRepository').then(
         (project) => {
             res.status(200).json(project);

@@ -77,7 +77,6 @@ export class GithubComponent implements OnInit, AfterViewInit {
             else if(err.status == '404'){
               this.errorMessage = "Github repository not found. The repository may be private : please provide valid Github login credentials"
             } else {
-            console.log("err : ", err);
             this.errorMessage = err.error.message;
             }
           });
@@ -104,7 +103,6 @@ export class GithubComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(form: NgForm) {
-        console.log(form.value)
         this.projectService.addProjectGithub(this.projectId, form.value).subscribe(
           res => {
             this.getProjectRepo();

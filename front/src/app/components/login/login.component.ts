@@ -11,6 +11,9 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService : AuthService, private router : Router) { }
 
+  errorMessage: string;
+
+
   ngOnInit() {
   }
 
@@ -20,12 +23,10 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/home/projects');
       },
       err => {
-
+        console.log(err.error.message)
+        this.errorMessage = err.error.message;
       }
     );
-    console.log(form.value);
-    this.router.navigateByUrl('/home/projects');//tmp
-
   }
 
 

@@ -33,7 +33,6 @@ export class GithubService {
   getCommitDetails(owner, repo, sha, gitUser, gitToken) {
     let headers = new HttpHeaders();
     headers = headers.append("Authorization", "Basic " + btoa(gitUser+":"+gitToken));
-    console.log('https://api.github.com/repos/'+owner+'/'+repo+'/commits/'+sha)
     return this.httpClient.get('https://api.github.com/repos/'+owner+'/'+repo+'/commits/'+sha, { headers });
   }
 

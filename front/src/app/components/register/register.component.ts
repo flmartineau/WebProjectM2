@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html'
 })
 export class RegisterComponent implements OnInit {
-  successmessage: boolean;
-  errormessage: string;
-  constructor(private authService : AuthService) { }
+  errorMessage: string;
+  constructor(private authService : AuthService, private router : Router) { }
 
   ngOnInit() {
   }
@@ -17,17 +17,11 @@ export class RegisterComponent implements OnInit {
   onSubmit(form: NgForm) {
     this.authService.addUser(form.value).subscribe(
       res => {
-
+        this.router.navigateByUrl('/login');
       },
       err => {
-        //affichage erreur
+        this.errorMessage = err.error[0];
       }
     );
-    console.log(form.value)
   }
-
-
-
-
-
 }
