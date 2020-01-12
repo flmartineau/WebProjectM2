@@ -105,23 +105,27 @@ module.exports.getEventsByYearMonth = (req, res) => {
     let numberOfDays = new Date(req.params.year, req.params.month , 0).getDate();
     let first = req.params.year + '-' + req.params.month + '-01';
     let last = req.params.year + '-' + req.params.month + '-' + numberOfDays;
+    let resEvents = [];
     Project.findOne({ _id: req.params.projectId })
         .populate('agendaEvents')
         .exec(function (err, project) {
+            console.log(project)
             if (err) {res.json({ error: 'error' });}
-                //AJOUTER CONDITION POUR RECUPERER DANS PROJET
-                AgendaEvent.find({ date: { $gte: first, $lte: last} }).then(
-                    (events) => {
-                        console.log(events)
-                        res.status(200).json(events);
+                project.agendaEvents.forEach(event => {
+                    let eventDate = new Date(event.date);
+                    if(+eventDate >= +new Date(first) && +eventDate <= +new Date(last)){
+                        resEvents.push(event);
                     }
-                ).catch(
-                    (error) => {
-                        res.status(400).json({
-                            error: error
-                        });
-                    }
-                );
-        });
+                });
+
+                console.log(resEvents);
+                res.status(200).json(resEvents);
+        }).catch(
+            (error) => {
+                res.status(400).json({
+                    error: error
+                });
+            }
+        );;
 
 };
