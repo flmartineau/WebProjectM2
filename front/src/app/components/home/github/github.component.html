@@ -8,7 +8,7 @@
 
 <ng-template #popupRepository id = "popupRepository" let-c="close" let-d="dismiss" >
     <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Ajoutez un dépot GitHub</h5>
+        <h5 class="modal-title">Ajouter un dépot GitHub</h5>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -37,6 +37,36 @@
     </div>
 </ng-template>
 
+<ng-template #popupRepositoryEdit id = "popupRepositoryEdit" let-c="close" let-d="dismiss" >
+    <div class="modal-header">
+        <h5 class="modal-title">Modifier le dépot GitHub</h5>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #updateProject="ngForm" (ngSubmit)="newProject.valid">
+            <div class="form-group">
+                <label for="githubLink">URL GitHub</label>
+                <input type="text" class="form-control" id="githubLink" name="githubLink" [(ngModel)]="model.githubLink">
+            </div>
+            <div class="form-group">
+                <label for="githubUsername">Username GitHub</label>
+                <input type="email" class="form-control" id="githubUsername" name="githubUsername" [(ngModel)]="model.githubUsername"
+                placeholder="Username">
+            </div>
+            <div class="form-group">
+                <label for="githubUsername">GitHub password or token</label>
+                <input type="password" class="form-control" id="githubToken" name="githubToken" [(ngModel)]="model.githubToken"
+                placeholder="Password or token">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+        <button type="submit" class="btn btn-primary" (click)="onSubmitEdit(updateProject)" (click)="c('Confirm click')">Valider</button>
+    </div>
+</ng-template>
 
 <h1 class="display-4">{{githubOwner}} / {{githubRepo}} <em id="editIcon" class="fa fa-edit" (click)="openModalEdit()"></em></h1>
 

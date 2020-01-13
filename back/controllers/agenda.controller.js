@@ -109,7 +109,6 @@ module.exports.getEventsByYearMonth = (req, res) => {
     Project.findOne({ _id: req.params.projectId })
         .populate('agendaEvents')
         .exec(function (err, project) {
-            console.log(project)
             if (err) {res.json({ error: 'error' });}
                 project.agendaEvents.forEach(event => {
                     let eventDate = new Date(event.date);
@@ -117,8 +116,6 @@ module.exports.getEventsByYearMonth = (req, res) => {
                         resEvents.push(event);
                     }
                 });
-
-                console.log(resEvents);
                 res.status(200).json(resEvents);
         }).catch(
             (error) => {
@@ -126,6 +123,6 @@ module.exports.getEventsByYearMonth = (req, res) => {
                     error: error
                 });
             }
-        );;
+        );
 
 };

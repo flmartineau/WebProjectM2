@@ -13,6 +13,7 @@ import { GithubService } from 'src/app/services/github.service';
 })
 export class GithubComponent implements OnInit, AfterViewInit {
   @ViewChild('popupRepository', {static: false}) popupRepository;
+  @ViewChild('popupRepositoryEdit', {static: false}) popupRepositoryEdit;
 
   public projectId;
 
@@ -77,7 +78,7 @@ export class GithubComponent implements OnInit, AfterViewInit {
             else if(err.status == '404'){
               this.errorMessage = "Github repository not found. The repository may be private : please provide valid Github login credentials"
             } else {
-            this.errorMessage = err.error.message;
+              this.errorMessage = err.error.message;
             }
           });
       }
@@ -99,7 +100,14 @@ export class GithubComponent implements OnInit, AfterViewInit {
    * Open the Github URL edit form popup.
    */
   openModalEdit() {
-    this.modalService.open(this.popupRepository, { centered: true });
+    this.projectService.getProjectById(this.projectId).subscribe(data => {
+      if(data.githubRepository == undefined){
+        this.modalService.open(this.popupRepository, { centered: true });
+      }
+      else {
+        this.modalService.open(this.popupRepositoryEdit, { centered: true });
+      }
+    });
   }
 
   onSubmit(form: NgForm) {
@@ -112,6 +120,17 @@ export class GithubComponent implements OnInit, AfterViewInit {
           }
         );
   }
+
+  onSubmitEdit(form: NgForm) {
+    this.projectService.updateProjectGithub(this.projectId, form.value).subscribe(
+      res => {
+        this.getProjectRepo();
+      },
+      err => {
+        console.log(err);
+      }
+    );
+}
 
   /**
    * Get details about a commit.
