@@ -24,6 +24,15 @@ export class AuthService {
     return this.http.post(environment.API_URL+'/user', user);
   }
 
+
+  /**
+   * Update the current logged user.
+   * @param user updated user.
+   */
+  updateUser(user: User) {
+    return this.http.put(environment.API_URL+'/user/:TEMPID', user);
+  }
+
   /**
    * Login user from info.
    * @param infos info from the login form.

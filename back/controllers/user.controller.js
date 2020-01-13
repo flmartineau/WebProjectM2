@@ -55,5 +55,6 @@ module.exports.logoutUser = (req, res, next) => {
 };
 
 module.exports.updateUser = (req, res, next) => {
-
+    console.log(req.body)
+    console.log("ff",localStorage)
 };

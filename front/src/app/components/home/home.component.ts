@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
-
+  userInfos;
   constructor(public authService : AuthService, private router: Router) { }
 
   ngOnInit() {

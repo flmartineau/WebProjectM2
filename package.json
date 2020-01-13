@@ -1,0 +1,21 @@
+{
+    "name": "webprojectm2",
+    "version": "1.0.0",
+    "description": "Site de gestion de projets destiné à des étudiants/développeurs, permettant de gérer et de récupérer toutes les informations relatives à leurs projet.",
+    "main": "app.js",
+    "scripts": {
+        "install": "npm install --prefix back && npm install --prefix front",
+        "postinstall": "cd front && npm run build",
+        "start": "node back/app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/flmartineau/WebProjectM2.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/flmartineau/WebProjectM2/issues"
+    },
+    "homepage": "https://github.com/flmartineau/WebProjectM2#readme"
+}

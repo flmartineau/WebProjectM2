@@ -1,1 +1,23 @@
-<p>profile works!</p>
+<div class="jumbotron">
+    <h1 class="display-4 col-md-5 mx-auto">Modifier mes informations</h1>
+</div>
+<div class="col-md-5 mx-auto">
+    <form #editForm="ngForm" (ngSubmit)="editForm.valid">
+        <div class="form-group">
+            <label for="email">Adresse email:</label>
+            <input type="email" placeholder="Email" name="email" class="form-control" id="email"
+                [(ngModel)]="model.email">
+        </div>
+        <div class="form-group">
+            <label for="name">Nom:</label>
+            <input placeholder="Nom" name="name" class="form-control" id="name"
+                [(ngModel)]="model.name">
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe:</label>
+            <input type="password" placeholder="Mot de passe" name="password" class="form-control" id="password"
+                [(ngModel)]="model.password">
+        </div>
+        <button class="btn btn-success" (click)="onSubmit(editForm)">Appliquer</button>
+    </form>
+</div>
