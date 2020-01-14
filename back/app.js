@@ -32,7 +32,7 @@ app.use((err, req, res, next) => {
     }
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3002, () => {
     console.log('Démarrage du serveur sur le port :' + process.env.PORT);
 });
 

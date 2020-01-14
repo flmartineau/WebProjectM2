@@ -1,5 +1,14 @@
 version: "2"
 services:
+    back:
+        build: "./back"
+        restart: always
+        environment:
+            MONGO_URL: "mongodb://mongodb:27017/projetWeb"
+        ports:
+          - "3002:3002"
+        links:
+          - mongodb
     mongodb:
         image: mongo
         volumes:
