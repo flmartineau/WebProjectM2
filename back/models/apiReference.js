@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 
 const apiReferenceSchema = new mongoose.Schema({
     link: {
-        type: String,
-        required: true
+        type: String
     },
     usernameAPI: {
         type: String

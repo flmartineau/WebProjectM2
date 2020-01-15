@@ -6,4 +6,28 @@
     </ol>
 </nav>
 
-<p>discord works!</p>
+
+<ng-template #popupServer id = "popupServer" let-c="close" let-d="dismiss" >
+    <div class="modal-header">
+        <h5 class="modal-title">Ajouter un serveur Discord</h5>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #updateProject="ngForm" (ngSubmit)="newProject.valid">
+            <div class="form-group">
+                <label for="discordServerID">ID du serveur</label>
+                <input type="text" class="form-control" id="discordServerID" name="discordServerID" [(ngModel)]="model.discordServerID">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+        <button type="submit" class="btn btn-primary" (click)="onSubmit(updateProject)" (click)="c('Confirm click')">Valider</button>
+    </div>
+</ng-template>
+
+
+
+<iframe *ngIf="discordIframeLink != undefined" [src]="discordIframeLink" width="350" height="1000" allowtransparency="true" frameborder="0"></iframe>

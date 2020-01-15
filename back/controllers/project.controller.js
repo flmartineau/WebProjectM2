@@ -12,8 +12,14 @@ const AgendaEvent = mongoose.model('AgendaEvent');
  */
 module.exports.addProject = (req, res) => {
     const project = new Project();
+    const githubRepository = new APIReference();
+    const discordServer = new APIReference();
+    githubRepository.save();
+    discordServer.save();
     project.name = req.body.name;
     project.description = req.body.description;
+    project.githubRepository = githubRepository;
+    project.discord = discordServer;
     project.save().then(
         () => {
             res.status(201).json({
@@ -36,6 +42,7 @@ module.exports.deleteProject = (req, res) => {
     Project.findOne({ _id: req.params.projectId })
         .populate('agendaEvents')
         .populate('githubRepository')
+        .populate('discord')
         .exec(function (err, project) {
             if (err) { res.json({ error: 'error' }); }
             project.agendaEvents.forEach(event => {
@@ -45,7 +52,10 @@ module.exports.deleteProject = (req, res) => {
                     (error) => { }
                 );
             });
-            APIReference.deleteOne({ _id: project.githubRepository._id }).then(
+            APIReference.deleteOne({$or: [
+                { _id: project.githubRepository._id },
+                { _id: project.discord._id}
+            ]}).then(
                 () => { }
             ).catch(
                 (error) => { }
@@ -71,7 +81,10 @@ module.exports.deleteProject = (req, res) => {
  * Get a project from its id.
  */
 module.exports.getProjectById = (req, res) => {
-    Project.findOne({ _id: req.params.projectId }).populate('githubRepository').then(
+    Project.findOne({ _id: req.params.projectId })
+    .populate('githubRepository')
+    .populate('discord')
+    .then(
         (project) => {
             res.status(200).json(project);
         }).catch(
@@ -82,28 +95,6 @@ module.exports.getProjectById = (req, res) => {
                 })
             }
         );
-};
-
-/**
- * Add a Github Reference to the project.
- */
-module.exports.addProjectGithub = (req, res) => {
-    const githubRepository = new APIReference();
-    githubRepository.link = req.body.githubLink;
-    githubRepository.tokenAPI = req.body.githubToken;
-    githubRepository.usernameAPI = req.body.githubUsername;
-    githubRepository.save().then(()=> {
-        Project.findOne({ _id: req.params.projectId }, (err, project) => {
-            if (!project) res.status(404).json({ status: false, message: 'Projet non trouvé' });
-            else {
-                project.githubRepository = githubRepository;
-                project.save(function (err) {
-                    if (!err)
-                        res.send({ success: 'Created with success' });
-                });
-            }
-        })
-    });
 };
 
 /**

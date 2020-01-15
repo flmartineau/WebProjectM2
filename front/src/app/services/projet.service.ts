@@ -60,13 +60,22 @@ export class ProjetService {
     return this.httpClient.put(environment.API_URL+'/project/' + id + '/github', githubRef);
   }
 
-    /**
-   * Add a Github Reference to the project.
-   * @param id id of the project.
-   * @param githubRef new GitHub Reference for the project.
+  /**
+   * Update the discord Reference to the project
+   * @param id id of the project
+   * @param discordRef new Discord Reference for the project.
    */
-  addProjectGithub(id, githubRef) {
-    return this.httpClient.post(environment.API_URL+'/project/' + id + '/github', githubRef);
+  updateProjectDiscord(id, discordRef) {
+    return this.httpClient.put(environment.API_URL+'/project/'+ id + '/discord', discordRef);
   }
+
+
+
+
+
+
+
+
+
 
 }

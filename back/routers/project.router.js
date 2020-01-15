@@ -16,7 +16,6 @@ router.get('/:projectId',projectController.getProjectById);
 router.delete('/:projectId', projectController.deleteProject);
 router.get('', projectController.getAllProjects);
 
-router.post('/:projectId/github', projectController.addProjectGithub);
 router.put('/:projectId/github', projectController.updateProjectGithub);
 
 router.post('/:projectId/agenda', agendaController.addEvent);
@@ -31,7 +30,6 @@ router.get('/:projectId/slack', slackController.getSlack);
 router.put('/:projectId/slack', slackController.updateSlack);
 router.delete('/:projectId/slack', slackController.deleteSlack);
 
-router.post('/:projectId/discord', discordController.addDiscord);
 router.get('/:projectId/discord', discordController.getDiscord);
 router.put('/:projectId/discord', discordController.updateDiscord);
 router.delete('/:projectId/discord', discordController.deleteDiscord);

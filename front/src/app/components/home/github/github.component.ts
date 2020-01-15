@@ -57,7 +57,7 @@ export class GithubComponent implements OnInit, AfterViewInit {
    */
   getProjectRepo() {
     this.projectService.getProjectById(this.projectId).subscribe(data => {
-      if (data.githubRepository != undefined) {
+      if (data.githubRepository.link != undefined) {
         this.githubRef = data.githubRepository;
         console.log(this.githubRef.link.split('/'));
         this.githubOwner = this.githubRef.link.split('/')[3];
@@ -90,7 +90,7 @@ export class GithubComponent implements OnInit, AfterViewInit {
    */
   openModal() {
     this.projectService.getProjectById(this.projectId).subscribe(data => {
-      if(data.githubRepository == undefined){
+      if(data.githubRepository.link == undefined){
         this.modalService.open(this.popupRepository, { centered: true });
       }
     });
@@ -101,7 +101,7 @@ export class GithubComponent implements OnInit, AfterViewInit {
    */
   openModalEdit() {
     this.projectService.getProjectById(this.projectId).subscribe(data => {
-      if(data.githubRepository == undefined){
+      if(data.githubRepository.link == undefined){
         this.modalService.open(this.popupRepository, { centered: true });
       }
       else {
@@ -111,7 +111,7 @@ export class GithubComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(form: NgForm) {
-        this.projectService.addProjectGithub(this.projectId, form.value).subscribe(
+        this.projectService.updateProjectGithub(this.projectId, form.value).subscribe(
           res => {
             this.getProjectRepo();
           },
@@ -120,17 +120,6 @@ export class GithubComponent implements OnInit, AfterViewInit {
           }
         );
   }
-
-  onSubmitEdit(form: NgForm) {
-    this.projectService.updateProjectGithub(this.projectId, form.value).subscribe(
-      res => {
-        this.getProjectRepo();
-      },
-      err => {
-        console.log(err);
-      }
-    );
-}
 
   /**
    * Get details about a commit.
