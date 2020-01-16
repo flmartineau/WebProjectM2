@@ -2,37 +2,45 @@ const mongoose = require('mongoose');
 require('../models/project');
 require('../models/apiReference');
 require('../models/agendaEvent');
+require('../models/user');
 const Project = mongoose.model('Project');
 const APIReference = mongoose.model('APIReference');
 const AgendaEvent = mongoose.model('AgendaEvent');
+const User = mongoose.model('User');
 
 
 /**
  * Create a new project.
  */
 module.exports.addProject = (req, res) => {
-    const project = new Project();
-    const githubRepository = new APIReference();
-    const discordServer = new APIReference();
-    githubRepository.save();
-    discordServer.save();
-    project.name = req.body.name;
-    project.description = req.body.description;
-    project.githubRepository = githubRepository;
-    project.discord = discordServer;
-    project.save().then(
-        () => {
-            res.status(201).json({
-                message: 'Project added successfully!'
-            });
+    User.findOne({ _id: req._id }, (err, user) => {
+        if (!user) res.status(404).json({ status: false, message: 'Utilisateur non trouvé' });
+        else {
+            const project = new Project();
+            const githubRepository = new APIReference();
+            const discordServer = new APIReference();
+            githubRepository.save();
+            discordServer.save();
+            project.name = req.body.name;
+            project.description = req.body.description;
+            project.githubRepository = githubRepository;
+            project.discord = discordServer;
+            project.owner = user;
+            project.save().then(
+                () => {
+                    res.status(201).json({
+                        message: 'Project added successfully!'
+                    });
+                }
+            ).catch(
+                (error) => {
+                    res.status(400).json({
+                        error: error
+                    });
+                }
+            );
         }
-    ).catch(
-        (error) => {
-            res.status(400).json({
-                error: error
-            });
-        }
-    );
+    });
 };
 
 /**
@@ -84,6 +92,7 @@ module.exports.getProjectById = (req, res) => {
     Project.findOne({ _id: req.params.projectId })
     .populate('githubRepository')
     .populate('discord')
+    .populate('owner')
     .then(
         (project) => {
             res.status(200).json(project);
@@ -138,7 +147,7 @@ module.exports.updateProject = (req, res) => {
  * Get all the projects.
  */
 module.exports.getAllProjects = (req, res) => {
-    Project.find().then(
+    Project.find({'owner': req._id}).then(
         (projects) => {
             res.status(200).json(projects);
         }

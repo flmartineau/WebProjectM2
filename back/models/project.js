@@ -9,6 +9,10 @@ const projectSchema = new mongoose.Schema({
     description: {
         type: String
     },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     githubRepository: {
         type: Schema.Types.ObjectId,
         ref: 'APIReference'
