@@ -16,10 +16,11 @@ import { ProjectsComponent } from './components/home/projects/projects.component
 import { ProjectComponent } from './components/home/project/project.component';
 import { GithubComponent } from './components/home/github/github.component';
 import { AgendaComponent } from './components/home/agenda/agenda.component';
-import { SlackComponent } from './components/home/slack/slack.component';
 import { DiscordComponent } from './components/home/discord/discord.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { ContactsComponent } from './components/contacts/contacts.component';
+import { NotesComponent } from './components/notes/notes.component';
 
 
 @NgModule({
@@ -33,8 +34,9 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     ProjectComponent,
     GithubComponent,
     AgendaComponent,
-    SlackComponent,
-    DiscordComponent
+    DiscordComponent,
+    ContactsComponent,
+    NotesComponent
   ],
   imports: [
     BrowserModule,

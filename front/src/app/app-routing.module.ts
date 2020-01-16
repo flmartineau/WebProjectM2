@@ -8,9 +8,10 @@ import { ProjectsComponent } from './components/home/projects/projects.component
 import { ProjectComponent } from './components/home/project/project.component';
 import { GithubComponent } from './components/home/github/github.component';
 import { AgendaComponent } from './components/home/agenda/agenda.component';
-import { SlackComponent } from './components/home/slack/slack.component';
 import { DiscordComponent } from './components/home/discord/discord.component';
 import { AuthGuard } from './auth/auth.guard';
+import { ContactsComponent } from './components/contacts/contacts.component';
+import { NotesComponent } from './components/notes/notes.component';
 
 
 const routes: Routes = [
@@ -25,8 +26,9 @@ const routes: Routes = [
     { path: 'projects/:id/github', component: GithubComponent},
     { path: 'projects/:id/agenda', component: AgendaComponent},
     { path: 'projects/:id/agenda/:eventId', component: AgendaComponent},
-    { path: 'projects/:id/slack', component: SlackComponent},
     { path: 'projects/:id/discord', component: DiscordComponent},
+    { path: 'projects/:id/contacts', component: ContactsComponent},
+    { path: 'projects/:id/notes', component: NotesComponent},
     { path: 'profile', component: ProfileComponent}]
   }
 ];
