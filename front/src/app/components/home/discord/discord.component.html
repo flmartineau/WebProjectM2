@@ -20,6 +20,10 @@
                 <label for="discordServerID">ID du serveur</label>
                 <input type="text" class="form-control" id="discordServerID" name="discordServerID" [(ngModel)]="model.discordServerID">
             </div>
+            <div class="form-group">
+                <label for="discordServerID">ID du channel principal</label>
+                <input type="text" class="form-control" id="discordChannelID" name="discordChannelID" [(ngModel)]="model.discordChannelID">
+            </div>
         </form>
     </div>
     <div class="modal-footer">
@@ -30,4 +34,14 @@
 
 
 
-<iframe *ngIf="discordIframeLink != undefined" [src]="discordIframeLink" width="350" height="1000" allowtransparency="true" frameborder="0"></iframe>
+<body>
+    <em id="editIcon" class="fa fa-edit" (click)="openModalEdit()"></em>
+    <div class="alert alert-success" role="alert" *ngIf="errorMessage">
+        {{ errorMessage }}
+        <a *ngIf="errorStatus == 403" href="https://add.widgetbot.io/">Ajouter Bot</a>
+    </div>
+    <div class="row-container">
+        <iframe *ngIf="discordIframeLink2 != undefined" [src]="discordIframeLink2" class="second-row"></iframe>
+        <iframe *ngIf="discordIframeLink1 != undefined" [src]="discordIframeLink1" class="first-row"></iframe>
+    </div>
+</body>

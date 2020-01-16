@@ -7,7 +7,7 @@ const APIReference = mongoose.model('APIReference');
 
 module.exports.updateDiscord = (req, res, next) => {
     const discordServer = new APIReference();
-    discordServer.link = req.body.discordServerID;
+    discordServer.link = req.body.discordServerID+"/"+req.body.discordChannelID;
     //discordServer.tokenAPI = null;
     //discordServer.usernameAPI = null;
     discordServer.save().then(() => {
