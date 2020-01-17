@@ -18,6 +18,11 @@ module.exports.addContact = (req, res, next) => {
                     project.save();
                     res.status(201).json({ message: 'Contact added successfully!' });
                 }
+                else if (err) {
+                    res.status(400).json({
+                        error: error
+                    });
+                }
             });
         }
     ).catch(
