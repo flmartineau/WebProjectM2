@@ -34,7 +34,6 @@ module.exports.addEvent = (req, res, next) => {
  * Get an event from its id.
  */
 module.exports.getEventById = (req, res) => {
-    console.log(req.params)
     AgendaEvent.findOne({ _id: req.params.eventId }).then(
         (event) => {
             res.status(200).json(event);

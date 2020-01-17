@@ -24,6 +24,10 @@ const projectSchema = new mongoose.Schema({
     agendaEvents: [{
         type: Schema.Types.ObjectId,
         ref: 'AgendaEvent'
+    }],
+    contacts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Contact'
     }]
 });
 

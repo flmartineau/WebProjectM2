@@ -3,9 +3,11 @@ require('../models/project');
 require('../models/apiReference');
 require('../models/agendaEvent');
 require('../models/user');
+require('../models/contact');
 const Project = mongoose.model('Project');
 const APIReference = mongoose.model('APIReference');
 const AgendaEvent = mongoose.model('AgendaEvent');
+const Contact = mongoose.model('Contact');
 const User = mongoose.model('User');
 
 
@@ -55,6 +57,13 @@ module.exports.deleteProject = (req, res) => {
             if (err) { res.json({ error: 'error' }); }
             project.agendaEvents.forEach(event => {
                 AgendaEvent.deleteOne({ _id: event._id }).then(
+                    () => { }
+                ).catch(
+                    (error) => { }
+                );
+            });
+            project.contacts.forEach(contact => {
+                Contact.deleteOne({ _id: contact._id }).then(
                     () => { }
                 ).catch(
                     (error) => { }
