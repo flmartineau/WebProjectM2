@@ -1,3 +1,8 @@
-#editIcon, #mainEditIcon {
+#editIcon, #mainEditIcon, #editIconList, #deleteIconList {
+    cursor: pointer;
+}
+
+.delete-card-icon {
+    font-size: medium;
     cursor: pointer;
 }

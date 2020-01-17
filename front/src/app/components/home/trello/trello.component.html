@@ -55,25 +55,98 @@
             <div *ngFor="let list of trelloLists" class="col-3">
                 <div class="card shadow-lg">
                     <div class="card-body">
-                        <h5 class="card-title">{{list?.name}} <em id="editIconList" class="fa fa-edit"></em></h5>
+                        <h4 class="card-title">{{list?.name}} <em id="editIconList" class="fa fa-edit" (click)="openModalEditList(list?.id)"></em> <em id="deleteIconList" class="fa fa-trash" (click)="deleteList(list?.id)"></em></h4>
                     </div>
                     <ul class="list-group list-group-flush">
                         <div *ngFor="let card of trelloCards">
                             <div *ngIf="card?.idList == list.id">
                                 <li  class="list-group-item">
-                                    <h4>{{card?.name}}</h4>
-                                    <h5>{{card?.desc}}</h5>
+                                    <h5>{{card?.name}} <em class="fa fa-trash delete-card-icon float-right" (click)="deleteCard(card.id)"></em></h5>
+                                    <p>{{card?.desc}}</p>
                                 </li>
                             </div>
                         </div>
+                        <a type="button" class="btn btn-light" data-toggle="collapse"
+                            href="#collapseAddCard{{list?.id}}">Ajouter une autre carte</a>
+
+                        <div class="collapse multi-collapse" id="collapseAddCard{{list.id}}">
+                            <form #addCard="ngForm" (ngSubmit)="addCard.valid">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="cardName" name="cardName" placeholder="Card name"
+                                        [(ngModel)]="modelCard.cardName">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="cardDescription" name="cardDescription" placeholder="Card description"
+                                        [(ngModel)]="modelCard.cardDescription">
+                                </div>
+                            </form>
+                            <a type="button" class="btn btn-primary" (click)="onSubmitAddCard(addCard,list?.id)" data-toggle="collapse"
+                                href="#collapseAddCard{{list?.id}}">Valider</a>
+                        </div>
                     </ul>
+                </div>
+            </div>
+            <div class="col-3">
+                <h5><a type="button" class="btn btn-light fa fa-plus" style="font-size: 2em;" (click)="openModalAddList()"></a></h5>
+                <div class="collapse multi-collapse" id="#collapseAddList">
+                    <form #addList="ngForm" (ngSubmit)="addList.valid">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="cardName" name="cardName" placeholder="Card name"
+                                [(ngModel)]="modelCard.cardName">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="cardDescription" name="cardDescription" placeholder="Card description"
+                                [(ngModel)]="modelCard.cardDescription">
+                        </div>
+                    </form>
+                    <a type="button" class="btn btn-primary" (click)="onSubmitAddCard(addCard,list?.id)" data-toggle="collapse"
+                        href="#collapseAddList">Valider</a>
                 </div>
             </div>
         </div>
     </div>
 
+    <ng-template #popupAddList id ="popupAddList" let-c="close" let-d="dismiss" >
+        <div class="modal-header">
+            <h5 class="modal-title">Ajouter une liste</h5>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form #addList="ngForm" (ngSubmit)="addList.valid">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="listName" name="listName" placeholder="List name"
+                        [(ngModel)]="modelList.listName">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+            <button type="submit" class="btn btn-primary" (click)="onSubmitAddList(addList)" (click)="c('Confirm click')">Valider</button>
+        </div>
+    </ng-template>
 
-
+    <ng-template #popupEditList id="popupEditList" let-c="close" let-d="dismiss" >
+        <div class="modal-header">
+            <h5 class="modal-title">Editer une liste</h5>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form #editList="ngForm" (ngSubmit)="editList.valid">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="listName" name="listName" placeholder="List name"
+                        [(ngModel)]="modelList.listName">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+            <button type="submit" class="btn btn-primary" (click)="onSubmitEditList(editList)" (click)="c('Confirm click')">Valider</button>
+        </div>
+    </ng-template>
 
 
 

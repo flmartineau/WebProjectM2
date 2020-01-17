@@ -12,6 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TrelloComponent implements OnInit {
   @ViewChild('popupTrello', {static: false}) popupTrello;
+  @ViewChild('popupAddList', {static: false}) popupAddList;
+  @ViewChild('popupEditList', {static: false}) popupEditList;
 
   public trelloRef;
   public trelloKey;
@@ -32,6 +34,16 @@ export class TrelloComponent implements OnInit {
 
   modelName = {
     trelloName: ''
+  }
+
+  modelCard = {
+    cardName: '',
+    cardDescription: ''
+  }
+
+  modelList = {
+    listName: '',
+    listId:''
   }
 
   model = {
@@ -123,6 +135,10 @@ export class TrelloComponent implements OnInit {
   }
 
 
+  /**
+   * Submit the trello name edit form
+   * @param form the name edit form
+   */
   onSubmitEditName(form: NgForm){
     console.log(form.value)
     this.trelloService.updateName(this.trelloKey,this.trelloToken,this.trelloBoardId,form.value['trelloName']).subscribe(
@@ -135,8 +151,28 @@ export class TrelloComponent implements OnInit {
     )
   }
 
+  /**
+   * Submit the add card form
+   * @param form the card add form
+   * @param id id of the list
+   */
+  onSubmitAddCard(form: NgForm, id){
+    console.log(form.value, id)
+    this.trelloService.addCardToList(this.trelloKey,this.trelloToken, id, form.value['cardName'], form.value['cardDescription']).subscribe(
+      res => {
+        this.getTrelloBoard();
+      },
+      err => {
+        console.log(err);
+      }
+    )
+  }
+
+  /**
+   * Submit the Trello reference edit form
+   * @param form the Trello reference edit form
+   */
   onSubmit(form : NgForm){
-    console.log(form.value)
     this.projectService.updateProjectTrello(this.projectId, form.value).subscribe(
       res => {
         this.getTrelloBoard();
@@ -147,7 +183,80 @@ export class TrelloComponent implements OnInit {
     )
   }
 
+  /**
+   * Delete a card from the Trello board
+   * @param id id of the card to delete
+   */
+  deleteCard(id) {
+    this.trelloService.deleteCard(this.trelloKey,this.trelloToken, id).subscribe(
+      res => {
+        this.getTrelloBoard();
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
 
 
+  /**
+   * Delete a list from the Trello board
+   * @param id id of the list
+   */
+  deleteList(id) {
+    this.trelloService.deleteList(this.trelloKey,this.trelloToken, id).subscribe(
+      res => {
+        this.getTrelloBoard();
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  /**
+   * Open the add list popup
+   */
+  openModalAddList() {
+    this.modalService.open(this.popupAddList, {centered: true});
+  }
+
+  /**
+   * Submit the add list form
+   * @param form the add list form
+   */
+  onSubmitAddList(form: NgForm){
+    this.trelloService.addList(this.trelloKey,this.trelloToken,this.trelloBoardId,form.value['listName']).subscribe(
+      res => {
+        this.getTrelloBoard();
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  /**
+   * Open the edit list form.
+   */
+  openModalEditList(id){
+    this.modelList.listId = id;
+    this.modalService.open(this.popupEditList, {centered: true});
+  }
+
+  /**
+   * Submit the edit list form
+   * @param form the edit list form
+   */
+  onSubmitEditList(form: NgForm){
+    this.trelloService.updateListName(this.trelloKey,this.trelloToken,this.modelList.listId,form.value['listName']).subscribe(
+      res => {
+        this.getTrelloBoard();
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
 
 }
