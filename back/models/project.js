@@ -21,6 +21,10 @@ const projectSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'APIReference'
     },
+    trello: {
+        type: Schema.Types.ObjectId,
+        ref: 'APIReference'
+    },
     agendaEvents: [{
         type: Schema.Types.ObjectId,
         ref: 'AgendaEvent'
