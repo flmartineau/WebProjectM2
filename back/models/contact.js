@@ -11,8 +11,7 @@ const contactSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: 'L\'email est obligatoire',
-        unique: true
+        required: 'L\'email est obligatoire'
     }
 });
 

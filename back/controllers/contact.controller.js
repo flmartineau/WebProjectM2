@@ -14,7 +14,7 @@ module.exports.addContact = (req, res, next) => {
         () => {
             Project.findOne({ _id: req.params.projectId }, (err, project) => {
                 if (project) {
-                    project.contacts.push(event);
+                    project.contacts.push(contact);
                     project.save();
                     res.status(201).json({ message: 'Contact added successfully!' });
                 }
@@ -73,7 +73,7 @@ module.exports.getContacts = (req, res, next) => {
         .populate('contacts')
         .exec(function (err, project) {
             if (err) res.json({ error: 'error' });
-            res.json({ contacts: project.contacts });
+            res.status(200).json({ contacts: project.contacts });
         });
 };
 

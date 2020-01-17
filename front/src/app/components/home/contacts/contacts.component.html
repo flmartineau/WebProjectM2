@@ -1,1 +1,74 @@
-<p>contacts works!</p>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="../..">Projects</a></li>
+        <li class="breadcrumb-item"><a routerLink="../">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Contacts</li>
+    </ol>
+</nav>
+
+<ng-template #popupUpdateContact id="popupUpdateContact" let-c="close" let-d="dismiss" >
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Editer le contact</h5>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #updateContact="ngForm" (ngSubmit)="updateContact.valid">
+            <div class="form-group">
+                <label for="firstNameUpdateContact">Prénom</label>
+                <input id="firstNameUpdateContact" class="form-control" name="firstName" [(ngModel)]="model.firstName" type="text"/>
+            </div>
+            <div class="form-group">
+                <label for="lastNameUpdateContact">Nom</label>
+                <input id="lastNameUpdateContact" class="form-control" name="lastName" [(ngModel)]="model.lastName" type="text"/>
+            </div>
+            <div class="form-group">
+                <label for="emailUpdateContact">Email</label>
+                <input id="emailUpdateContact" class="form-control" name="email" [(ngModel)]="model.email" type="text"/>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+        <button type="submit" class="btn btn-primary" (click)="onUpdateSubmit(updateContact)" (click)="c('Confirm click')">Valider</button>
+    </div>
+</ng-template>
+
+<div class="jumbotron">
+    <h1 class="display-4">Mes contacts</h1>
+    <p class="lead">Créez et gérez vos contact par projet</p>
+    <a class="btn btn-primary btn-lg" href="#collapseNewContact" role="button" data-toggle="collapse">Créer un nouveau
+        contact <em class="fa fa-plus"></em></a>
+
+    <div class="collapse" id="collapseNewContact">
+        <div class="card card-body" style="margin-top:15px;">
+            <form #newContact="ngForm" (ngSubmit)="newContact.valid">
+                <div class="form-group">
+                    <label for="firstNameNewContact">Prénom</label>
+                    <input id="firstNameNewContact" class="form-control" name="firstName" [(ngModel)]="model.firstName" type="text"/>
+                </div>
+                <div class="form-group">
+                    <label for="lastNameNewContact">Nom</label>
+                    <input id="lastNameNewContact" class="form-control" name="lastName" [(ngModel)]="model.lastName" type="text"/>
+                </div>
+                <div class="form-group">
+                    <label for="emailNewContact">Email</label>
+                    <input id="emailNewContact" class="form-control" name="email" [(ngModel)]="model.email" type="text"/>
+                </div>
+                <button type="submit" class="btn btn-primary" (click)="onAddSubmit(newContact)" data-toggle="collapse" href="#collapseNewContact">Valider</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id='contactsList' class="scroll card card-body ">
+    <div *ngFor="let contact of contacts" class="card card-body contactDetails" id="contact-list-{{contact._id}}">  
+        <h5 class="card-title">{{contact.firstName}} {{contact.lastName}}</h5>
+        <p class="card-text">{{ contact.email}}</p>
+        <button (click)="updateContact(contact._id)" routerLinkActive="router-link-active"  class="btn btn-info"
+                data-toggle="modal" [attr.data-target]="'#event-list-' + contact._id"><em class="fa fa-edit"></em></button>
+        <button (click)="deleteContact(contact._id)" routerLinkActive="router-link-active"  class="btn btn-danger"
+                data-toggle="modal" [attr.data-target]="'#event-list-' + contact._id"><em class="fa fa-trash"></em></button> 
+    </div>
+</div>
