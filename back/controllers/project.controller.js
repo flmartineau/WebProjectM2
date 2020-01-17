@@ -69,6 +69,13 @@ module.exports.deleteProject = (req, res) => {
                     (error) => { }
                 );
             });
+            project.notes.forEach(note => {
+                Note.deleteOne({ _id: note._id }).then(
+                    () => { }
+                ).catch(
+                    (error) => { }
+                );
+            });
             APIReference.deleteOne({$or: [
                 { _id: project.githubRepository._id },
                 { _id: project.discord._id}

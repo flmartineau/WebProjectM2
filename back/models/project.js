@@ -28,6 +28,10 @@ const projectSchema = new mongoose.Schema({
     contacts: [{
         type: Schema.Types.ObjectId,
         ref: 'Contact'
+    }],
+    notes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Note'
     }]
 });
 
