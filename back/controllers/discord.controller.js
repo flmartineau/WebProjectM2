@@ -5,6 +5,9 @@ const Project = mongoose.model('Project');
 const APIReference = mongoose.model('APIReference');
 
 
+/**
+ * Update the discord reference of the project.
+ */
 module.exports.updateDiscord = (req, res, next) => {
     const discordServer = new APIReference();
     discordServer.link = req.body.discordServerID+"/"+req.body.discordChannelID;
@@ -22,12 +25,4 @@ module.exports.updateDiscord = (req, res, next) => {
             }
         })
     });
-};
-
-module.exports.deleteDiscord = (req, res, next) => {
-
-};
-
-module.exports.getDiscord = (req, res, next) => {
-
 };

@@ -30,7 +30,7 @@ export class AuthService {
    * @param user updated user.
    */
   updateUser(user: User) {
-    return this.http.put(environment.API_URL+'/user/:TEMPID', user);
+    return this.http.put(environment.API_URL+'/user', user);
   }
 
   /**
@@ -41,12 +41,20 @@ export class AuthService {
     return this.http.post(environment.API_URL+'/user/login', infos);
   }
 
-
   /**
    * Logout the current user.
    */
   logout() {
     return this.http.get(environment.API_URL + '/user/logout');
   }
+
+
+  /**
+   * Get current user.
+   */
+  getUser(){
+    return this.http.get(environment.API_URL+ '/user');
+  }
+
 
 }

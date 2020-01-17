@@ -8,10 +8,9 @@ Groupe : GOURGUE Antoine - MARTINEAU Flavien - PEYRICHOU Arthur
 Site de gestion de projets destiné à des étudiants/développeurs, permettant de gérer et de récupérer toutes les informations relatives à leurs projet. Le site servant ainsi de "hub" en regroupant :
 
 - Les informations du dépôt GitHub (API GitHub) : données des commits, etc...
-- Les outils de conversation (Slack/Discord...)
+- Les outils de conversation (Discord)
 - La gestion du projet avec Trello
 - La gestion des contacts + prises de RDVs + dates importantes (Agenda)
-- Les informations de documentations/rapports/presentations (projet Overleaf, Google doc...)
 - Ajout de notes diverses
 
 Technologies utilisées

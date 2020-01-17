@@ -1,6 +1,12 @@
 <div class="jumbotron">
     <h1 class="display-4 col-md-5 mx-auto">Modifier mes informations</h1>
 </div>
+<div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+</div>
+<div class="alert alert-success" role="alert" *ngIf="successMessage">
+    {{ successMessage }}
+</div>
 <div class="col-md-5 mx-auto">
     <form #editForm="ngForm" (ngSubmit)="editForm.valid">
         <div class="form-group">

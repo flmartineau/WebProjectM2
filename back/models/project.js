@@ -17,13 +17,6 @@ const projectSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'APIReference'
     },
-    overleafLink: {
-        type: String
-    },
-    slack: {
-        type: Schema.Types.ObjectId,
-        ref: 'APIReference'
-    },
     discord: {
         type: Schema.Types.ObjectId,
         ref: 'APIReference'

@@ -3,7 +3,6 @@ const router = express.Router();
 
 const projectController = require('../controllers/project.controller');
 const agendaController = require('../controllers/agenda.controller');
-const slackController = require('../controllers/slack.controller');
 const discordController = require('../controllers/discord.controller');
 const trelloController = require('../controllers/trello.controller');
 const contactController = require('../controllers/contact.controller');
@@ -25,14 +24,7 @@ router.delete('/:projectId/agenda/:eventId', agendaController.deleteEvent);
 router.get('/:projectId/agenda', agendaController.getAllEvents);
 router.get('/:projectId/agenda/:year/:month', agendaController.getEventsByYearMonth);
 
-router.post('/:projectId/slack', slackController.addSlack);
-router.get('/:projectId/slack', slackController.getSlack);
-router.put('/:projectId/slack', slackController.updateSlack);
-router.delete('/:projectId/slack', slackController.deleteSlack);
-
-router.get('/:projectId/discord', discordController.getDiscord);
 router.put('/:projectId/discord', discordController.updateDiscord);
-router.delete('/:projectId/discord', discordController.deleteDiscord);
 
 router.post('/:projectId/trello', trelloController.addTrello);
 router.get('/:projectId/trello', trelloController.getTrello);
