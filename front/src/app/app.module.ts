@@ -19,7 +19,7 @@ import { AgendaComponent } from './components/home/agenda/agenda.component';
 import { DiscordComponent } from './components/home/discord/discord.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
-import { ContactsComponent } from './components/contacts/contacts.component';
+import { ContactsComponent } from './components/home/contacts/contacts.component';
 import { NotesComponent } from './components/notes/notes.component';
 
 
