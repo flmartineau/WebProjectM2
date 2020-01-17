@@ -62,13 +62,17 @@
     </div>
 </div>
 
-<div id='contactsList' class="scroll card card-body ">
+<div id='contactsList' class="card card-body">
     <div *ngFor="let contact of contacts" class="card card-body contactDetails" id="contact-list-{{contact._id}}">  
-        <h5 class="card-title">{{contact.firstName}} {{contact.lastName}}</h5>
-        <p class="card-text">{{ contact.email}}</p>
-        <button (click)="updateContact(contact._id)" routerLinkActive="router-link-active"  class="btn btn-info"
-                data-toggle="modal" [attr.data-target]="'#event-list-' + contact._id"><em class="fa fa-edit"></em></button>
-        <button (click)="deleteContact(contact._id)" routerLinkActive="router-link-active"  class="btn btn-danger"
-                data-toggle="modal" [attr.data-target]="'#event-list-' + contact._id"><em class="fa fa-trash"></em></button> 
+        <div class="row">
+            <div style="width: 80%;">
+                <h5 class="card-title">{{contact.firstName}} {{contact.lastName}}</h5>
+                <p>Adresse mail : <a href="mailto:{{ contact.email}}" class="card-text">{{ contact.email}}</a></p>
+            </div>
+            <div>
+                <button (click)="updateContact(contact._id)" routerLinkActive="router-link-active"  type="button" class="btn btn-light" style="width: 40px;"><em class="fa fa-edit"></em></button>
+                <button (click)="deleteContact(contact._id)" routerLinkActive="router-link-active"  type="button" class="btn btn-light" style="width: 40px; margin-left: 5px;"><em class="fa fa-trash"></em></button> 
+            </div>
+        </div>
     </div>
 </div>
