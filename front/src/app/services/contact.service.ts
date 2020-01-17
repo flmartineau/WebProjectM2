@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class AgendaService {
+export class ContactService {
 
   constructor(private httpClient: HttpClient) { }
 

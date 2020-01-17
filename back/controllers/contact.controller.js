@@ -12,8 +12,12 @@ module.exports.addContact = (req, res, next) => {
     contact.email = req.body.email;
     contact.save().then(
         () => {
-            res.status(201).json({
-                message: 'Contact added successfully!'
+            Project.findOne({ _id: req.params.projectId }, (err, project) => {
+                if (project) {
+                    project.contacts.push(event);
+                    project.save();
+                    res.status(201).json({ message: 'Contact added successfully!' });
+                }
             });
         }
     ).catch(
@@ -47,7 +51,7 @@ module.exports.deleteContact = (req, res, next) => {
 /**
  * Get a contact by id.
  */
-module.exports.getContactById = (req, res, next) => {
+module.exports.getContact = (req, res, next) => {
     Contact.findOne({ _id: req.params.contactId }).then(
         (contact) => {
             res.status(200).json(contact);
@@ -64,7 +68,7 @@ module.exports.getContactById = (req, res, next) => {
 /**
  * Get all contacts.
  */
-module.exports.getContactsOfProject = (req, res, next) => {
+module.exports.getContacts = (req, res, next) => {
     Project.findOne({ _id: req.params.projectId })
         .populate('contacts')
         .exec(function (err, project) {
