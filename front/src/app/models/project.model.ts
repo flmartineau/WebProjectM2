@@ -3,4 +3,5 @@ export class Project {
     description: string;
     githubRepository: string;
     discord: string;
+    trello: string;
 }

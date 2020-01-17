@@ -1,0 +1,84 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="../..">Projects</a></li>
+        <li class="breadcrumb-item"><a routerLink="../">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Trello </li> <em class="fa fa-cogs" id="mainEditIcon" (click)="openModalEdit()"></em>
+    </ol>
+</nav>
+
+<ng-template #popupTrello id = "popupTrello" let-c="close" let-d="dismiss" >
+    <div class="modal-header">
+        <h5 class="modal-title">Ajouter un Trello</h5>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #updateTrello="ngForm" (ngSubmit)="udpateTrello.valid">
+            <div class="form-group">
+                <label for="trelloKey">Clé API</label>
+                <input type="text" class="form-control" id="trelloKey" name="trelloKey" [(ngModel)]="model.trelloKey">
+            </div>
+            <div class="form-group">
+                <label for="githubUsername">Token Utilisateur</label>
+                <input type="text" class="form-control" id="trelloToken" name="trelloToken" [(ngModel)]="model.trelloToken">
+            </div>
+            <div class="form-group">
+                <label for="githubUsername">Id du tableau Trello</label>
+                <input type="text" class="form-control" id="trelloBoardId" name="trelloBoardId" [(ngModel)]="model.trelloBoardId">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+        <button type="submit" class="btn btn-primary" (click)="onSubmit(updateTrello)" (click)="c('Confirm click')">Valider</button>
+    </div>
+</ng-template>
+
+
+<h1 class="display-4">{{trelloName}} <em id="editIcon" data-toggle="collapse" class="fa fa-edit"
+        href="#collapseEditName" role="button" aria-expanded="false" aria-controls="collapseEditName"></em></h1>
+
+<div class="collapse multi-collapse" id="collapseEditName">
+    <form #editTrelloName="ngForm" (ngSubmit)="editTrelloName.valid">
+        <div class="form-group">
+            <label for="trelloName">Nom du trello</label>
+            <input type="text" class="form-control" id="trelloName" name="trelloName" [(ngModel)]="modelName.trelloName">
+        </div>
+    </form>
+    <button type="submit" class="btn btn-primary" (click)="onSubmitEditName(editTrelloName)" data-toggle="collapse" href="#collapseEditName">Valider</button>
+</div>
+
+
+<div class="container-fluid" style="overflow-x: auto; min-height:500px;">
+        <div class="row flex-nowrap">
+            <div *ngFor="let list of trelloLists" class="col-3">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <h5 class="card-title">{{list?.name}} <em id="editIconList" class="fa fa-edit"></em></h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <div *ngFor="let card of trelloCards">
+                            <div *ngIf="card?.idList == list.id">
+                                <li  class="list-group-item">
+                                    <h4>{{card?.name}}</h4>
+                                    <h5>{{card?.desc}}</h5>
+                                </li>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+<div class="alert alert-success" role="alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+</div>
+
+

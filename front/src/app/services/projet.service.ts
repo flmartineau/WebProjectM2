@@ -69,6 +69,14 @@ export class ProjetService {
     return this.httpClient.put(environment.API_URL+'/project/'+ id + '/discord', discordRef);
   }
 
+  /**
+   * Update the trello Reference to the project
+   * @param id id of the project
+   * @param trelloRef new Trello reference of the project
+   */
+  updateProjectTrello(id, trelloRef) {
+    return this.httpClient.put(environment.API_URL+'/project/'+ id + '/trello', trelloRef);
+  }
 
 
 

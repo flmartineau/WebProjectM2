@@ -21,6 +21,8 @@ import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { NotesComponent } from './components/notes/notes.component';
+import { TrelloComponent } from './components/home/trello/trello.component';
+
 
 
 @NgModule({
@@ -36,7 +38,8 @@ import { NotesComponent } from './components/notes/notes.component';
     AgendaComponent,
     DiscordComponent,
     ContactsComponent,
-    NotesComponent
+    NotesComponent,
+    TrelloComponent
   ],
   imports: [
     BrowserModule,

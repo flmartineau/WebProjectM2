@@ -19,12 +19,15 @@ module.exports.addProject = (req, res) => {
             const project = new Project();
             const githubRepository = new APIReference();
             const discordServer = new APIReference();
+            const trello = new APIReference();
             githubRepository.save();
             discordServer.save();
+            trello.save();
             project.name = req.body.name;
             project.description = req.body.description;
             project.githubRepository = githubRepository;
             project.discord = discordServer;
+            project.trello = trello;
             project.owner = user;
             project.save().then(
                 () => {
@@ -51,6 +54,7 @@ module.exports.deleteProject = (req, res) => {
         .populate('agendaEvents')
         .populate('githubRepository')
         .populate('discord')
+        .populate('trello')
         .exec(function (err, project) {
             if (err) { res.json({ error: 'error' }); }
             project.agendaEvents.forEach(event => {
@@ -93,6 +97,7 @@ module.exports.getProjectById = (req, res) => {
     .populate('githubRepository')
     .populate('discord')
     .populate('owner')
+    .populate('trello')
     .then(
         (project) => {
             res.status(200).json(project);

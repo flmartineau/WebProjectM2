@@ -12,6 +12,7 @@ import { DiscordComponent } from './components/home/discord/discord.component';
 import { AuthGuard } from './auth/auth.guard';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { NotesComponent } from './components/notes/notes.component';
+import { TrelloComponent } from './components/home/trello/trello.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,7 @@ const routes: Routes = [
     { path: 'projects/:id/agenda', component: AgendaComponent},
     { path: 'projects/:id/agenda/:eventId', component: AgendaComponent},
     { path: 'projects/:id/discord', component: DiscordComponent},
+    { path: 'projects/:id/trello', component: TrelloComponent},
     { path: 'projects/:id/contacts', component: ContactsComponent},
     { path: 'projects/:id/notes', component: NotesComponent},
     { path: 'profile', component: ProfileComponent}]

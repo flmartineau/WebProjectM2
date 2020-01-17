@@ -12,7 +12,8 @@ export class AuthInterceptor implements HttpInterceptor  {
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
         if ((req.url.split('/')[2] != 'api.github.com') &&
-            (req.url.split('/')[2] != 'discordapp.com')) {
+            (req.url.split('/')[2] != 'discordapp.com') &&
+            (req.url.split('/')[2] != 'api.trello.com')) {
             req = req.clone({
                 withCredentials: true
             });

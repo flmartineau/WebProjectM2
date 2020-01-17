@@ -26,10 +26,7 @@ router.get('/:projectId/agenda/:year/:month', agendaController.getEventsByYearMo
 
 router.put('/:projectId/discord', discordController.updateDiscord);
 
-router.post('/:projectId/trello', trelloController.addTrello);
-router.get('/:projectId/trello', trelloController.getTrello);
 router.put('/:projectId/trello', trelloController.updateTrello);
-router.delete('/:projectId/trello', trelloController.deleteTrello);
 
 router.post('/:projectId/contacts', contactController.addContact);
 router.get('/:projectId/contacts', contactController.getContacts);

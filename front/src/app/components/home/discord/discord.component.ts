@@ -94,7 +94,7 @@ export class DiscordComponent implements OnInit {
   }
 
   /**
-   * Edit the Discord Server add form popup.
+   * Open the Discord Server edit form popup.
    */
   openModalEdit() {
     this.projectService.getProjectById(this.projectId).subscribe(data => {
