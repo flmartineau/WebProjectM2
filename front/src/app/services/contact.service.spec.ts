@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ContactService } from './agenda.service';
+import { ContactService } from './contact.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ContactService', () => {
@@ -8,11 +8,11 @@ describe('ContactService', () => {
     imports: [
       HttpClientTestingModule
     ],
-    providers: [AgendaService]
+    providers: [ContactService]
   }));
 
   it('should be created', () => {
-    const service: AgendaService = TestBed.get(AgendaService);
+    const service: ContactService = TestBed.get(ContactService);
     expect(service).toBeTruthy();
   });
 });
