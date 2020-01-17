@@ -18,6 +18,7 @@ export class TrelloComponent implements OnInit {
   public trelloRef;
   public trelloKey;
   public trelloToken;
+  public trelloBoardUrl;
   public trelloBoardId;
 
   public trelloName;
@@ -49,7 +50,7 @@ export class TrelloComponent implements OnInit {
   model = {
     trelloKey: '',
     trelloToken: '',
-    trelloBoardId: ''
+    trelloBoardUrl: ''
   }
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -72,40 +73,54 @@ export class TrelloComponent implements OnInit {
     this.projectService.getProjectById(this.projectId).subscribe(
       project => {
         if (project.trello.link != undefined) {
+
           this.trelloRef = project.trello;
           this.trelloKey = this.trelloRef.usernameAPI;
           this.trelloToken = this.trelloRef.tokenAPI;
-          this.trelloBoardId = this.trelloRef.link;
+          this.trelloBoardUrl = this.trelloRef.link;
 
-          this.model.trelloBoardId = this.trelloBoardId;
+          this.model.trelloBoardUrl = this.trelloBoardUrl;
           this.model.trelloKey = this.trelloKey;
           this.model.trelloToken = this.trelloToken;
 
-          this.trelloService.getBoardFromId(this.trelloKey, this.trelloToken, this.trelloBoardId).subscribe(
-            res => {
-              console.log(res)
-              this.trelloName = res['name'];
-              this.modelName.trelloName = this.trelloName;
+          this.trelloService.getAllBoards(this.trelloKey, this.trelloToken).subscribe(
+            boards => {
+              for (let board in boards) {
+                if (boards[board]['url'] == this.trelloBoardUrl) {
+                  this.trelloBoardId = boards[board]['id'];
+                }
+              }
 
-              this.trelloService.getLists(this.trelloKey, this.trelloToken, this.trelloBoardId).subscribe(
-                lists => {
-                  this.trelloLists = lists;
-                  this.trelloService.getCards(this.trelloKey, this.trelloToken, this.trelloBoardId).subscribe(
-                    cards => {
-                      this.trelloCards = cards;
+              this.trelloService.getBoardFromId(this.trelloKey, this.trelloToken, this.trelloBoardId).subscribe(
+                res => {
+                  console.log(res)
+                  this.trelloName = res['name'];
+                  this.modelName.trelloName = this.trelloName;
+
+                  this.trelloService.getLists(this.trelloKey, this.trelloToken, this.trelloBoardId).subscribe(
+                    lists => {
+                      this.trelloLists = lists;
+                      this.trelloService.getCards(this.trelloKey, this.trelloToken, this.trelloBoardId).subscribe(
+                        cards => {
+                          this.trelloCards = cards;
+                        },
+                        err3 => {
+                          console.log(err3);
+                        }
+                      )
                     },
-                    err3 => {
-                      console.log(err3);
+                    err2 => {
+                      console.log(err2)
                     }
                   )
                 },
-                err2 => {
-                  console.log(err2)
+                err => {
+                  console.log(err)
                 }
-              )
+              );
             },
-            err => {
-              console.log(err)
+            errorBoards => {
+              console.log(errorBoards);
             }
           );
         }
@@ -121,6 +136,7 @@ export class TrelloComponent implements OnInit {
    */
   openModal(){
     this.projectService.getProjectById(this.projectId).subscribe(data => {
+      console.log(data)
       if(data.trello.link == undefined){
         this.modalService.open(this.popupTrello, {centered: true});
       }

@@ -10,6 +10,15 @@ export class TrelloService {
 
 
   /**
+   * Get all boards of the user
+   * @param key api key of the trello user
+   * @param token token of the trello user
+   */
+  getAllBoards(key, token) {
+    return this.httpClient.get('https://api.trello.com/1/members/me/boards?key='+ key +'&token='+ token);
+  }
+
+  /**
    * Get the board info from its id.
    * @param key api key of the trello user
    * @param token token of the trello user

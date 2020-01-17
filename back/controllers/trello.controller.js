@@ -9,7 +9,7 @@ const APIReference = mongoose.model('APIReference');
  */
 module.exports.updateTrello = (req, res, next) => {
     const trello = new APIReference();
-    trello.link = req.body.trelloBoardId;
+    trello.link = req.body.trelloBoardUrl;
     trello.tokenAPI = req.body.trelloToken;
     trello.usernameAPI = req.body.trelloKey;
 
