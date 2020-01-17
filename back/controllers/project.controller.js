@@ -57,6 +57,8 @@ module.exports.deleteProject = (req, res) => {
         .populate('githubRepository')
         .populate('discord')
         .populate('trello')
+        .populate('contact')
+        .populate('notes')
         .exec(function (err, project) {
             if (err) { res.json({ error: 'error' }); }
             project.agendaEvents.forEach(event => {
