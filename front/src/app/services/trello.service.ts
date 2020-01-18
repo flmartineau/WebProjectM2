@@ -128,9 +128,19 @@ export class TrelloService {
    */
   updateCard(key, token, idCard, name, description){
     return this.httpClient.put('https://api.trello.com/1/cards/'+ idCard + '?key='+ key +'&token=' + token + '&name=' + name + '&desc=' + description,null);
-
   }
 
+
+  /**
+   * Move a card to another list
+   * @param key api key of the trello user
+   * @param token token of the trello user
+   * @param idCard id of the card to update
+   * @param idList id of the list
+   */
+  moveCardToListFromId(key, token, idCard, idList){
+    return this.httpClient.put('https://api.trello.com/1/cards/'+ idCard + '?key='+ key +'&token=' + token + '&idList=' + idList,null);
+  }
 
 
 }

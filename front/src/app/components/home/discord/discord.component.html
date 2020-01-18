@@ -38,7 +38,7 @@
     <em id="editIcon" class="fa fa-edit" (click)="openModalEdit()"></em>
     <div class="alert alert-success" role="alert" *ngIf="errorMessage">
         {{ errorMessage }}
-        <a *ngIf="errorStatus == 403" href="https://add.widgetbot.io/" class="alert-link">Ajouter Bot</a>
+        <a *ngIf="errorStatus == 403" href="https://add.widgetbot.io/" class="alert-link" target="_blank">Ajouter Bot</a>
     </div>
     <div class="row-container">
         <iframe *ngIf="discordIframeLink2 != undefined" [src]="discordIframeLink2" class="second-row"></iframe>

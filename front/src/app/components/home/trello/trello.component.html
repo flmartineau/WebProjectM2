@@ -8,7 +8,10 @@
 
 <ng-template #popupTrello id = "popupTrello" let-c="close" let-d="dismiss" >
     <div class="modal-header">
-        <h5 class="modal-title">Ajouter un Trello</h5>
+        <div>
+            <h5 class="modal-title">Ajouter un Trello<br/></h5>
+            <a href="https://trello.com/app-key" target="_blank">Récuperer une clé et un token</a>
+        </div>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -52,7 +55,7 @@
 
 <div class="container-fluid" id="container-lists">
         <div class="row flex-nowrap">
-            <div *ngFor="let list of trelloLists" class="col-3">
+            <div *ngFor="let list of trelloLists; let i = index" class="col-3">
                 <div class="card shadow-lg">
                     <div class="card-body">
                         <h4 class="card-title">{{list?.name}} <em id="editIconList" class="fa fa-edit" (click)="openModalEditList(list?.id)"></em> <em id="deleteIconList" class="fa fa-trash" (click)="deleteList(list?.id)"></em></h4>
@@ -63,6 +66,7 @@
                                 <li  class="list-group-item">
                                     <h5>{{card?.name}} <em class="fa fa-trash delete-card-icon float-right" (click)="deleteCard(card.id)"></em></h5>
                                     <p>{{card?.desc}}</p>
+                                    <em class="fa fa-chevron-left" *ngIf="i!=0" (click)="moveCardToList(card?.id, trelloLists[i-1].id)"></em><em *ngIf="(i+1)<trelloLists.length" class="fa fa-chevron-right float-right" (click)="moveCardToList(card?.id, trelloLists[i+1].id)"></em>
                                 </li>
                             </div>
                         </div>

@@ -275,4 +275,20 @@ export class TrelloComponent implements OnInit {
     );
   }
 
+  /**
+   * Move card to another list
+   * @param idCard id of the card
+   * @param idList id of the list
+   */
+  moveCardToList(idCard, idList){
+    this.trelloService.moveCardToListFromId(this.trelloKey,this.trelloToken, idCard, idList).subscribe(
+      res => {
+        this.getTrelloBoard();
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
 }
