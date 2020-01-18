@@ -50,9 +50,7 @@ export class NotesComponent implements OnInit {
 
   getNotes() {
     this.notesService.getNotes(this.projectId).subscribe(
-      data => {
-      this.notes = data['notes']
-      console.log(this.notes)});
+      data => this.notes = data['notes']);
   }
 
   onAddSubmit(form: NgForm) {
@@ -68,8 +66,7 @@ export class NotesComponent implements OnInit {
   }
 
   onUpdateSubmit(form: NgForm) {
-    console.log(form.value);
-    this.notesService.updateNote(this.projectId, this.noteId,form.value).subscribe(
+    this.notesService.updateNote(this.projectId, this.noteId, form.value).subscribe(
       res => {
         console.log(res);
         this.getNotes();

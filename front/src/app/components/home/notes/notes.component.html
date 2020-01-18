@@ -13,27 +13,60 @@
     note <em class="fa fa-plus"></em></a>
 </div>
 
+<ng-template #popupUpdateNote id="popupUpdateNote" let-c="close" let-d="dismiss" >
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLongTitle">Editer la Note</h5>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #updateNote="ngForm" (ngSubmit)="updateNote.valid">
+      <div class="form-group">
+        <label for="titleUpdateNote">Titre</label>
+        <input id="titleUpdateNote" class="form-control" name="title" [(ngModel)]="model.title" type="text"/>
+      </div>
+      <div class="form-group">
+        <label for="descriptionUpdateNote">Description</label>
+        <textarea id="descriptionUpdateNote" class="form-control" name="description" [(ngModel)]="model.description" type="text"></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+    <button type="submit" class="btn btn-primary" (click)="onUpdateSubmit(updateNote)" (click)="c('Confirm click')">Valider</button>
+  </div>
+</ng-template>
+
 <div class="collapse" id="collapseNewNote">
   <div class="card card-body" style="margin-top:15px;">
-      <form #newNote="ngForm" (ngSubmit)="newNote.valid">
-          <div class="form-group">
-              <label for="titleNewNote">Titre</label>
-              <input id="titleNewNote" class="form-control" type="text" name="title" [(ngModel)]="model.title"/>
-          </div>
-          <div class="form-group">
-              <label for="decriptionNewNote">Description</label>
-              <textarea id="decriptionNewNote" class="form-control" type="text" name="description" [(ngModel)]="model.description"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary" (click)="onAddSubmit(newNote)" data-toggle="collapse" href="#collapseNewNote">Valider</button>
-      </form>
+    <form #newNote="ngForm" (ngSubmit)="newNote.valid">
+      <div class="form-group">
+        <label for="titleNewNote">Titre</label>
+        <input id="titleNewNote" class="form-control" type="text" name="title" [(ngModel)]="model.title"/>
+      </div>
+      <div class="form-group">
+        <label for="decriptionNewNote">Description</label>
+        <textarea id="decriptionNewNote" class="form-control" type="text" name="description" [(ngModel)]="model.description"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="onAddSubmit(newNote)" data-toggle="collapse" href="#collapseNewNote">Valider</button>
+    </form>
   </div>
 </div>
 
-<div *ngFor="let note of notes" class="row col-12" id="note-list-{{note._id}}">
-  <div class="post-it ml-1">
-    <div class="inner">
-      <h4>{{note.title}}</h4>
-      <div>{{note.description}}</div>
+<div class="row">
+  <div *ngFor="let note of notes" id="note-list-{{note._id}}">
+    <div>
+      <div class="post-it ml-1">
+        <div class="inner">
+          <div class="float-right">
+            <button (click)="updateNote(note._id)" routerLinkActive="router-link-active"  type="button" class="btn customYellowButton" style="width: 40px;"><em class="fa fa-edit"></em></button>
+            <button (click)="deleteNote(note._id)" routerLinkActive="router-link-active"  type="button" class="btn customYellowButton" style="width: 40px; margin-left: 5px;"><em class="fa fa-trash"></em></button> 
+          </div>
+          <h4>{{note.title}}</h4>
+          <div>{{note.description}}</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

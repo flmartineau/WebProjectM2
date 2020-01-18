@@ -53,7 +53,7 @@ export class NotesService {
    * @param note note used to update.
    */
   updateNote(projectId, id, note) {
-    return this.httpClient.post(environment.API_URL + '/project/' + projectId + '/notes' + id, note);
+    return this.httpClient.put(environment.API_URL + '/project/' + projectId + '/notes/' + id, note);
   }
 
 }

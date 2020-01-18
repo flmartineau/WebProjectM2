@@ -47,7 +47,7 @@ module.exports.deleteNote = (req, res, next) => {
 };
 
 module.exports.getNote = (req, res, next) => {
-    Notes.findOne({ _id: req.params.noteId }).then(
+    Note.findOne({ _id: req.params.noteId }).then(
         (note) => {
             res.status(200).json(note);
         }).catch(
@@ -70,7 +70,7 @@ module.exports.getNotes = (req, res, next) => {
 };
 
 module.exports.updateNote = (req, res, next) => {
-    Notes.findOne({ _id: req.params.noteId }, (err, note) => {
+    Note.findOne({ _id: req.params.noteId }, (err, note) => {
         if (!note) {
             res.status(404).json({ status: false, message: 'Note not found' });
         } else {

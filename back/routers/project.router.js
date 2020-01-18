@@ -36,9 +36,9 @@ router.delete('/:projectId/contacts/:contactId', contactController.deleteContact
 
 router.post('/:projectId/notes', noteController.addNote);
 router.get('/:projectId/notes', noteController.getNotes);
-router.get('/:projectId/notes/:nodeId', noteController.getNote);
-router.put('/:projectId/notes/:nodeId', noteController.updateNote);
-router.delete('/:projectId/notes/:nodeId', noteController.deleteNote);
+router.get('/:projectId/notes/:noteId', noteController.getNote);
+router.put('/:projectId/notes/:noteId', noteController.updateNote);
+router.delete('/:projectId/notes/:noteId', noteController.deleteNote);
 
 router.get('/:projectId/documentation', documentationController.getDocumentation);
 router.post('/:projectId/documentation/googledocs', documentationController.addGoogleDoc);
