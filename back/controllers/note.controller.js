@@ -9,8 +9,8 @@ const Note = mongoose.model('Note');
 
 module.exports.addNote = (req, res, next) => {
     const note = new Note();
-    event.title = req.body.title;
-    event.description = req.body.description;
+    note.title = req.body.title;
+    note.description = req.body.description;
     note.save().then(
         () => {
             Project.findOne({ _id: req.params.projectId }, (err, project) => {

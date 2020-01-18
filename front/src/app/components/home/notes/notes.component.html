@@ -1,0 +1,39 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="../..">Projects</a></li>
+    <li class="breadcrumb-item"><a routerLink="../">Dashboard</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Notes</li>
+  </ol>
+</nav>
+
+<div class="jumbotron">
+  <h1 class="display-4">Mes notes</h1>
+  <p class="lead">Ici, vous pouvez laisser des notes diverses pour votre groupe !</p>
+  <a class="btn btn-primary btn-lg" href="#collapseNewNote" role="button" data-toggle="collapse">Créer une nouvelle
+    note <em class="fa fa-plus"></em></a>
+</div>
+
+<div class="collapse" id="collapseNewNote">
+  <div class="card card-body" style="margin-top:15px;">
+      <form #newNote="ngForm" (ngSubmit)="newNote.valid">
+          <div class="form-group">
+              <label for="titleNewNote">Titre</label>
+              <input id="titleNewNote" class="form-control" type="text" name="title" [(ngModel)]="model.title"/>
+          </div>
+          <div class="form-group">
+              <label for="decriptionNewNote">Description</label>
+              <textarea id="decriptionNewNote" class="form-control" type="text" name="description" [(ngModel)]="model.description"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" (click)="onAddSubmit(newNote)" data-toggle="collapse" href="#collapseNewNote">Valider</button>
+      </form>
+  </div>
+</div>
+
+<div *ngFor="let note of notes" class="row col-12" id="note-list-{{note._id}}">
+  <div class="post-it ml-1">
+    <div class="inner">
+      <h4>{{note.title}}</h4>
+      <div>{{note.description}}</div>
+    </div>
+  </div>
+</div>
