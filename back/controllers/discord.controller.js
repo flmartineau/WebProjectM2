@@ -15,12 +15,12 @@ module.exports.updateDiscord = (req, res, next) => {
     //discordServer.usernameAPI = null;
     discordServer.save().then(() => {
         Project.findOne({ _id: req.params.projectId }, (err, project) => {
-            if (!project) res.status(404).json({ status: false, message: 'Projet non trouvé' });
+            if (!project) res.status(404).json({ status: false, message: 'Project not found.' });
             else {
                 project.discord = discordServer;
                 project.save(function (err) {
                     if (!err)
-                        res.send({ success: 'Created with success' });
+                        res.status(204).send({ success: 'Discord updated with success.' });
                 });
             }
         })

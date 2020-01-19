@@ -15,12 +15,12 @@ module.exports.updateTrello = (req, res, next) => {
 
     trello.save().then(() => {
         Project.findOne({ _id: req.params.projectId }, (err, project) => {
-            if (!project) res.status(404).json({ status: false, message: 'Projet non trouvé' });
+            if (!project) res.status(404).json({ status: false, message: 'Project not found.' });
             else {
                 project.trello = trello;
                 project.save(function (err) {
                     if (!err)
-                        res.send({ success: 'Created with success' });
+                        res.send({ success: 'Trello updated with success.' });
                 });
             }
         })

@@ -4,11 +4,13 @@ require('../models/apiReference');
 require('../models/agendaEvent');
 require('../models/user');
 require('../models/contact');
+require('../models/note');
 const Project = mongoose.model('Project');
 const APIReference = mongoose.model('APIReference');
 const AgendaEvent = mongoose.model('AgendaEvent');
 const Contact = mongoose.model('Contact');
 const User = mongoose.model('User');
+const Note = mongoose.model('Note');
 
 
 /**
@@ -16,7 +18,7 @@ const User = mongoose.model('User');
  */
 module.exports.addProject = (req, res) => {
     User.findOne({ _id: req._id }, (err, user) => {
-        if (!user) res.status(404).json({ status: false, message: 'Utilisateur non trouvé' });
+        if (!user) res.status(404).json({ status: false, message: 'User not found.' });
         else {
             const project = new Project();
             const githubRepository = new APIReference();
@@ -33,15 +35,11 @@ module.exports.addProject = (req, res) => {
             project.owner = user;
             project.save().then(
                 () => {
-                    res.status(201).json({
-                        message: 'Project added successfully!'
-                    });
+                    res.status(201).json({ message: 'Project added with success.' });
                 }
             ).catch(
                 (error) => {
-                    res.status(400).json({
-                        error: error
-                    });
+                    res.status(400).json({ error: error });
                 }
             );
         }
@@ -52,15 +50,10 @@ module.exports.addProject = (req, res) => {
  * Delete a project.
  */
 module.exports.deleteProject = (req, res) => {
-    Project.findOne({ _id: req.params.projectId })
-        .populate('agendaEvents')
-        .populate('githubRepository')
-        .populate('discord')
-        .populate('trello')
-        .populate('contact')
-        .populate('notes')
-        .exec(function (err, project) {
-            if (err) { res.json({ error: 'error' }); }
+    Project.findOne({ _id: req.params.projectId }, (err, project) => {
+        if (!project) {
+            res.status(404).json({ status: false, message: 'Project not found.' });
+        } else {
             project.agendaEvents.forEach(event => {
                 AgendaEvent.deleteOne({ _id: event._id }).then(
                     () => { }
@@ -82,9 +75,10 @@ module.exports.deleteProject = (req, res) => {
                     (error) => { }
                 );
             });
-            APIReference.deleteOne({$or: [
+            APIReference.deleteMany({$or: [
                 { _id: project.githubRepository._id },
-                { _id: project.discord._id}
+                { _id: project.discord._id},
+                { _id: project.trello._id}
             ]}).then(
                 () => { }
             ).catch(
@@ -93,18 +87,15 @@ module.exports.deleteProject = (req, res) => {
 
             Project.deleteOne({ _id: req.params.projectId }).then(
                 () => {
-                    res.status(200).json({
-                        message: 'Project deleted!'
-                    });
+                    res.status(200).json({ message: 'Project deleted with success.' });
                 }
             ).catch(
                 (error) => {
-                    res.status(400).json({
-                        error: error
-                    });
+                    res.status(400).json({ error: error });
                 }
             );
-        })
+        }
+    });
 };
 
 /**
@@ -121,10 +112,7 @@ module.exports.getProjectById = (req, res) => {
             res.status(200).json(project);
         }).catch(
             (error) => {
-                console.log(error)
-                res.status(404).json({
-                    error: error
-                })
+                res.status(404).json({ error: error })
             }
         );
 };
@@ -134,16 +122,22 @@ module.exports.getProjectById = (req, res) => {
  */
 module.exports.updateProjectGithub = (req, res) => {
         Project.findOne({ _id: req.params.projectId }, (err, project) => {
-            if (!project) res.status(404).json({ status: false, message: 'Projet non trouvé' });
-            else {
+            if (!project) {
+                res.status(404).json({ status: false, message: 'Project not found.' });
+            } else {
                 APIReference.findOne({ _id: project.githubRepository._id }, (err, apiRef) => {
                     apiRef.link = req.body.githubLink;
                     apiRef.tokenAPI = req.body.githubToken;
                     apiRef.usernameAPI = req.body.githubUsername;
-                    apiRef.save(function (err) {
-                        if (!err)
-                            res.send({ success: 'Updated with success' });
-                    });
+                    apiRef.save().then(
+                        () => {
+                            res.status(204).send({ success: 'Project updated with success.' });
+                        }
+                    ).catch(
+                        (error) => {
+                            res.status(400).json({ error: error });
+                        }
+                    );
                 });
             }
         }).populate('githubRepository');
@@ -154,14 +148,19 @@ module.exports.updateProjectGithub = (req, res) => {
  */
 module.exports.updateProject = (req, res) => {
     Project.findOne({ _id: req.params.projectId }, (err, project) => {
-        if (!project) res.status(404).json({ status: false, message: 'Projet non trouvé' });
+        if (!project) res.status(404).json({ status: false, message: 'Project not found.' });
         else {
             project.name = req.body.name;
             project.description = req.body.description;
-            project.save(function (err) {
-                if (!err)
-                    res.send({ success: 'Updated with success' });
-            });
+            project.save().then(
+                () => {
+                    res.status(204).send({ success: 'Project updated with success.' });
+                }
+            ).catch(
+                (error) => {
+                    res.status(400).json({ error: error });
+                }
+            );
         }
     });
 };
@@ -176,9 +175,7 @@ module.exports.getAllProjects = (req, res) => {
         }
     ).catch(
         (error) => {
-            res.status(400).json({
-                error: error
-            });
+            res.status(400).json({ error: error });
         }
     );
 };

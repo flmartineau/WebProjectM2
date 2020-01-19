@@ -16,12 +16,10 @@ module.exports.addContact = (req, res, next) => {
                 if (project) {
                     project.contacts.push(contact);
                     project.save();
-                    res.status(201).json({ message: 'Contact added successfully!' });
+                    res.status(201).json({ message: 'Contact added with success.' });
                 }
                 else if (err) {
-                    res.status(400).json({
-                        error: error
-                    });
+                    res.status(400).json({ error: error });
                 }
             });
         }
@@ -38,19 +36,19 @@ module.exports.addContact = (req, res, next) => {
  * Delete a contact by id.
  */
 module.exports.deleteContact = (req, res, next) => {
-    Contact.deleteOne({_id: req.params.contactId}).then(
-        () => {
-            res.status(200).json({
-                message: 'Contact deleted!'
-            });
+    Contact.findOne({ _id: req.params.contactId }, (err, contact) => {
+        if (!contact) {
+            res.status(404).json({ status: false, message: 'Contact not found.' });
+        } else {
+            Contact.deleteOne({_id: contact._id}).then(
+                () => {
+                    res.status(200).json({ message: 'Contact deleted with success.' });
+                }
+            ).catch(
+                (error) => { res.status(400).json({ error: error }); }
+            );
         }
-    ).catch(
-        (error) => {
-            res.status(400).json({
-                error: error
-            });
-        }
-    );
+    });
 };
 
 /**
@@ -62,10 +60,7 @@ module.exports.getContact = (req, res, next) => {
             res.status(200).json(contact);
         }).catch(
             (error) => {
-                console.log(error)
-                res.status(404).json({
-                    error: error
-                })
+                res.status(404).json({ error: error })
             }
         );
 };
@@ -76,10 +71,17 @@ module.exports.getContact = (req, res, next) => {
 module.exports.getContacts = (req, res, next) => {
     Project.findOne({ _id: req.params.projectId })
         .populate('contacts')
-        .exec(function (err, project) {
-            if (err) res.json({ error: 'error' });
-            res.status(200).json({ contacts: project.contacts });
-        });
+        .exec().then(
+            (project) => {
+                res.status(200).json({ contacts: project.contacts });
+            }
+        ).catch(
+            (error) => {
+                res.status(400).json({
+                    error: error
+                });
+            }
+        );
 };
 
 /**
@@ -88,14 +90,14 @@ module.exports.getContacts = (req, res, next) => {
 module.exports.updateContact = (req, res, next) => {
     Contact.findOne({ _id: req.params.contactId }, (err, contact) => {
         if (!contact) {
-            res.status(404).json({ status: false, message: 'Contact not found' });
+            res.status(404).json({ status: false, message: 'Contact not found.' });
         } else {
             contact.firstName = req.body.firstName;
             contact.lastName = req.body.lastName;
             contact.email = req.body.email;
             contact.save(function (err) {
                 if (!err)
-                    res.send({ success: 'Contact updated with success' });
+                    res.status(204).send({ success: 'Contact updated with success.' });
             });
         }
     });
