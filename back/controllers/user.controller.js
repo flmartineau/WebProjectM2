@@ -12,7 +12,7 @@ module.exports.createUser = (req, res, next) => {
     user.password = req.body.password;
     user.save().then(
         () => {
-            res.status(204).send({ success: 'User account added with success.' });
+            res.status(200).send({ success: 'User account added with success.' });
         }
     ).catch(
         (error) => {
