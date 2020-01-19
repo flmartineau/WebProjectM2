@@ -1,0 +1,8 @@
+language: node_js
+sudo: false
+node_js:
+  - 9
+install:
+  - cd back && npm install && cd .. && docker-compose up -d mongodb
+script:
+  - npm test
