@@ -65,6 +65,9 @@ export class TrelloComponent implements OnInit {
     this.getTrelloBoard();
   }
 
+  ngOnDestroy(){
+    this.modalService.dismissAll();
+  }
 
   /**
    * Get the trello board info.

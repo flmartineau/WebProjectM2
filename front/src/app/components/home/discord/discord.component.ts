@@ -48,6 +48,10 @@ export class DiscordComponent implements OnInit {
     this.getProjectDiscord();
   }
 
+  ngOnDestroy(){
+    this.modalService.dismissAll();
+  }
+
   /**
    * Get the project Discord info.
    */

@@ -43,6 +43,10 @@ export class ContactsComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(){
+    this.modalService.dismissAll();
+  }
+
   /**
    * Get the selected contact info.
    */

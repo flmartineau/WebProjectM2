@@ -33,6 +33,10 @@ export class ProjectComponent implements OnInit {
     this.getProject();
   }
 
+  ngOnDestroy(){
+    this.modalService.dismissAll();
+  }
+
   /**
    * Get the selected project info.
    */

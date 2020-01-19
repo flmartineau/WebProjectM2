@@ -52,6 +52,10 @@ export class GithubComponent implements OnInit, AfterViewInit {
     this.getProjectRepo();
   }
 
+  ngOnDestroy(){
+    this.modalService.dismissAll();
+  }
+
   /**
    * Get the Github repository info.
    */

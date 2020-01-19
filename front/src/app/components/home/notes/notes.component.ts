@@ -18,8 +18,8 @@ export class NotesComponent implements OnInit {
   public note: Notes;
   public notes = new Array<Notes>();
 
-  constructor(private route: ActivatedRoute, 
-              public notesService: NotesService, 
+  constructor(private route: ActivatedRoute,
+              public notesService: NotesService,
               public modalService: NgbModal) { }
   @ViewChild('popupUpdateNote', {static: false}) popupUpdateNote;
 
@@ -38,6 +38,12 @@ export class NotesComponent implements OnInit {
       this.getNote();
     }
   }
+
+
+  ngOnDestroy(){
+    this.modalService.dismissAll();
+  }
+
 
   getNote() {
     this.notesService.getNoteById(this.projectId, this.noteId)

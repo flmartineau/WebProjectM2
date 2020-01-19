@@ -54,6 +54,11 @@ export class AgendaComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(){
+    this.modalService.dismissAll();
+  }
+
+
   /**
    * Select the previous month to the current
    */
