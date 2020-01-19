@@ -32,10 +32,16 @@ const project_details = {
     'owner': ''
 }
 
-describe('Get project test, add a project', () => {
+const new_project_details = {
+    'name': 'ProjectTestUpdate',
+    'description': 'ProjectDescriptionUpdate',
+    'owner': ''
+}
+
+describe('Projects: add, get, update, delete', () => {
     before((done) => {
-        User.remove({}, (err) => { });
-        Project.remove({}, (err) => { });
+        User.deleteMany({}, (err) => { });
+        Project.deleteMany({}, (err) => { });
         chai.request(app)
             .post("/api/user")
             .send(register_details)
@@ -46,8 +52,8 @@ describe('Get project test, add a project', () => {
     });
 
     after((done) => {
-        User.remove({}, (err) => { });
-        Project.remove({}, (err) => { done() });
+        User.deleteMany({}, (err) => { });
+        Project.deleteMany({}, (err) => { done() });
     });
 
     describe('/GET /POST Projects', () => {
@@ -85,6 +91,130 @@ describe('Get project test, add a project', () => {
                         });
                 });
         });
+
+        it('it should update project', (done) => {
+            //On se connecte
+            chai.request(app)
+                .post("/api/user/login")
+                .send(login_details)
+                .end((err, res) => {
+                    let token = res.body.token;
+
+                    //On recupere la liste des projets
+                    chai.request(app)
+                        .get("/api/project")
+                        .set('cookie', "token=" + token)
+                        .end((err, res) => {
+                            res.should.have.status(200);
+
+                            let nb_projects = res.body.length;
+                            //On ajoute un projet
+                            chai.request(app)
+                                .post("/api/project")
+                                .set('cookie', "token=" + token)
+                                .send(project_details)
+                                .end((err, res) => {
+                                    res.should.have.status(201);
+
+                                    //On recupere une 2nd fois la liste des des projets
+                                    chai.request(app)
+                                        .get("/api/project")
+                                        .set('cookie', "token=" + token)
+                                        .end((err, res) => {
+                                            res.should.have.status(200);
+                                            let projectsBeforeUpdate = res.body;
+                                            expect(projectsBeforeUpdate.length).to.equal(nb_projects + 1);
+                                            
+                                            //On update
+                                            chai.request(app)
+                                                .put("/api/project/" + projectsBeforeUpdate[0]._id)
+                                                .set('cookie', "token=" + token)
+                                                .send(new_project_details)
+                                                .end((err, res) => {
+                                                    res.should.have.status(204);
+
+                                                    //On recupere une 3eme fois la liste des des projets
+                                                    chai.request(app)
+                                                        .get("/api/project")
+                                                        .set('cookie', "token=" + token)
+                                                        .end((err, res) => {
+                                                            res.should.have.status(200);
+                                                            let projectsAfterUpdate = res.body;
+                                                            expect(projectsBeforeUpdate[0].name).to.not.equal(projectsAfterUpdate[0].name);
+                                                            expect(projectsBeforeUpdate[0].description).to.not.equal(projectsAfterUpdate[0].description);
+                                                            
+                                                            done();
+                                                        });
+                                                });
+                                        });        
+                                });
+                            
+                        });
+                });
+        });
+
+        it('it should delete project', (done) => {
+            //On se connecte
+            chai.request(app)
+                .post("/api/user/login")
+                .send(login_details)
+                .end((err, res) => {
+                    let token = res.body.token;
+
+                    //On recupere la liste des projets
+                    chai.request(app)
+                        .get("/api/project")
+                        .set('cookie', "token=" + token)
+                        .end((err, res) => {
+                            res.should.have.status(200);
+                            
+                            //On recupere taille de la liste des projets
+                            let nb_projects = res.body.length;
+                            //On ajoute un projet
+                            chai.request(app)
+                                .post("/api/project")
+                                .set('cookie', "token=" + token)
+                                .send(project_details)
+                                .end((err, res) => {
+                                    res.should.have.status(201);
+
+                                    //On recupere une 2nd fois la liste des des projets
+                                    chai.request(app)
+                                        .get("/api/project")
+                                        .set('cookie', "token=" + token)
+                                        .end((err, res) => {
+                                            res.should.have.status(200);
+                                            let projectsBeforeUpdate = res.body;
+                                            expect(projectsBeforeUpdate.length).to.equal(nb_projects + 1);
+                                            ++nb_projects;
+                                            
+                                            //On delete
+                                            chai.request(app)
+                                                .delete("/api/project/" + projectsBeforeUpdate[0]._id)
+                                                .set('cookie', "token=" + token)
+                                                .send(new_project_details)
+                                                .end((err, res) => {
+                                                    res.should.have.status(200);
+
+                                                    //On recupere une 3eme fois la liste des des projets
+                                                    chai.request(app)
+                                                        .get("/api/project")
+                                                        .set('cookie', "token=" + token)
+                                                        .end((err, res) => {
+                                                            res.should.have.status(200);
+                                                            expect(res.body.length).to.equal(nb_projects - 1);
+                                                            
+                                                            done();
+                                                        });
+                                                });
+                                        });        
+                                });
+                            
+                        });
+                });
+        });
+
+        
     });
 
 });

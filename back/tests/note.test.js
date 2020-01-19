@@ -1,6 +1,6 @@
 let User = require('../models/user');
 let Project = require('../models/project');
-let AgendaEvent = require('../models/agendaEvent');
+let Note = require('../models/note');
 
 process.env.NODE_ENV = 'test';
 
@@ -33,23 +33,21 @@ const project_details = {
     'owner': ''
 }
 
-const agenda_details = {
-    'name': 'AgendaTest',
-    'description': 'AgendaDescription',
-    'date': new Date("2020-01-01")
+const note_details = {
+    'title': 'noteTitle',
+    'description': 'noteDescription'
 }
 
-const new_agenda_details = {
-    'name': 'AgendaTestUpdate',
-    'description': 'AgendaDescriptionUpdate',
-    'date': new Date("2000-01-01")
+const new_note_details = {
+    'title': 'noteTitleUpdate',
+    'description': 'noteDescriptionUpdate'
 }
 
-describe('Event: add, get, update, delete', () => {
+describe('Note: add, get, update, delete', () => {
     before((done) => {
         User.deleteMany({}, (err) => { });
         Project.deleteMany({}, (err) => { });
-        AgendaEvent.deleteMany({}, (err) => { });
+        Note.deleteMany({}, (err) => { });
         //On creer un compte
         chai.request(app)
             .post("/api/user")
@@ -80,12 +78,12 @@ describe('Event: add, get, update, delete', () => {
     after((done) => {
         User.deleteMany({}, (err) => { });
         Project.deleteMany({}, (err) => { });
-        AgendaEvent.deleteMany({}, (err) => { done() });
+        Note.deleteMany({}, (err) => { done() });
     });
 
     describe('/GET /POST Agendas', () => {
 
-        it('it should get events and add one new event', (done) => {
+        it('it should get notes and add one new note', (done) => {
             //On se connecte
             chai.request(app)
                 .post("/api/user/login")
@@ -102,31 +100,31 @@ describe('Event: add, get, update, delete', () => {
                             //On prends le premier de la liste, celui creer dans le before
                             let firstProject = res.body[0];
                             
-                            //On recupere la liste des evennements pour le specifique projets
+                            //On recupere la liste des notes pour le specifique projets
                             chai.request(app)
-                                .get("/api/project/" + firstProject._id + "/agenda")
+                                .get("/api/project/" + firstProject._id + "/notes")
                                 .set('cookie', "token=" + token)
                                 .end((err, res) => {
                                     res.should.have.status(200);
 
-                                    //On recupere taille de la liste des evennements pour le specifique projets
-                                    let nb_agendas = res.body.events.length;
+                                    //On recupere taille de la liste des notes pour le specifique projets
+                                    let nb_notes = res.body.notes.length;
 
-                                    //On ajoute un evennement pour le specifique projets
+                                    //On ajoute un note pour le specifique projets
                                     chai.request(app)
-                                        .post("/api/project/" + firstProject._id + "/agenda")
+                                        .post("/api/project/" + firstProject._id + "/notes")
                                         .set('cookie', "token=" + token)
-                                        .send(agenda_details)
+                                        .send(note_details)
                                         .end((err, res) => {
                                             res.should.have.status(201);
 
-                                            //On recupere une 2nd fois la liste des evennements pour le specifique projets
+                                            //On recupere une 2nd fois la liste des notes pour le specifique projets
                                             chai.request(app)
-                                                .get("/api/project/" + firstProject._id + "/agenda")
+                                                .get("/api/project/" + firstProject._id + "/notes")
                                                 .set('cookie', "token=" + token)
                                                 .end((err, res) => {
                                                     res.should.have.status(200);
-                                                    expect(res.body.events.length).to.equal(nb_agendas + 1);
+                                                    expect(res.body.notes.length).to.equal(nb_notes + 1);
                                                     done();
                                                 });
                                         });
@@ -135,7 +133,7 @@ describe('Event: add, get, update, delete', () => {
                 });
         });
 
-        it('it should update event', (done) => {
+        it('it should update notes', (done) => {
             //On se connecte
             chai.request(app)
                 .post("/api/user/login")
@@ -152,54 +150,44 @@ describe('Event: add, get, update, delete', () => {
                             //On prends le premier de la liste, celui creer dans le before
                             let firstProject = res.body[0];
                             
-                            //On recupere la liste des evennements pour le specifique projets
+                            //On recupere la liste des notes pour le specifique projets
                             chai.request(app)
-                                .get("/api/project/" + firstProject._id + "/agenda")
+                                .get("/api/project/" + firstProject._id + "/notes")
                                 .set('cookie', "token=" + token)
                                 .end((err, res) => {
                                     res.should.have.status(200);
 
-                                    //On recupere taille de la liste des evennements pour le specifique projets
-                                    let nb_agendas = res.body.events.length;
+                                    //On recupere taille de la liste des notes pour le specifique projets
+                                    let nb_notes = res.body.notes.length;
 
                                     //On ajoute un evennement pour le specifique projets
                                     chai.request(app)
-                                        .post("/api/project/" + firstProject._id + "/agenda")
+                                        .post("/api/project/" + firstProject._id + "/notes")
                                         .set('cookie', "token=" + token)
-                                        .send(agenda_details)
+                                        .send(note_details)
                                         .end((err, res) => {
                                             res.should.have.status(201);
 
-                                            //On recupere une 2nd fois la liste des evennements pour le specifique projets
+                                            //On recupere une 2nd fois la liste des notes pour le specifique projets
                                             chai.request(app)
-                                                .get("/api/project/" + firstProject._id + "/agenda")
+                                                .get("/api/project/" + firstProject._id + "/notes")
                                                 .set('cookie', "token=" + token)
                                                 .end((err, res) => {
                                                     res.should.have.status(200);
-                                                    let eventsBeforeUpdate = res.body.events;
-                                                    expect(eventsBeforeUpdate.length).to.equal(nb_agendas + 1);
+                                                    expect(res.body.notes.length).to.equal(nb_notes + 1);
+                                                    let notes = res.body.notes;
                                                     //On update
                                                     chai.request(app)
-                                                        .put("/api/project/" + firstProject._id + "/agenda/" + eventsBeforeUpdate[0]._id)
+                                                        .put("/api/project/" + firstProject._id + "/notes/" + res.body.notes[0]._id)
                                                         .set('cookie', "token=" + token)
-                                                        .send(new_agenda_details)
+                                                        .send(new_note_details)
                                                         .end((err, res) => {
                                                             res.should.have.status(204);
+                                                            expect(notes[0].title).to.not.equal(new_note_details.title);
+                                                            expect(notes[0].description).to.not.equal(new_note_details.description);
+                                                            
+                                                            done();
 
-                                                            //On recupere une 3eme fois la liste des evennements pour le specifique projets
-                                                            chai.request(app)
-                                                                .get("/api/project/" + firstProject._id + "/agenda")
-                                                                .set('cookie', "token=" + token)
-                                                                .end((err, res) => {
-                                                                    res.should.have.status(200);
-                                                                    let eventsAfterUpdate = res.body.events;
-                                                                    expect(eventsBeforeUpdate[0].name).to.not.equal(eventsAfterUpdate[0].name);
-                                                                    expect(eventsBeforeUpdate[0].description).to.not.equal(eventsAfterUpdate[0].description);
-                                                                    expect(eventsBeforeUpdate[0].date).to.not.equal(eventsAfterUpdate[0].date);
-                                                                        
-                                                                    done();
-
-                                                                });
                                                         });
 
                                                 });
@@ -209,7 +197,7 @@ describe('Event: add, get, update, delete', () => {
                 });
         });
 
-        it('it should delete event', (done) => {
+        it('it should delete notes', (done) => {
             //On se connecte
             chai.request(app)
                 .post("/api/user/login")
@@ -226,49 +214,49 @@ describe('Event: add, get, update, delete', () => {
                             //On prends le premier de la liste, celui creer dans le before
                             let firstProject = res.body[0];
                             
-                            //On recupere la liste des evennements pour le specifique projets
+                            //On recupere la liste des notes pour le specifique projets
                             chai.request(app)
-                                .get("/api/project/" + firstProject._id + "/agenda")
+                                .get("/api/project/" + firstProject._id + "/notes")
                                 .set('cookie', "token=" + token)
                                 .end((err, res) => {
                                     res.should.have.status(200);
 
-                                    //On recupere taille de la liste des evennements pour le specifique projets
-                                    let nb_agendas = res.body.events.length;
+                                    //On recupere taille de la liste des notes pour le specifique projets
+                                    let nb_notes = res.body.notes.length;
 
-                                    //On ajoute un evennement pour le specifique projets
+                                    //On ajoute un note pour le specifique projets
                                     chai.request(app)
-                                        .post("/api/project/" + firstProject._id + "/agenda")
+                                        .post("/api/project/" + firstProject._id + "/notes")
                                         .set('cookie', "token=" + token)
-                                        .send(agenda_details)
+                                        .send(note_details)
                                         .end((err, res) => {
                                             res.should.have.status(201);
 
-                                            //On recupere une 2nd fois la liste des evennements pour le specifique projets
+                                            //On recupere une 2nd fois la liste des notes pour le specifique projets
                                             chai.request(app)
-                                                .get("/api/project/" + firstProject._id + "/agenda")
+                                                .get("/api/project/" + firstProject._id + "/notes")
                                                 .set('cookie', "token=" + token)
                                                 .end((err, res) => {
                                                     res.should.have.status(200);
-                                                    expect(res.body.events.length).to.equal(nb_agendas + 1);
-                                                    let events = res.body.events;
-                                                    ++nb_agendas;
+                                                    expect(res.body.notes.length).to.equal(nb_notes + 1);
+                                                    let notes = res.body.notes;
+                                                    ++nb_notes;
 
                                                     //On delete
                                                     chai.request(app)
-                                                        .delete("/api/project/" + firstProject._id + "/agenda/" + res.body.events[0]._id)
+                                                        .delete("/api/project/" + firstProject._id + "/notes/" + res.body.notes[0]._id)
                                                         .set('cookie', "token=" + token)
-                                                        .send(new_agenda_details)
+                                                        .send(new_note_details)
                                                         .end((err, res) => {
                                                             res.should.have.status(200);
 
-                                                            //On recupere une 2nd fois la liste des evennements pour le specifique projets
+                                                            //On recupere une 2nd fois la liste des notes pour le specifique projets
                                                             chai.request(app)
-                                                                .get("/api/project/" + firstProject._id + "/agenda")
+                                                                .get("/api/project/" + firstProject._id + "/notes")
                                                                 .set('cookie', "token=" + token)
                                                                 .end((err, res) => {
                                                                     res.should.have.status(200);
-                                                                    expect(res.body.events.length).to.equal(nb_agendas - 1);
+                                                                    expect(res.body.notes.length).to.equal(nb_notes - 1);
                                                                 
                                                                     done();
 
