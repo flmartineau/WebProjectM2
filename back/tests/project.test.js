@@ -140,6 +140,7 @@ describe('Projects: add, get, update, delete', () => {
                                                         .end((err, res) => {
                                                             res.should.have.status(200);
                                                             let projectsAfterUpdate = res.body;
+                                                            expect(projectsBeforeUpdate[0]._id).to.equal(projectsAfterUpdate[0]._id);
                                                             expect(projectsBeforeUpdate[0].name).to.not.equal(projectsAfterUpdate[0].name);
                                                             expect(projectsBeforeUpdate[0].description).to.not.equal(projectsAfterUpdate[0].description);
                                                             

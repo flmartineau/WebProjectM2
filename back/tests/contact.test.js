@@ -1,6 +1,6 @@
 let User = require('../models/user');
 let Project = require('../models/project');
-let Note = require('../models/note');
+let Contact = require('../models/contact');
 
 process.env.NODE_ENV = 'test';
 
@@ -33,21 +33,23 @@ const project_details = {
     'owner': ''
 }
 
-const note_details = {
-    'title': 'noteTitle',
-    'description': 'noteDescription'
+const contact_details = {
+    'firstName': 'contactFirstName',
+    'lastName': 'contactLastName',
+    'email': 'contactEmail@test.test'
 }
 
-const new_note_details = {
-    'title': 'noteTitleUpdate',
-    'description': 'noteDescriptionUpdate'
+const new_contact_details = {
+    'firstName': 'contactFirstNameUpdate',
+    'lastName': 'contactLastNameUpdate',
+    'email': 'contactEmailUpdate@test.test'
 }
 
-describe('Note: add, get, update, delete', () => {
+describe('Contact: add, get, update, delete', () => {
     before((done) => {
         User.deleteMany({}, (err) => { });
         Project.deleteMany({}, (err) => { });
-        Note.deleteMany({}, (err) => { });
+        Contact.deleteMany({}, (err) => { });
         //On creer un compte
         chai.request(app)
             .post("/api/user")
@@ -78,12 +80,12 @@ describe('Note: add, get, update, delete', () => {
     after((done) => {
         User.deleteMany({}, (err) => { });
         Project.deleteMany({}, (err) => { });
-        Note.deleteMany({}, (err) => { done() });
+        Contact.deleteMany({}, (err) => { done() });
     });
 
     describe('/GET /POST Agendas', () => {
 
-        it('it should get notes and add one new note', (done) => {
+        it('it should get contacts and add one new contact', (done) => {
             //On se connecte
             chai.request(app)
                 .post("/api/user/login")
@@ -100,31 +102,31 @@ describe('Note: add, get, update, delete', () => {
                             //On prends le premier de la liste, celui creer dans le before
                             let firstProject = res.body[0];
                             
-                            //On recupere la liste des notes pour le specifique projets
+                            //On recupere la liste des contacts pour le specifique projets
                             chai.request(app)
-                                .get("/api/project/" + firstProject._id + "/notes")
+                                .get("/api/project/" + firstProject._id + "/contacts")
                                 .set('cookie', "token=" + token)
                                 .end((err, res) => {
                                     res.should.have.status(200);
 
-                                    //On recupere taille de la liste des notes pour le specifique projets
-                                    let nb_notes = res.body.notes.length;
+                                    //On recupere taille de la liste des contacts pour le specifique projets
+                                    let nb_contacts = res.body.contacts.length;
 
-                                    //On ajoute un note pour le specifique projets
+                                    //On ajoute un contact pour le specifique projets
                                     chai.request(app)
-                                        .post("/api/project/" + firstProject._id + "/notes")
+                                        .post("/api/project/" + firstProject._id + "/contacts")
                                         .set('cookie', "token=" + token)
-                                        .send(note_details)
+                                        .send(contact_details)
                                         .end((err, res) => {
                                             res.should.have.status(201);
 
-                                            //On recupere une 2nd fois la liste des notes pour le specifique projets
+                                            //On recupere une 2nd fois la liste des contacts pour le specifique projets
                                             chai.request(app)
-                                                .get("/api/project/" + firstProject._id + "/notes")
+                                                .get("/api/project/" + firstProject._id + "/contacts")
                                                 .set('cookie', "token=" + token)
                                                 .end((err, res) => {
                                                     res.should.have.status(200);
-                                                    expect(res.body.notes.length).to.equal(nb_notes + 1);
+                                                    expect(res.body.contacts.length).to.equal(nb_contacts + 1);
                                                     done();
                                                 });
                                         });
@@ -133,7 +135,7 @@ describe('Note: add, get, update, delete', () => {
                 });
         });
 
-        it('it should update notes', (done) => {
+        it('it should update contacts', (done) => {
             //On se connecte
             chai.request(app)
                 .post("/api/user/login")
@@ -150,56 +152,56 @@ describe('Note: add, get, update, delete', () => {
                             //On prends le premier de la liste, celui creer dans le before
                             let firstProject = res.body[0];
                             
-                            //On recupere la liste des notes pour le specifique projets
+                            //On recupere la liste des contacts pour le specifique projets
                             chai.request(app)
-                                .get("/api/project/" + firstProject._id + "/notes")
+                                .get("/api/project/" + firstProject._id + "/contacts")
                                 .set('cookie', "token=" + token)
                                 .end((err, res) => {
                                     res.should.have.status(200);
 
-                                    //On recupere taille de la liste des notes pour le specifique projets
-                                    let nb_notes = res.body.notes.length;
+                                    //On recupere taille de la liste des contacts pour le specifique projets
+                                    let nb_contacts = res.body.contacts.length;
 
                                     //On ajoute un evennement pour le specifique projets
                                     chai.request(app)
-                                        .post("/api/project/" + firstProject._id + "/notes")
+                                        .post("/api/project/" + firstProject._id + "/contacts")
                                         .set('cookie', "token=" + token)
-                                        .send(note_details)
+                                        .send(contact_details)
                                         .end((err, res) => {
                                             res.should.have.status(201);
 
-                                            //On recupere une 2nd fois la liste des notes pour le specifique projets
+                                            //On recupere une 2nd fois la liste des contacts pour le specifique projets
                                             chai.request(app)
-                                                .get("/api/project/" + firstProject._id + "/notes")
+                                                .get("/api/project/" + firstProject._id + "/contacts")
                                                 .set('cookie', "token=" + token)
                                                 .end((err, res) => {
                                                     res.should.have.status(200);
-                                                    let notesBeforeUpdate = res.body.notes;
-                                                    expect(notesBeforeUpdate.length).to.equal(nb_notes + 1);
+                                                    let contactsBeforeUpdate = res.body.contacts;
+                                                    expect(contactsBeforeUpdate.length).to.equal(nb_contacts + 1);
                                                     //On update
                                                     chai.request(app)
-                                                        .put("/api/project/" + firstProject._id + "/notes/" + notesBeforeUpdate[0]._id)
+                                                        .put("/api/project/" + firstProject._id + "/contacts/" + contactsBeforeUpdate[0]._id)
                                                         .set('cookie', "token=" + token)
-                                                        .send(new_note_details)
+                                                        .send(new_contact_details)
                                                         .end((err, res) => {
                                                             res.should.have.status(204);
 
                                                             //On recupere une 3eme fois la liste des evennements pour le specifique projets
                                                             chai.request(app)
-                                                                .get("/api/project/" + firstProject._id + "/notes")
+                                                                .get("/api/project/" + firstProject._id + "/contacts")
                                                                 .set('cookie', "token=" + token)
                                                                 .end((err, res) => {
                                                                     res.should.have.status(200);
-                                                                    let notesAfterUpdate = res.body.notes;
-                                                                    expect(notesBeforeUpdate[0]._id).to.equal(notesAfterUpdate[0]._id);
-                                                                    expect(notesBeforeUpdate[0].title).to.not.equal(notesAfterUpdate[0].title);
-                                                                    expect(notesBeforeUpdate[0].description).to.not.equal(notesAfterUpdate[0].description);
+                                                                    let contactsAfterUpdate = res.body.contacts;
+                                                                    expect(contactsBeforeUpdate[0]._id).to.equal(contactsAfterUpdate[0]._id);
+                                                                    expect(contactsBeforeUpdate[0].firstName).to.not.equal(contactsAfterUpdate[0].firstName);
+                                                                    expect(contactsBeforeUpdate[0].lastName).to.not.equal(contactsAfterUpdate[0].lastName);
+                                                                    expect(contactsBeforeUpdate[0].email).to.not.equal(contactsAfterUpdate[0].email);
                                                                     
                                                                     done();
                                                                 });
 
                                                         });
-
                                                 });
                                         });
                                 });
@@ -207,7 +209,7 @@ describe('Note: add, get, update, delete', () => {
                 });
         });
 
-        it('it should delete notes', (done) => {
+        it('it should delete contacts', (done) => {
             //On se connecte
             chai.request(app)
                 .post("/api/user/login")
@@ -224,49 +226,49 @@ describe('Note: add, get, update, delete', () => {
                             //On prends le premier de la liste, celui creer dans le before
                             let firstProject = res.body[0];
                             
-                            //On recupere la liste des notes pour le specifique projets
+                            //On recupere la liste des contacts pour le specifique projets
                             chai.request(app)
-                                .get("/api/project/" + firstProject._id + "/notes")
+                                .get("/api/project/" + firstProject._id + "/contacts")
                                 .set('cookie', "token=" + token)
                                 .end((err, res) => {
                                     res.should.have.status(200);
 
-                                    //On recupere taille de la liste des notes pour le specifique projets
-                                    let nb_notes = res.body.notes.length;
+                                    //On recupere taille de la liste des contacts pour le specifique projets
+                                    let nb_contacts = res.body.contacts.length;
 
-                                    //On ajoute un note pour le specifique projets
+                                    //On ajoute un contact pour le specifique projets
                                     chai.request(app)
-                                        .post("/api/project/" + firstProject._id + "/notes")
+                                        .post("/api/project/" + firstProject._id + "/contacts")
                                         .set('cookie', "token=" + token)
-                                        .send(note_details)
+                                        .send(contact_details)
                                         .end((err, res) => {
                                             res.should.have.status(201);
 
-                                            //On recupere une 2nd fois la liste des notes pour le specifique projets
+                                            //On recupere une 2nd fois la liste des contacts pour le specifique projets
                                             chai.request(app)
-                                                .get("/api/project/" + firstProject._id + "/notes")
+                                                .get("/api/project/" + firstProject._id + "/contacts")
                                                 .set('cookie', "token=" + token)
                                                 .end((err, res) => {
                                                     res.should.have.status(200);
-                                                    expect(res.body.notes.length).to.equal(nb_notes + 1);
-                                                    let notes = res.body.notes;
-                                                    ++nb_notes;
+                                                    expect(res.body.contacts.length).to.equal(nb_contacts + 1);
+                                                    let contacts = res.body.contacts;
+                                                    ++nb_contacts;
 
                                                     //On delete
                                                     chai.request(app)
-                                                        .delete("/api/project/" + firstProject._id + "/notes/" + res.body.notes[0]._id)
+                                                        .delete("/api/project/" + firstProject._id + "/contacts/" + res.body.contacts[0]._id)
                                                         .set('cookie', "token=" + token)
-                                                        .send(new_note_details)
+                                                        .send(new_contact_details)
                                                         .end((err, res) => {
                                                             res.should.have.status(200);
 
-                                                            //On recupere une 2nd fois la liste des notes pour le specifique projets
+                                                            //On recupere une 2nd fois la liste des contacts pour le specifique projets
                                                             chai.request(app)
-                                                                .get("/api/project/" + firstProject._id + "/notes")
+                                                                .get("/api/project/" + firstProject._id + "/contacts")
                                                                 .set('cookie', "token=" + token)
                                                                 .end((err, res) => {
                                                                     res.should.have.status(200);
-                                                                    expect(res.body.notes.length).to.equal(nb_notes - 1);
+                                                                    expect(res.body.contacts.length).to.equal(nb_contacts - 1);
                                                                 
                                                                     done();
 

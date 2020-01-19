@@ -20,7 +20,7 @@ module.exports.updateTrello = (req, res, next) => {
                 project.trello = trello;
                 project.save(function (err) {
                     if (!err)
-                        res.send({ success: 'Trello updated with success.' });
+                        res.status(204).send({ success: 'Trello updated with success.' });
                 });
             }
         })

@@ -193,12 +193,12 @@ describe('Event: add, get, update, delete', () => {
                                                                 .end((err, res) => {
                                                                     res.should.have.status(200);
                                                                     let eventsAfterUpdate = res.body.events;
+                                                                    expect(eventsBeforeUpdate[0]._id).to.equal(eventsAfterUpdate[0]._id);
                                                                     expect(eventsBeforeUpdate[0].name).to.not.equal(eventsAfterUpdate[0].name);
                                                                     expect(eventsBeforeUpdate[0].description).to.not.equal(eventsAfterUpdate[0].description);
                                                                     expect(eventsBeforeUpdate[0].date).to.not.equal(eventsAfterUpdate[0].date);
                                                                         
                                                                     done();
-
                                                                 });
                                                         });
 
