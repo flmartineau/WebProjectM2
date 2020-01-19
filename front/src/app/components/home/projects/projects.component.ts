@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjetService } from 'src/app/services/projet.service';
+import { ProjetService } from 'src/app/services/project.service';
 import { NgForm } from '@angular/forms';
 
 @Component({

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TrelloService } from 'src/app/services/trello.service';
 import { NgForm } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProjetService } from 'src/app/services/projet.service';
+import { ProjetService } from 'src/app/services/project.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
