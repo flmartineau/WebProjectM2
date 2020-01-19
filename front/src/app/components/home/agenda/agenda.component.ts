@@ -26,6 +26,7 @@ export class AgendaComponent implements OnInit {
   public today :string;
 
   constructor(private route: ActivatedRoute, public agendaService: AgendaService, public modalService: NgbModal) { }
+  @ViewChild('popupAddEvent', {static: false}) popupAddEvent;
   @ViewChild('popupUpdateEvent', {static: false}) popupUpdateEvent;
 
   model = {
@@ -181,6 +182,26 @@ export class AgendaComponent implements OnInit {
         });
   }
 
+  /**
+   * Add event on a specific date
+   */
+  addEvent(isThereEvents, date) {
+    if(!isThereEvents){
+      console.log("Add request");
+      this.model.name = "";
+      this.model.description = "";
+      this.model.date = date;
+      this.modalService.open(this.popupAddEvent, { centered: true });
+    }
+  }
+
+  /**
+   * Add event on a specific day of current month
+   */
+  addEventFromListEvents(day) {
+    this.modalService.dismissAll();
+    this.addEvent(false, this.year + "-" + this.month + "-" + day);
+  }
 }
 
 class Calendar {     

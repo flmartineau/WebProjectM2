@@ -196,7 +196,7 @@ describe('Event: add, get, update, delete', () => {
                                                                     expect(eventsBeforeUpdate[0]._id).to.equal(eventsAfterUpdate[0]._id);
                                                                     expect(eventsBeforeUpdate[0].name).to.not.equal(eventsAfterUpdate[0].name);
                                                                     expect(eventsBeforeUpdate[0].description).to.not.equal(eventsAfterUpdate[0].description);
-                                                                    expect(eventsBeforeUpdate[0].date).to.not.equal(eventsAfterUpdate[0].date);
+                                                                    expect(new Date(eventsBeforeUpdate[0].date).getTime()).to.not.equal(parseInt(new Date(eventsAfterUpdate[0].date).getTime()));
                                                                         
                                                                     done();
                                                                 });
@@ -269,7 +269,7 @@ describe('Event: add, get, update, delete', () => {
                                                                 .end((err, res) => {
                                                                     res.should.have.status(200);
                                                                     expect(res.body.events.length).to.equal(nb_agendas - 1);
-                                                                
+                                                                    
                                                                     done();
 
                                                                 });
@@ -281,6 +281,69 @@ describe('Event: add, get, update, delete', () => {
                                 });
                         });
                 });
+        });
+
+        it('it should get events by month and year', (done) => {
+            AgendaEvent.deleteMany({}, (err) => { 
+                //On se connecte
+                chai.request(app)
+                    .post("/api/user/login")
+                    .send(login_details)
+                    .end((err, res) => {
+                        let token = res.body.token;
+
+                        //On recupere la liste des projets
+                        chai.request(app)
+                            .get("/api/project")
+                            .set('cookie', "token=" + token)
+                            .end((err, res) => {
+                                res.should.have.status(200);
+                                //On prends le premier de la liste, celui creer dans le before
+                                let firstProject = res.body[0];
+                                
+                                //On ajoute un evennement pour le specifique projets avec pour data 2020-01-01
+                                chai.request(app)
+                                    .post("/api/project/" + firstProject._id + "/agenda")
+                                    .set('cookie', "token=" + token)
+                                    .send(agenda_details)
+                                    .end((err, res) => {
+                                        res.should.have.status(201);
+
+                                        //On recupere une la liste des evennements pour le specifique projet a la date 2020-02
+                                        chai.request(app)
+                                            .get("/api/project/" + firstProject._id + "/agenda/2020/02")
+                                            .set('cookie', "token=" + token)
+                                            .end((err, res) => {
+                                                res.should.have.status(200);
+                                                expect(res.body.length).to.equal(0);
+                                                
+                                                //On recupere une la liste des evennements pour le specifique projet a la date 2019-01
+                                                chai.request(app)
+                                                    .get("/api/project/" + firstProject._id + "/agenda/2019/01")
+                                                    .set('cookie', "token=" + token)
+                                                    .end((err, res) => {
+                                                        res.should.have.status(200);
+                                                        expect(res.body.length).to.equal(0);
+
+                                                        //On recupere une la liste des evennements pour le specifique projet a la date 2019-01
+                                                        chai.request(app)
+                                                        .get("/api/project/" + firstProject._id + "/agenda/2020/01")
+                                                            .set('cookie', "token=" + token)
+                                                            .end((err, res) => {
+                                                                res.should.have.status(200);
+                                                                expect(res.body.length).to.equal(1);
+                                                                expect(res.body[0].name).to.equal(agenda_details.name);
+                                                                expect(res.body[0].description).to.equal(agenda_details.description);
+                                                                expect(new Date(res.body[0].date).getTime()).to.equal(parseInt(agenda_details.date.getTime()));
+
+                                                                done();
+                                                            });
+                                                    });
+                                            });
+                                    });
+                            });
+                    });
+            });
         });
 
     });

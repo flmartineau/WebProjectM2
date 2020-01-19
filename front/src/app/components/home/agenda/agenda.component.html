@@ -7,33 +7,62 @@
 </nav>
 
 <ng-template #popupUpdateEvent id="popupUpdateEvent" let-c="close" let-d="dismiss" >
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Editer l'évènement</h5>
-            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form #updateEvent="ngForm" (ngSubmit)="updateEvent.valid">
-                <div class="form-group">
-                    <label for="nameUpdateEvent">Nom</label>
-                    <input id="nameUpdateEvent" class="form-control" name="name" [(ngModel)]="model.name" type="text"/>
-                </div>
-                <div class="form-group">
-                    <label for="descUpdateEvent">Description</label>
-                    <textarea id="descUpdateEvent" class="form-control" name="description" [(ngModel)]="model.description" rows="3" ></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="dateUpdateEvent">Date</label>
-                    <input id="dateUpdateEvent" class="form-control" name="date" [(ngModel)]="model.date" type="date" />
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
-            <button type="submit" class="btn btn-primary" (click)="onUpdateSubmit(updateEvent)" (click)="c('Confirm click')">Valider</button>
-        </div>
-    </ng-template>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Editer l'évènement</h5>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #updateEvent="ngForm" (ngSubmit)="updateEvent.valid">
+            <div class="form-group">
+                <label for="nameUpdateEvent">Nom</label>
+                <input id="nameUpdateEvent" class="form-control" name="name" [(ngModel)]="model.name" type="text"/>
+            </div>
+            <div class="form-group">
+                <label for="descUpdateEvent">Description</label>
+                <textarea id="descUpdateEvent" class="form-control" name="description" [(ngModel)]="model.description" rows="3" ></textarea>
+            </div>
+            <div class="form-group">
+                <label for="dateUpdateEvent">Date</label>
+                <input id="dateUpdateEvent" class="form-control" name="date" [(ngModel)]="model.date" type="date" />
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+        <button type="submit" class="btn btn-primary" (click)="onUpdateSubmit(updateEvent)" (click)="c('Confirm click')">Valider</button>
+    </div>
+</ng-template>
+
+<ng-template #popupAddEvent id="popupAddEvent" let-c="close" let-d="dismiss" >
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Ajouter un évènement</h5>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #newEventOnDate="ngForm" (ngSubmit)="newEvent.valid">
+            <div class="form-group">
+                <label for="nameAddEvent">Nom</label>
+                <input id="nameAddEvent" class="form-control" name="name" [(ngModel)]="model.name" type="text"/>
+            </div>
+            <div class="form-group">
+                <label for="descAddEvent">Description</label>
+                <textarea id="descAddEvent" class="form-control" name="description" [(ngModel)]="model.description" rows="3" ></textarea>
+            </div>
+            <div class="form-group">
+                <label for="dateAddEvent">Date</label>
+                <input id="dateAddEvent" class="form-control" name="date" [(ngModel)]="model.date" type="date" disabled/>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+        <button type="submit" class="btn btn-primary" (click)="onAddSubmit(newEvent)" (click)="c('Confirm click')">Valider</button>
+    </div>
+</ng-template>
 
 <div class="jumbotron">
     <h1 class="display-4">Mes évènements</h1>
@@ -80,7 +109,9 @@
             <div class="clear"></div>
             <ul class="dates">
                 <li *ngFor="let day of calendar.getDays(null,null); let index = index;" id="cell-{{ day[1] }}" class="cell {{day[1] == today ? 'current' : ''}}" 
-                        [attr.data-toggle]="day[2] ? 'modal' : null" [attr.data-target]="day[2] ? '#event-list-' + day[1].substring(8,10) : null" [style.cursor]="day[2] ? 'pointer' : null">
+                        [attr.data-toggle]="day[2] ? 'modal' : null" [attr.data-target]="day[2] ? '#event-list-' + day[1].substring(8,10) : null" [style.cursor]="day[2] ? 'pointer' : null"
+                    (click)="addEvent(day[2],day[1])"
+                >
                     {{ day[0] }}
                     <img *ngIf="day[2]" src="../../..//../assets/planning_star.svg" alt="Evenement" style="max-width: 25px; margin-top: -50px;  margin-right: -20px;">
                 </li>
@@ -95,6 +126,10 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="scroll modal-body">
+                <button (click)="addEventFromListEvents(eventsOdTheDay.key)" routerLinkActive="router-link-active" class="btn btn-dark"
+                data-toggle="modal" [attr.data-target]="'#event-list-' + eventsOdTheDay.key" style="margin:auto; margin-bottom:5px; display: block;">
+                <em class="fa fa-plus"></em>  Evenement</button>
+                
                 <div *ngFor="let anEvent of eventsOdTheDay.value" class="card card-body eventDetails {{anEvent.date.substring(8,10)}}">
                     <h5 class="card-title">{{anEvent.name | titlecase}}</h5>
                     <p class="card-text">{{ anEvent.description}}</p>
