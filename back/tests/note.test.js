@@ -81,7 +81,7 @@ describe('Note: add, get, update, delete', () => {
         Note.deleteMany({}, (err) => { done() });
     });
 
-    describe('/GET /POST Agendas', () => {
+    describe('/GET /POST /PUT /DELETE Notes', () => {
 
         it('it should get notes and add one new note', (done) => {
             //On se connecte

@@ -34,12 +34,12 @@ const project_details = {
 }
 
 const apiRef_details = {
-    'link': 'https://trello.com/',
+    'link': 'https://githubapp.com/',
     'usernameAPI': 'apiRefUsernameAPITest',
     'tokenAPI': 'apiRefTokenAPITest'
 }
 
-describe('Trello:update', () => {
+describe('Discord:update', () => {
     before((done) => {
         User.deleteMany({}, (err) => { });
         Project.deleteMany({}, (err) => { });
@@ -77,9 +77,9 @@ describe('Trello:update', () => {
         APIReference.deleteMany({}, (err) => { done(); });
     });
 
-    describe('/PUT Trello', () => {
+    describe('/PUT Github', () => {
 
-        it('it should update trello', (done) => {
+        it('it should update github', (done) => {
             //On se connecte
             chai.request(app)
                 .post("/api/user/login")
@@ -96,36 +96,37 @@ describe('Trello:update', () => {
                             //On prends le premier de la liste, celui creer dans le before
                             let firstProject = res.body[0];
                             
-                            //On recupere le trello pour le specifique projets
+                            //On recupere le github pour le specifique projets
                             chai.request(app)
                                 .get("/api/project/" + firstProject._id)
                                 .set('cookie', "token=" + token)
                                 .end((err, res) => {
                                     res.should.have.status(200);
 
-                                    let trelloBefore = res.body.trello;
+                                    let githubBefore = res.body.githubRepository;
+                                    expect(githubBefore.link).to.equal(undefined);
                                     
                                     //On update
                                     chai.request(app)
-                                        .put("/api/project/" + firstProject._id + "/trello")
+                                        .put("/api/project/" + firstProject._id + "/github")
                                         .set('cookie', "token=" + token)
                                         .send(apiRef_details)
                                         .end((err, res) => {
                                             res.should.have.status(204);
 
-                                            //On recupere le trello une 2eme fois pour le specifique projets
+                                            //On recupere le github une 2eme fois pour le specifique projets
                                             chai.request(app)
                                                 .get("/api/project/" + firstProject._id)
                                                 .set('cookie', "token=" + token)
                                                 .end((err, res) => {
                                                     res.should.have.status(200);
                                                     
-                                                    let trelloAfter = res.body.trello;
-                                                    console.log(trelloBefore);
-                                                    console.log(trelloAfter);
-                                                    //expect(trelloBefore.link).to.not.equal(trelloAfter.link);
-                                                    //expect(trelloBefore.usernameAPI).to.not.equal(trelloAfter.usernameAPI);
-                                                    //expect(trelloBefore.tokenAPI).to.not.equal(trelloAfter.tokenAPI);
+                                                    let githubAfter = res.body.githubRepository;
+                                                    console.log(githubBefore)
+                                                    console.log(githubAfter)
+                                                    //expect(githubAfter.link).to.not.equal(undefined);
+                                                    //expect(githubBefore.usernameAPI).to.not.equal(githubAfter.usernameAPI);
+                                                    //expect(githubBefore.tokenAPI).to.not.equal(githubAfter.tokenAPI);
                                                     
                                                     done();
                                                 });

@@ -83,7 +83,7 @@ describe('Contact: add, get, update, delete', () => {
         Contact.deleteMany({}, (err) => { done() });
     });
 
-    describe('/GET /POST Agendas', () => {
+    describe('/GET /POST /PUT /DELETE Contacts', () => {
 
         it('it should get contacts and add one new contact', (done) => {
             //On se connecte

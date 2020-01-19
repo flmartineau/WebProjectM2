@@ -83,7 +83,7 @@ describe('Event: add, get, update, delete', () => {
         AgendaEvent.deleteMany({}, (err) => { done() });
     });
 
-    describe('/GET /POST Agendas', () => {
+    describe('/GET /POST /PUT /DELETE Agendas', () => {
 
         it('it should get events and add one new event', (done) => {
             //On se connecte

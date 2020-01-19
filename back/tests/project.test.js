@@ -56,7 +56,7 @@ describe('Projects: add, get, update, delete', () => {
         Project.deleteMany({}, (err) => { done() });
     });
 
-    describe('/GET /POST Projects', () => {
+    describe('/GET /POST /PUT /DELETE Projects', () => {
 
         it('it should get projects and add one new project', (done) => {
             chai.request(app)

@@ -34,7 +34,7 @@ const project_details = {
 }
 
 const apiRef_details = {
-    'link': 'apiRefLinkTest',
+    'link': 'https://discordapp.com/',
     'usernameAPI': 'apiRefUsernameAPITest',
     'tokenAPI': 'apiRefTokenAPITest'
 }
@@ -77,7 +77,7 @@ describe('Discord:update', () => {
         APIReference.deleteMany({}, (err) => { done(); });
     });
 
-    describe('/GET /POST Agendas', () => {
+    describe('/PUT Discord', () => {
 
         it('it should update discord', (done) => {
             //On se connecte
