@@ -7,7 +7,6 @@ const discordController = require('../controllers/discord.controller');
 const trelloController = require('../controllers/trello.controller');
 const contactController = require('../controllers/contact.controller');
 const noteController = require('../controllers/note.controller');
-const documentationController = require('../controllers/documentation.controller');
 
 router.post('', projectController.addProject);
 router.put('/:projectId', projectController.updateProject);
@@ -39,11 +38,5 @@ router.get('/:projectId/notes', noteController.getNotes);
 router.get('/:projectId/notes/:noteId', noteController.getNote);
 router.put('/:projectId/notes/:noteId', noteController.updateNote);
 router.delete('/:projectId/notes/:noteId', noteController.deleteNote);
-
-router.get('/:projectId/documentation', documentationController.getDocumentation);
-router.post('/:projectId/documentation/googledocs', documentationController.addGoogleDoc);
-router.get('/:projectId/documentation/googledocs', documentationController.getGoogleDoc);
-router.put('/:projectId/documentation/googledocs', documentationController.updateGoogleDoc);
-router.delete('/:projectId/documentation/googledocs', documentationController.deleteGoogleDoc);
 
 module.exports = router;
