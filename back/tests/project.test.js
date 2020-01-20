@@ -65,7 +65,7 @@ describe('Projects: add, get, update, delete', () => {
                 .end((err, res) => {
                     let token = res.body.token;
                     chai.request(app)
-                        .get("/api/project")
+                        .get("/api/project/owned")
                         .set('cookie', "token=" + token)
                         .end((err, res) => {
                             res.should.have.status(200);
@@ -80,7 +80,7 @@ describe('Projects: add, get, update, delete', () => {
                                     res.should.have.status(201);
 
                                     chai.request(app)
-                                        .get("/api/project")
+                                        .get("/api/project/owned")
                                         .set('cookie', "token=" + token)
                                         .end((err, res) => {
                                             res.should.have.status(200);
@@ -102,7 +102,7 @@ describe('Projects: add, get, update, delete', () => {
 
                     //On recupere la liste des projets
                     chai.request(app)
-                        .get("/api/project")
+                        .get("/api/project/owned")
                         .set('cookie', "token=" + token)
                         .end((err, res) => {
                             res.should.have.status(200);
@@ -116,9 +116,9 @@ describe('Projects: add, get, update, delete', () => {
                                 .end((err, res) => {
                                     res.should.have.status(201);
 
-                                    //On recupere une 2nd fois la liste des des projets
+                                    //On recupere une 2nd fois la liste des projets
                                     chai.request(app)
-                                        .get("/api/project")
+                                        .get("/api/project/owned")
                                         .set('cookie', "token=" + token)
                                         .end((err, res) => {
                                             res.should.have.status(200);
@@ -133,9 +133,9 @@ describe('Projects: add, get, update, delete', () => {
                                                 .end((err, res) => {
                                                     res.should.have.status(204);
 
-                                                    //On recupere une 3eme fois la liste des des projets
+                                                    //On recupere une 3eme fois la liste des projets
                                                     chai.request(app)
-                                                        .get("/api/project")
+                                                        .get("/api/project/owned")
                                                         .set('cookie', "token=" + token)
                                                         .end((err, res) => {
                                                             res.should.have.status(200);
@@ -164,7 +164,7 @@ describe('Projects: add, get, update, delete', () => {
 
                     //On recupere la liste des projets
                     chai.request(app)
-                        .get("/api/project")
+                        .get("/api/project/owned")
                         .set('cookie', "token=" + token)
                         .end((err, res) => {
                             res.should.have.status(200);
@@ -181,7 +181,7 @@ describe('Projects: add, get, update, delete', () => {
 
                                     //On recupere une 2nd fois la liste des des projets
                                     chai.request(app)
-                                        .get("/api/project")
+                                        .get("/api/project/owned")
                                         .set('cookie', "token=" + token)
                                         .end((err, res) => {
                                             res.should.have.status(200);
@@ -197,9 +197,9 @@ describe('Projects: add, get, update, delete', () => {
                                                 .end((err, res) => {
                                                     res.should.have.status(200);
 
-                                                    //On recupere une 3eme fois la liste des des projets
+                                                    //On recupere une 3eme fois la liste des projets
                                                     chai.request(app)
-                                                        .get("/api/project")
+                                                        .get("/api/project/owned")
                                                         .set('cookie', "token=" + token)
                                                         .end((err, res) => {
                                                             res.should.have.status(200);

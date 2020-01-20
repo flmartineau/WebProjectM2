@@ -93,7 +93,7 @@ describe('Note: add, get, update, delete', () => {
 
                     //On recupere la liste des projets
                     chai.request(app)
-                        .get("/api/project")
+                        .get("/api/project/owned")
                         .set('cookie', "token=" + token)
                         .end((err, res) => {
                             res.should.have.status(200);
@@ -143,7 +143,7 @@ describe('Note: add, get, update, delete', () => {
 
                     //On recupere la liste des projets
                     chai.request(app)
-                        .get("/api/project")
+                        .get("/api/project/owned")
                         .set('cookie', "token=" + token)
                         .end((err, res) => {
                             res.should.have.status(200);
@@ -217,7 +217,7 @@ describe('Note: add, get, update, delete', () => {
 
                     //On recupere la liste des projets
                     chai.request(app)
-                        .get("/api/project")
+                        .get("/api/project/owned")
                         .set('cookie', "token=" + token)
                         .end((err, res) => {
                             res.should.have.status(200);

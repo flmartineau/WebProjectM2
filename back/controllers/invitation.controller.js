@@ -8,23 +8,29 @@ const Member = require('../models/member');
  * Invite a user to a project.
  */
 module.exports.invitUserToProject = (req, res, next) => {
-    const invitation = new Invitation();
+    const newInvitation = new Invitation();
     Project.findOne({ _id: req.params.projectId }, (err, project) => {
         if (project) {
             User.findOne({ _id: req.body.userId }, (err, user) => {
                 if (user) {
-                    invitation.creationDate = new Date();
-                    invitation.project = project;
-                    invitation.user = user;
-                    invitation.save().then(
-                        () => {  
-                            res.status(201).json({ message: 'Invitation added with success.' });
+
+                    Invitation.findOne({ user: user, project: project }, (err, invitation) => {
+                        if (!invitation) {
+                            newInvitation.creationDate = new Date();
+                            newInvitation.project = project;
+                            newInvitation.user = user;
+                            newInvitation.save().then(
+                                () => {  
+                                    res.status(201).json({ message: 'Invitation added with success.' });
+                                }
+                            ).catch(
+                                    (error) => {
+                                        res.status(400).json({ error: error });
+                                    }
+                            );
                         }
-                    ).catch(
-                        (error) => {
-                            res.status(400).json({ error: error });
-                        }
-                    );
+                    });
+                    
                 } else {
                     res.status(400).json({ error: err });
                 }
