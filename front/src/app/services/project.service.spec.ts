@@ -16,6 +16,14 @@ describe('ProjectService', () => {
     trello: "projectTestTrello"
   }
 
+  let project2: Project = {
+    name: "projectTestName2",
+    description: "projectTestDesc",
+    githubRepository: "projectTestGithubRepository",
+    discord: "projectTestDiscord",
+    trello: "projectTestTrello"
+  }
+
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule],
     providers: [ProjectService]
@@ -32,7 +40,6 @@ describe('ProjectService', () => {
   }));
 
   it('should be created', () => {
-    const service: ProjectService = TestBed.get(ProjectService);
     expect(service).toBeTruthy();
   });
 
@@ -47,7 +54,30 @@ describe('ProjectService', () => {
     });
 
     req.flush(project, { status: 200, statusText: 'ok' });
-});
+  });
+
+  it('should add and get projects', () => {
+    service.addProject(project2).subscribe(res => {
+      service.getOwnedProjects().subscribe(result =>{
+        expect(result.name).toBe("projectTestName2");
+      })
+    })
+
+    const req = backend.expectOne({
+      url: environment.API_URL+'/project',
+      method: 'POST'
+    });
+
+    req.flush(project2, { status: 200, statusText: 'ok' });
+
+    const req2 = backend.expectOne({
+      url: environment.API_URL+'/project/owned',
+      method: 'GET'
+    });
+
+    req2.flush(project2, { status: 200, statusText: 'ok' });
+    
+  });
 
   afterEach(inject([HttpTestingController], (httpMock: HttpTestingController) => {
     httpMock.verify();   
