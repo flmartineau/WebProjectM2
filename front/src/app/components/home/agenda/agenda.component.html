@@ -43,20 +43,20 @@
         </button>
     </div>
     <div class="modal-body">
-        <form #newEventOnDate="ngForm" (ngSubmit)="newEvent.valid">
+        <form #newEvent="ngForm" (ngSubmit)="newEvent.valid">
             <div class="form-group">
-                <label for="nameAddEvent">Nom</label>
-                <input id="nameAddEvent" class="form-control" name="name" [(ngModel)]="model.name" type="text"/>
+                <label for="nameNewEvent">Nom de l'évènement</label>
+                <input id="nameNewEvent" class="form-control" type="text" name="name" [(ngModel)]="model.name"/>
             </div>
             <div class="form-group">
-                <label for="descAddEvent">Description</label>
-                <textarea id="descAddEvent" class="form-control" name="description" [(ngModel)]="model.description" rows="3" ></textarea>
+                <label for="decriptionNewEvent">Description de l'évènement</label>
+                <textarea id="decriptionNewEvent" class="form-control" rows="3" type="text" name="description" [(ngModel)]="model.description"></textarea>
             </div>
             <div class="form-group">
-                <label for="dateAddEvent">Date</label>
-                <input id="dateAddEvent" class="form-control" name="date" [(ngModel)]="model.date" type="date" disabled/>
+                <label for="dateNewEvent">Date de l'évènement</label>
+                <input id="dateNewEvent" class="form-control" type="date" name="date" [(ngModel)]="model.date"/>
             </div>
-        </form>
+             </form>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
@@ -67,28 +67,7 @@
 <div class="jumbotron">
     <h1 class="display-4">Mes évènements</h1>
     <p class="lead">Créez et gérez vos évènement en groupe !</p>
-    <a class="btn btn-primary btn-lg" href="#collapseNewEvent" role="button" data-toggle="collapse">Créer un nouvel
-        évènement <em class="fa fa-plus"></em></a>
 
-    <div class="collapse" id="collapseNewEvent">
-        <div class="card card-body" style="margin-top:15px;">
-            <form #newEvent="ngForm" (ngSubmit)="newEvent.valid">
-                <div class="form-group">
-                    <label for="nameNewEvent">Nom de l'évènement</label>
-                    <input id="nameNewEvent" class="form-control" type="text" name="name" [(ngModel)]="model.name"/>
-                </div>
-                <div class="form-group">
-                    <label for="decriptionNewEvent">Description de l'évènement</label>
-                    <textarea id="decriptionNewEvent" class="form-control" rows="3" type="text" name="description" [(ngModel)]="model.description"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="dateNewEvent">Date de l'évènement</label>
-                    <input id="dateNewEvent" class="form-control" type="date" name="date" [(ngModel)]="model.date"/>
-                </div>
-                <button type="submit" class="btn btn-primary" (click)="onAddSubmit(newEvent)" data-toggle="collapse" href="#collapseNewEvent">Valider</button>
-            </form>
-        </div>
-    </div>
 </div>
 
 <div id='agenda'>

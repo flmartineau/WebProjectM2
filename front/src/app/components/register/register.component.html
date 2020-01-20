@@ -10,7 +10,7 @@
                 <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Pseudo</label>
-                        <input type="email" name="name" class="form-control" [(ngModel)]="this.authService.user.name"
+                        <input type="text" name="name" class="form-control" [(ngModel)]="this.authService.user.name"
                             placeholder="Entrez un pseudonyme">
                     </div>
                     <div class="form-group">

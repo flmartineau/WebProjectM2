@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user.model';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -56,5 +57,11 @@ export class AuthService {
     return this.http.get(environment.API_URL+ '/user');
   }
 
+  /**
+   * Get all users.
+   */
+  getUsers(): Observable<User[]>{
+    return this.http.get<User[]>(environment.API_URL+ '/users');
+  }
 
 }

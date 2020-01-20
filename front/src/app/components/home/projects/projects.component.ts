@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from 'src/app/services/project.service';
 import { NgForm } from '@angular/forms';
+import { InvitationService } from 'src/app/services/invitation.service';
 
 @Component({
   selector: 'app-projects',
@@ -9,8 +10,9 @@ import { NgForm } from '@angular/forms';
 export class ProjectsComponent implements OnInit {
 
   public projects = [];
+  public invitations = [];
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService, public invitationService: InvitationService) { }
 
   model = {
     name: '',
@@ -19,6 +21,7 @@ export class ProjectsComponent implements OnInit {
 
   ngOnInit() {
     this.getProjects();
+    this.getInvitations();
   }
 
   /**
@@ -26,6 +29,13 @@ export class ProjectsComponent implements OnInit {
    */
   getProjects() {
     this.projectService.getProjects().subscribe(data => this.projects = data);
+  }
+
+   /**
+   * Get all the invitations info.
+   */
+  getInvitations() {
+    this.invitationService.getInvitations().subscribe(data => { this.invitations = data; console.log(data);} );
   }
 
   /**
@@ -45,6 +55,42 @@ export class ProjectsComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  /**
+   * accept an invitation to a project.
+   * @param invitationId id of the project to accept.
+   */
+  acceptInvitation(projectId) {
+    this.invitationService.acceptInvitation(projectId)
+      .subscribe(
+        res => {
+          this.getProjects();
+          this.getInvitations();
+          console.log(res);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+  }
+
+  /**
+   * Deny an invitation to a project.
+   * @param invitationId id of the project to deny.
+   */
+  denyInvitation(projectId) {
+    this.invitationService.denyInvitation(projectId)
+      .subscribe(
+        res => {
+          this.getProjects();
+          this.getInvitations();
+          console.log(res);
+        },
+        err => {
+          console.log(err);
+        }
+      );
   }
 
 

@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from 'src/app/models/project.model';
-import { ProjectService } from 'src/app/services/project.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { InvitationService } from 'src/app/services/invitation.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
+import { User } from 'src/app/models/user.model';
+import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'app-project',
@@ -15,15 +18,21 @@ export class ProjectComponent implements OnInit {
 
   public projectId;
   public project: Project;
+  public users:User[] = [];
 
 
-  constructor(private route: ActivatedRoute, public projectService: ProjectService, public modalService: NgbModal) { }
+  constructor(private route: ActivatedRoute, public projectService: ProjectService, public authService: AuthService, public invitationService: InvitationService, public modalService: NgbModal) { }
   @ViewChild('popupUpdateProject', {static: false}) popupUpdateProject;
+  @ViewChild('popupInvitation', {static: false}) popupInvitation;
 
   model = {
     name: '',
     description: ''
   };
+
+  invitationModel = {
+    userId:''
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -31,6 +40,7 @@ export class ProjectComponent implements OnInit {
       this.projectId = params[id];
     });
     this.getProject();
+    this.getUsers();
   }
 
   ngOnDestroy(){
@@ -49,15 +59,46 @@ export class ProjectComponent implements OnInit {
           this.model.description = this.project.description;});
   }
 
-  openModal() {
+  /**
+   * Get all user
+   */
+  getUsers() {
+    this.authService.getUsers()
+        .subscribe(data => {
+          this.users = [];
+          data.forEach(element => {
+            this.users.push(element);
+          });
+          console.log(this.users);
+        });
+  }
+
+
+  openModalUpdate() {
     this.modalService.open(this.popupUpdateProject, { centered: true });
   }
 
-  onSubmit(form: NgForm) {
+  openModalInvitation() {
+    this.modalService.open(this.popupInvitation, { centered: true });
+  }
+
+  onSubmitUpdate(form: NgForm) {
     console.log(form.value);
     this.projectService.updateProject(this.projectId,form.value).subscribe(
       res => {
         this.getProject();
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  onInvitationSubmit(form: NgForm) {
+    console.log(form.value);
+    this.invitationService.addInvitation(this.projectId, form.value).subscribe(
+      res => {
+        
       },
       err => {
         console.log(err);
