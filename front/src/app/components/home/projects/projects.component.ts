@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectService } from 'src/app/services/project.service';
 import { NgForm } from '@angular/forms';
 import { InvitationService } from 'src/app/services/invitation.service';
+import { Invitation } from 'src/app/models/invitation.model';
 
 @Component({
   selector: 'app-projects',
@@ -35,7 +36,22 @@ export class ProjectsComponent implements OnInit {
    * Get all the invitations info.
    */
   getInvitations() {
-    this.invitationService.getInvitations().subscribe(data => { this.invitations = data; console.log(data);} );
+    this.invitationService.getUserInvitations().subscribe(data => {
+      this.invitations = []
+      data.forEach((element => {
+        let invitation = element;
+        this.projectService.getProjectById(invitation['project']).subscribe(
+          res => {
+            invitation['project'] = res;
+            this.invitations.push(invitation);
+          },
+          err => {
+            console.log(err);
+          }
+        );
+      }));
+    } );
+    
   }
 
   /**
@@ -67,7 +83,6 @@ export class ProjectsComponent implements OnInit {
         res => {
           this.getProjects();
           this.getInvitations();
-          console.log(res);
         },
         err => {
           console.log(err);
@@ -85,7 +100,6 @@ export class ProjectsComponent implements OnInit {
         res => {
           this.getProjects();
           this.getInvitations();
-          console.log(res);
         },
         err => {
           console.log(err);

@@ -43,7 +43,7 @@
                 <label for="user">Utilisateur</label>
                 <select class="form-control" id="invitationUserId" type="text" name="userId" [(ngModel)]="invitationModel.userId">
                     <option value="">Selectionnez</option>
-                    <option *ngFor="let aUser of users" value="{{aUser._id}}">{{aUser.name}} : {{aUser.email}}</option>
+                    <option *ngFor="let candidate of candidates" value="{{candidate._id}}">{{candidate.name}} : {{candidate.email}}</option>
                 </select>
             </div>
         </form>

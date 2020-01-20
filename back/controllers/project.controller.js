@@ -11,6 +11,7 @@ const AgendaEvent = mongoose.model('AgendaEvent');
 const Contact = mongoose.model('Contact');
 const User = mongoose.model('User');
 const Note = mongoose.model('Note');
+const Member = mongoose.model('Member');
 
 
 /**
@@ -178,4 +179,28 @@ module.exports.getAllProjects = (req, res) => {
             res.status(400).json({ error: error });
         }
     );
+};
+
+/**
+ * Get a project from its id.
+ */
+module.exports.getMembers = (req, res) => {
+
+    Project.findOne({ _id: req.params.projectId })
+    .then(
+        (project) => {
+            Member.find({ project: project })
+            .then(
+                (members) => {
+                    res.status(200).json(members);
+                }).catch(
+                    (error) => {
+                        res.status(404).json({ error: error })
+                    }
+                );
+        }).catch(
+            (error) => {
+                res.status(404).json({ error: error })
+            }
+        );
 };

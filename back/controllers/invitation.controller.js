@@ -114,13 +114,16 @@ module.exports.denyInvitation = (req, res, next) => {
  * Get all invitations from current user
  */
 module.exports.getUserInvitations = (req, res, next) => {
-
     User.findOne({ _id: req._id }, (err, user) => {
         if (user) {
             Invitation.find({ user: user }, (err, invitations) => {
                 if (!invitations) {
                     res.status(404).json({ status: false, message: 'Invitations not found.' });
                 } else {
+                    invitations.forEach((el => {
+                        el.project = Project.findOne({_id: el.project});
+                    }))
+                    console.log(invitations[0].project)
                     res.status(200).json(invitations);
                 }
             });
@@ -133,7 +136,7 @@ module.exports.getUserInvitations = (req, res, next) => {
 /**
  * Get all Invitations.
  */
-module.exports.getUsers = (req, res, next) => {
+module.exports.getInvitations = (req, res, next) => {
     Invitation.find( (err, invitations) => {
         if (!invitations) {
             res.status(404).json({ status: false, message: 'Invitations not found.' });

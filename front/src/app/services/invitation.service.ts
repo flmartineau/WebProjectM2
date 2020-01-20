@@ -39,7 +39,7 @@ export class InvitationService {
   /**
    * Get all invitations from current user.
    */
-  getInvitations(): Observable<Invitation[]>{
+  getUserInvitations(): Observable<Invitation[]>{
     return this.httpClient.get<Invitation[]>(environment.API_URL + '/user/invitations');
   }
 

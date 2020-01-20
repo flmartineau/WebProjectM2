@@ -58,6 +58,13 @@ export class AuthService {
   }
 
   /**
+   * Get current user.
+   */
+  getUserById(id): Observable<User>{
+    return this.http.get<User>(environment.API_URL+ '/user/id/' + id);
+  }
+
+  /**
    * Get all users.
    */
   getUsers(): Observable<User[]>{

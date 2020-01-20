@@ -8,6 +8,7 @@ router.post('/user', userController.createUser);
 router.post('/user/login', userController.loginUser);
 router.get('/user/logout', userController.logoutUser);
 router.get('/user', jwtVerify.verifyJwtToken, userController.getUser);
+router.get('/user/id/:userId', jwtVerify.verifyJwtToken, userController.getUserById);
 router.put('/user', jwtVerify.verifyJwtToken, userController.updateUser);
 router.get('/users', jwtVerify.verifyJwtToken, userController.getUsers);
 

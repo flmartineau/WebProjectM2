@@ -5,9 +5,9 @@
         projet <em class="fa fa-plus"></em></a>
 
     <div *ngFor="let invitation of invitations" class="alert alert-primary" role="alert" style="margin-top: 5px; max-width: 700px;">
-        Vous êtes invité à rejoindre le projet "{{invitation.project}}"
-        <button type="submit" class="btn btn-primary" (click)="acceptInvitation(invitation.project)" routerLinkActive="router-link-active" style="margin-left: 5px; margin-right: 5px;">Accepter</button>
-        <button type="submit" class="btn btn-primary" (click)="denyInvitation(invitation.project)" routerLinkActive="router-link-active" style="margin-left: 5px; margin-right: 5px;">Deny</button>
+        Vous êtes invité à rejoindre le projet "{{invitation.project.name}}"
+        <button type="submit" class="btn btn-primary" (click)="acceptInvitation(invitation.project._id)" routerLinkActive="router-link-active" style="margin-left: 5px; margin-right: 5px;">Accepter</button>
+        <button type="submit" class="btn btn-primary" (click)="denyInvitation(invitation.project._id)" routerLinkActive="router-link-active" style="margin-left: 5px; margin-right: 5px;">Deny</button>
     </div>
 
     <div class="collapse" id="collapseNewProject">

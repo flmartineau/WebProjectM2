@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Project } from '../models/project.model';
 import { environment } from 'src/environments/environment';
+import { Member } from '../models/member.model';
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +77,15 @@ export class ProjectService {
    */
   updateProjectTrello(id, trelloRef) {
     return this.httpClient.put(environment.API_URL+'/project/'+ id + '/trello', trelloRef);
+  }
+
+
+  /**
+   * Get all the members to the project
+   * @param id id of the project
+   */
+  getProjectMembers(id) : Observable<Member[]>{
+    return this.httpClient.get<Member[]>(environment.API_URL+'/project/'+ id + '/members');
   }
 
 

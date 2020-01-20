@@ -40,6 +40,7 @@ router.get('/:projectId/notes/:noteId', noteController.getNote);
 router.put('/:projectId/notes/:noteId', noteController.updateNote);
 router.delete('/:projectId/notes/:noteId', noteController.deleteNote);
 
+router.get('/:projectId/members', projectController.getMembers);
 
 router.post('/:projectId/invitation', invitationController.invitUserToProject);
 router.get('/:projectId/invitation/deny', invitationController.denyInvitation);

@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { ProjectService } from 'src/app/services/project.service';
+import { Member } from 'src/app/models/member.model';
 
 @Component({
   selector: 'app-project',
@@ -18,7 +19,8 @@ export class ProjectComponent implements OnInit {
 
   public projectId;
   public project: Project;
-  public users:User[] = [];
+  public members:User[] = [];
+  public candidates:User[] = [];
 
 
   constructor(private route: ActivatedRoute, public projectService: ProjectService, public authService: AuthService, public invitationService: InvitationService, public modalService: NgbModal) { }
@@ -40,7 +42,6 @@ export class ProjectComponent implements OnInit {
       this.projectId = params[id];
     });
     this.getProject();
-    this.getUsers();
   }
 
   ngOnDestroy(){
@@ -54,23 +55,62 @@ export class ProjectComponent implements OnInit {
     this.projectService.getProjectById(this.projectId)
         .subscribe(data => {
           this.project = data;
-          console.log(data);
           this.model.name = this.project.name;
-          this.model.description = this.project.description;});
+          this.model.description = this.project.description;
+          
+          this.getMembers();
+        });
   }
 
   /**
    * Get all user
    */
-  getUsers() {
+  getCandidates() {
+    let keep = true;
     this.authService.getUsers()
         .subscribe(data => {
-          this.users = [];
+          this.candidates = [];
           data.forEach(element => {
-            this.users.push(element);
+            keep = true;
+            this.members.forEach((member => {
+                if(member['_id'] == element['_id'])
+                  keep = false;
+              }));
+            if(keep)
+              this.candidates.push(element);
+            
           });
-          console.log(this.users);
+        
+        console.log(this.members);
+        console.log(this.candidates);
         });
+  }
+
+   /**
+   * Get all members
+   */
+  getMembers() {
+    this.projectService.getProjectMembers(this.projectId)
+        .subscribe(data => {
+          this.members = [this.project['owner']];
+          
+          data.forEach(element => {
+            console.log(element);
+            this.authService.getUserById(element['user']).subscribe(user => {
+              this.members.push(user);
+              },
+              err => {
+                console.log(err);
+              }
+            );
+          });
+          
+          this.getCandidates();
+        },
+        err => {
+          console.log(err);
+        }
+        );
   }
 
 

@@ -57,6 +57,19 @@ module.exports.getUser = (req, res, next) => {
 };
 
 /**
+ * Get the user by id.
+ */
+module.exports.getUserById = (req, res, next) => {
+    User.findOne({ _id: req.params.userId }, (err, user) => {
+        if (!user) {
+            res.status(404).json({ status: false, message: 'User not found.' });
+        } else {
+            res.status(200).json(user);
+        }
+    });
+};
+
+/**
  * Get all users.
  */
 module.exports.getUsers = (req, res, next) => {
