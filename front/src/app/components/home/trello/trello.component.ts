@@ -27,6 +27,8 @@ export class TrelloComponent implements OnInit {
 
   public projectId;
 
+  public errorMessage;
+
   constructor(public trelloService : TrelloService,
               public modalService: NgbModal,
               public projectService: ProjectService,
@@ -119,17 +121,30 @@ export class TrelloComponent implements OnInit {
                 },
                 err => {
                   console.log(err)
+                  if(err.status == '400'){
+                    this.errorMessage = "Trello URL is invalid"
+                  }
+                  else {
+                    this.errorMessage = err.statusText;
+                  }
                 }
               );
+              this.errorMessage = null;
             },
             errorBoards => {
               console.log(errorBoards);
+              if(errorBoards.status == '401'){
+                this.errorMessage = "Trello credentials are invalid, please check the login information"
+              }
+              else {
+                this.errorMessage = errorBoards.statusText;
+              }
             }
           );
         }
       },
       err4 => {
-
+        console.log(err4)
       }
     )
   }

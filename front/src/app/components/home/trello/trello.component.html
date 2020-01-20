@@ -38,6 +38,9 @@
     </div>
 </ng-template>
 
+<div class="alert alert-success" role="alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+</div>
 
 <h1 class="display-4">{{trelloName}} <em id="editIcon" data-toggle="collapse" class="fa fa-edit"
         href="#collapseEditName" role="button" aria-expanded="false" aria-controls="collapseEditName"></em></h1>
@@ -152,10 +155,5 @@
         </div>
     </ng-template>
 
-
-
-<div class="alert alert-success" role="alert" *ngIf="errorMessage">
-    {{ errorMessage }}
-</div>
 
 

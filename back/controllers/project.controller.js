@@ -197,7 +197,7 @@ module.exports.getJoinedProjects = (req, res) => {
 };
 
 /**
- * Get a project from its id.
+ * Get all members from the project.
  */
 module.exports.getMembers = (req, res) => {
 

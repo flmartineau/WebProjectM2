@@ -15,6 +15,7 @@ router.get('/joined', projectController.getJoinedProjects);
 router.put('/:projectId', projectController.updateProject);
 router.get('/:projectId',projectController.getProjectById);
 router.delete('/:projectId', projectController.deleteProject);
+router.get('/:projectId/members', projectController.getMembers);
 
 router.put('/:projectId/github', projectController.updateProjectGithub);
 
@@ -40,8 +41,6 @@ router.get('/:projectId/notes', noteController.getNotes);
 router.get('/:projectId/notes/:noteId', noteController.getNote);
 router.put('/:projectId/notes/:noteId', noteController.updateNote);
 router.delete('/:projectId/notes/:noteId', noteController.deleteNote);
-
-router.get('/:projectId/members', projectController.getMembers);
 
 router.post('/:projectId/invitation', invitationController.invitUserToProject);
 router.get('/:projectId/invitation/deny', invitationController.denyInvitation);

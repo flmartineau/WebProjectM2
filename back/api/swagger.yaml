@@ -9,6 +9,8 @@ tags:
   description: "Projects management"
 - name: "user"
   description: "Operations about user"
+- name: "invitation"
+  description: "Operations about invitations"
 - name: "agenda"
   description: "Management of a project agenda"
 - name: "discord"
@@ -25,7 +27,6 @@ tags:
 
 schemes:
 - "http"
-
 
 
 paths:
@@ -50,7 +51,7 @@ paths:
       responses:
         405:
           description: "Invalid input"
-
+  
     get:
         tags:
         - "project"
@@ -103,7 +104,7 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "Project not found"
-
+    
     put:
       tags:
       - "project"
@@ -160,6 +161,88 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "Project not found"
+          
+          
+  /project/owned:
+    get:
+      tags:
+      - "project"
+      summary: "Get all the projects owned"
+      operationId: "getOwnProjects"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "_id"
+          in: "query"
+          description: "ID of the user"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Project"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Project not found"        
+          
+  /project/joined:
+    get:
+      tags:
+      - "project"
+      summary: "Get all the projects joined"
+      operationId: "getJoinedProjects"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "_id"
+          in: "query"
+          description: "ID of the user"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Project"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Project not found"        
+          
+  /project/{projectId}/members:
+    get:
+      tags:
+      - "project"
+      summary: "Get all members of a project"
+      operationId: "getMembers"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Project id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+          200:
+            description: "successful operation"
+            schema:
+              type: array
+              items:
+                $ref: "#/definitions/Member"
+          400:
+            description: "Invalid ID supplied"
+          404:
+            description: "Member not found"  
+                  
+          
+          
+          
 
   /user:
     post:
@@ -198,6 +281,7 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/User"
+            
         400:
           description: "Invalid id supplied"
         404:
@@ -276,7 +360,90 @@ paths:
       responses:
         default:
           description: "successful operation"
-
+ 
+ 
+ 
+  /project/{projectId}/invitation:
+    post:
+      tags:
+      - "invitation"
+      summary: "Invite a user to a project"
+      operationId: "invitUserToProject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Created invitation"
+        required: true
+        schema:
+          $ref: "#/definitions/Invitation"
+      responses:
+        default:
+          description: "successful operation"
+          
+  /project/{projectId}/invitation/deny:
+    get:
+      tags:
+      - "invitation"
+      summary: "Deny an invitation to a project"
+      operationId: "denyInvitation"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "query"
+        name: "_id"
+        description: "id of the user"
+        type: string
+      responses:
+        201:
+          description: "successful operation"
+        400:
+          description: "Invalid ID supplied"
+  
+  /project/{projectId}/invitation/accept:
+    get:
+      tags:
+      - "invitation"
+      summary: "Accept an invitation to a project"
+      operationId: "acceptInvitation"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "query"
+        name: "_id"
+        description: "id of the user"
+        type: string
+      responses:
+        201:
+          description: "successful operation"
+        400:
+          description: "Invalid ID supplied"
+ 
 
   /project/{projectId}/agenda:
     post:
@@ -333,7 +500,7 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "Events not found"
-
+      
 
   /project/{projectId}/agenda/{eventId}:
     get:
@@ -458,7 +625,7 @@ paths:
         description: "month of the events"
         required: true
         type: "integer"
-        format: "int64"
+        format: "int64"  
       responses:
         200:
           description: "successful operation"
@@ -470,7 +637,8 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "Events not found"
-
+          
+        
   /project/{projectId}/discord:
     put:
       tags:
@@ -498,7 +666,7 @@ paths:
       responses:
         default:
           description: "successful operation"
-
+  
   /project/{projectId}/github:
     put:
       tags:
@@ -554,7 +722,7 @@ paths:
       responses:
         default:
           description: "successful operation"
-
+  
   /project/{projectId}/contacts:
     post:
       tags:
@@ -851,7 +1019,7 @@ paths:
           description: "Invalid id supplied"
         404:
           description: "Note not found"
-
+          
 definitions:
 
   User:
@@ -904,6 +1072,35 @@ definitions:
           $ref: '#/definitions/Note'
     xml:
       name: "Project"
+
+
+  Member:
+    type: "object"
+    required:
+    - "project"
+    - "user"
+    properties:
+      project:
+        $ref: '#/definitions/Project'
+      user:
+        $ref: '#/definitions/User'
+    xml:
+      name: "Member"
+
+  Invitation:
+    type: "object"
+    required:
+    - "project"
+    - "user"
+    properties:
+      creationDate:
+        type: "string"
+      project:
+        $ref: '#/definitions/Project'
+      user:
+        $ref: '#/definitions/User'
+    xml:
+      name: "Invitation"
 
 
   AgendaEvent:

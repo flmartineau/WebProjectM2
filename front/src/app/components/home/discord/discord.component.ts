@@ -73,7 +73,10 @@ export class DiscordComponent implements OnInit {
             this.errorMessage = "The Discord credentials are invalid";
           }
           else if(err.status == '403'){
-            this.errorMessage = "The widget bot must be added to the server";
+            this.errorMessage = "The widget bot must be added to the server and widgets must be activated on the server";
+          }
+          else if(err.status == '404'){
+            this.errorMessage = "The server/channel id is not an existing one";
           }
           else {
             this.errorMessage = err.statusText;

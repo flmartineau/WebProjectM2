@@ -20,7 +20,7 @@ module.exports.invitUserToProject = (req, res, next) => {
                             newInvitation.project = project;
                             newInvitation.user = user;
                             newInvitation.save().then(
-                                () => {  
+                                () => {
                                     res.status(201).json({ message: 'Invitation added with success.' });
                                 }
                             ).catch(
@@ -30,7 +30,6 @@ module.exports.invitUserToProject = (req, res, next) => {
                             );
                         }
                     });
-                    
                 } else {
                     res.status(400).json({ error: err });
                 }
@@ -55,10 +54,10 @@ module.exports.acceptInvitation = (req, res, next) => {
                             member.user = user;
                             member.project = project;
                             member.save().then(
-                                () => {  
+                                () => {
                                     Invitation.deleteOne(invitation).then(
                                         () => {
-                                            res.status(201).json({ message: 'Invitation acpeted with success.' });
+                                            res.status(201).json({ message: 'Invitation accepted with success.' });
                                         }
                                     ).catch(
                                         (error) => { res.status(400).json({ error: error }); }
@@ -93,7 +92,6 @@ module.exports.denyInvitation = (req, res, next) => {
                 if (user) {
                     Invitation.findOne({ user: user, project: project }, (err, invitation) => {
                         if (invitation) {
-                            
                             Invitation.deleteOne(invitation).then(
                                 () => {
                                     res.status(201).json({ message: 'Invitation denied with success.' });
@@ -101,7 +99,6 @@ module.exports.denyInvitation = (req, res, next) => {
                             ).catch(
                                 (error) => { res.status(400).json({ error: error }); }
                             );
-                                 
                         } else {
                             res.status(400).json({ error: err });
                         }
