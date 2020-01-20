@@ -24,7 +24,7 @@ Technologies utilisées
 Configuration
 =============
 
-**En mode développement : **
+**En mode développement :**
 
 Pour démarrer le serveur frontend, aller dans le dossier /front et taper :
 
@@ -58,3 +58,14 @@ Déploiement Heroku
 Le site est également disponible sur Heroku via cette adresse :
 `https://webproject-m2.herokuapp.com`
 
+
+Utilisation
+===========
+
+![](screens_README/inscription.png)
+![](screens_README/connexion.png)
+
+![](screens_README/AddProject.gif)
+
+![](screens_README/home_project.png)
+![](screens_README/Github.gif)
