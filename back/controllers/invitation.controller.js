@@ -14,20 +14,26 @@ module.exports.invitUserToProject = (req, res, next) => {
             User.findOne({ _id: req.body.userId }, (err, user) => {
                 if (user) {
 
-                    Invitation.findOne({ user: user, project: project }, (err, invitation) => {
-                        if (!invitation) {
-                            newInvitation.creationDate = new Date();
-                            newInvitation.project = project;
-                            newInvitation.user = user;
-                            newInvitation.save().then(
-                                () => {
-                                    res.status(201).json({ message: 'Invitation added with success.' });
+                    Member.findOne({ user: user, project: project }, (err, member) => {
+                        if (!member) {    
+                            Invitation.findOne({ user: user, project: project }, (err, invitation) => {
+                                if (!invitation) {
+                                    newInvitation.creationDate = new Date();
+                                    newInvitation.project = project;
+                                    newInvitation.user = user;
+                                    newInvitation.save().then(
+                                        () => {
+                                            res.status(201).json({ message: 'Invitation added with success.' });
+                                        }
+                                    ).catch(
+                                            (error) => {
+                                                res.status(400).json({ error: error });
+                                            }
+                                    );
                                 }
-                            ).catch(
-                                    (error) => {
-                                        res.status(400).json({ error: error });
-                                    }
-                            );
+                            });
+                        } else {
+                            res.status(400).json({ error: 'Already member' });
                         }
                     });
                 } else {

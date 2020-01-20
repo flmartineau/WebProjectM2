@@ -4,7 +4,9 @@ require('../models/apiReference');
 require('../models/agendaEvent');
 require('../models/user');
 require('../models/contact');
-require('../models/note');
+require('../models/member');
+require('../models/invitation');
+require('../models/note')
 const Project = mongoose.model('Project');
 const APIReference = mongoose.model('APIReference');
 const AgendaEvent = mongoose.model('AgendaEvent');
@@ -12,6 +14,7 @@ const Contact = mongoose.model('Contact');
 const User = mongoose.model('User');
 const Note = mongoose.model('Note');
 const Member = mongoose.model('Member');
+const Invitation = mongoose.model('Invitation');
 
 
 /**
@@ -55,46 +58,70 @@ module.exports.deleteProject = (req, res) => {
         if (!project) {
             res.status(404).json({ status: false, message: 'Project not found.' });
         } else {
-            project.agendaEvents.forEach(event => {
-                AgendaEvent.deleteOne({ _id: event._id }).then(
+            //If the user is the owner of the project
+            if(project.owner == req._id){
+                project.agendaEvents.forEach(event => {
+                    AgendaEvent.deleteOne({ _id: event._id }).then(
+                        () => { }
+                    ).catch(
+                        (error) => { }
+                    );
+                });
+                project.contacts.forEach(contact => {
+                    Contact.deleteOne({ _id: contact._id }).then(
+                        () => { }
+                    ).catch(
+                        (error) => { }
+                    );
+                });
+                project.notes.forEach(note => {
+                    Note.deleteOne({ _id: note._id }).then(
+                        () => { }
+                    ).catch(
+                        (error) => { }
+                    );
+                });
+                APIReference.deleteMany({$or: [
+                    { _id: project.githubRepository._id },
+                    { _id: project.discord._id},
+                    { _id: project.trello._id}
+                ]}).then(
                     () => { }
                 ).catch(
                     (error) => { }
                 );
-            });
-            project.contacts.forEach(contact => {
-                Contact.deleteOne({ _id: contact._id }).then(
-                    () => { }
-                ).catch(
-                    (error) => { }
-                );
-            });
-            project.notes.forEach(note => {
-                Note.deleteOne({ _id: note._id }).then(
-                    () => { }
-                ).catch(
-                    (error) => { }
-                );
-            });
-            APIReference.deleteMany({$or: [
-                { _id: project.githubRepository._id },
-                { _id: project.discord._id},
-                { _id: project.trello._id}
-            ]}).then(
-                () => { }
-            ).catch(
-                (error) => { }
-            );
 
-            Project.deleteOne({ _id: req.params.projectId }).then(
-                () => {
-                    res.status(200).json({ message: 'Project deleted with success.' });
-                }
-            ).catch(
-                (error) => {
-                    res.status(400).json({ error: error });
-                }
-            );
+                Member.deleteMany({ project: project._id }).then(
+                    () => { }
+                ).catch(
+                    (error) => { }
+                );
+                Invitation.deleteMany({ project: project._id }).then(
+                    () => { }
+                ).catch(
+                    (error) => { }
+                );
+
+                Project.deleteOne({ _id: req.params.projectId }).then(
+                    () => {
+                        res.status(200).json({ message: 'Project deleted with success.' });
+                    }
+                ).catch(
+                    (error) => {
+                        res.status(400).json({ error: error });
+                    }
+                );
+            } else {
+                Member.deleteOne({ user: req._id, project: project._id }).then(
+                    () => {
+                        res.status(200).json({ message: 'User leaved the project with success.' });
+                    }
+                ).catch(
+                    (error) => {
+                        res.status(400).json({ error: error });
+                    }
+                );
+            }
         }
     });
 };
