@@ -31,7 +31,7 @@ Pour démarrer le serveur frontend, aller dans le dossier /front et taper :
 `npm install`
 `ng serve --open`
 
-Le serveur tourne sur le port 4200.
+Le serveur tourne sur le port 4200 (http://localhost:4200)
 
 
 Pour démarrer la base de données MongoDB :
@@ -42,7 +42,7 @@ Ensuite pour démarrer le serveur backend, dans le dossier /back :
 
 `node app.js`
 
-(port 3002)
+> http://localhost:3002
 
 
 
@@ -50,7 +50,7 @@ Ensuite pour démarrer le serveur backend, dans le dossier /back :
 
 `docker-compose up --build`
 
-Le site est ensuite dispo en local sur le port 3002.
+Le site est ensuite dispo en local sur le port 3002 (http://localhost:3002)
 
 Déploiement Heroku
 ===================
