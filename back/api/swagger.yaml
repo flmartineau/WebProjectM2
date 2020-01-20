@@ -240,9 +240,6 @@ paths:
           404:
             description: "Member not found"  
                   
-          
-          
-          
 
   /user:
     post:
@@ -361,7 +358,26 @@ paths:
         default:
           description: "successful operation"
  
- 
+  /users:
+    get:
+        tags:
+        - "user"
+        summary: "Get all Users"
+        operationId: "getUsers"
+        produces:
+        - "application/json"
+        responses:
+          200:
+            description: "successful operation"
+            schema:
+              type: array
+              items:
+                $ref: "#/definitions/User"
+                
+          400:
+            description: "Invalid id supplied"
+          404:
+              description: "User not found"
  
   /project/{projectId}/invitation:
     post:

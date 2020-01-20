@@ -20,11 +20,11 @@
         <form #updateTrello="ngForm" (ngSubmit)="udpateTrello.valid">
             <div class="form-group">
                 <label for="trelloKey">Clé API</label>
-                <input type="text" class="form-control" id="trelloKey" name="trelloKey" [(ngModel)]="model.trelloKey">
+                <input type="password" class="form-control" id="trelloKey" name="trelloKey" [(ngModel)]="model.trelloKey">
             </div>
             <div class="form-group">
                 <label for="githubUsername">Token Utilisateur</label>
-                <input type="text" class="form-control" id="trelloToken" name="trelloToken" [(ngModel)]="model.trelloToken">
+                <input type="password" class="form-control" id="trelloToken" name="trelloToken" [(ngModel)]="model.trelloToken">
             </div>
             <div class="form-group">
                 <label for="githubUsername">URL du tableau Trello</label>
