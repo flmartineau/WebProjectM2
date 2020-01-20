@@ -5,4 +5,4 @@ node_js:
 install:
   - cd back && npm install && cd .. && docker-compose up -d mongodb
 script:
-  - cd back && npm test && cd ../front && npm install -g @angular/cli && ng test
+  - cd back && npm test
