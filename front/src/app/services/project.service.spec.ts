@@ -4,7 +4,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Project } from '../models/project.model';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 describe('ProjectService', () => {
   let service, http, backend;
@@ -16,8 +15,6 @@ describe('ProjectService', () => {
     discord: "projectTestDiscord",
     trello: "projectTestTrello"
   }
-
-  
 
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule],
@@ -40,19 +37,16 @@ describe('ProjectService', () => {
   });
 
   it('should get projects', () => {
-    const spyProjectService = jasmine.createSpyObj('spyProjectService', ['getProjects']);
-    spyProjectService.getProjects.and.returnValue( Observable.create(project) );
-    service.getProjects().subscribe(result => {
+    service.getOwnedProjects().subscribe(result => {
       expect(result.name).toBe("projectTestName");
     })
 
     const req = backend.expectOne({
-      url: environment.API_URL+'/project',
+      url: environment.API_URL+'/project/owned',
       method: 'GET'
     });
 
     req.flush(project, { status: 200, statusText: 'ok' });
- 
 });
 
   afterEach(inject([HttpTestingController], (httpMock: HttpTestingController) => {
