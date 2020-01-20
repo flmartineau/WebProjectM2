@@ -4,7 +4,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Project } from '../models/project.model';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 describe('ProjectService', () => {
   let service, http, backend;
@@ -23,15 +22,6 @@ describe('ProjectService', () => {
     githubRepository: "projectTestGithubRepository",
     discord: "projectTestDiscord",
     trello: "projectTestTrello"
-  }
-
-  let project3: Object = {
-    name: "projectTestName3",
-    description: "projectTestDesc",
-    githubRepository: "projectTestGithubRepository",
-    discord: "projectTestDiscord",
-    trello: "projectTestTrello",
-    id: "01234"
   }
 
   beforeEach(() => TestBed.configureTestingModule({
