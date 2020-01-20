@@ -13,10 +13,17 @@ export class ProjectService {
   constructor(private httpClient: HttpClient) { }
 
   /**
-   * Get the projects list.
+   * Get the owned projects list.
    */
-  getProjects(): Observable<Project[]>{
-    return this.httpClient.get<Project[]>(environment.API_URL+'/project');
+  getOwnedProjects(): Observable<Project[]>{
+    return this.httpClient.get<Project[]>(environment.API_URL+'/project/owned');
+  }
+
+  /**
+   * Get the joined projects list.
+   */
+  getJoinedProjects(): Observable<Project[]>{
+    return this.httpClient.get<Project[]>(environment.API_URL+'/project/joined');
   }
 
   /**

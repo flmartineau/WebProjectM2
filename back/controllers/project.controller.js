@@ -167,12 +167,27 @@ module.exports.updateProject = (req, res) => {
 };
 
 /**
- * Get all the projects.
+ * Get all the projects owned.
  */
-module.exports.getAllProjects = (req, res) => {
+module.exports.getOwnProjects = (req, res) => {
     Project.find({'owner': req._id}).then(
         (projects) => {
             res.status(200).json(projects);
+        }
+    ).catch(
+        (error) => {
+            res.status(400).json({ error: error });
+        }
+    );
+};
+
+/**
+ * Get all the projects joined.
+ */
+module.exports.getJoinedProjects = (req, res) => {
+    Member.find({'user': req._id}).then(
+        (members) => {
+            res.status(200).json(members);
         }
     ).catch(
         (error) => {

@@ -29,7 +29,23 @@ export class ProjectsComponent implements OnInit {
    * Get all the projects info.
    */
   getProjects() {
-    this.projectService.getProjects().subscribe(data => this.projects = data);
+    this.projectService.getOwnedProjects().subscribe(data => 
+      {
+        this.projects = data;
+        this.projectService.getJoinedProjects().subscribe(data => 
+          {
+            data.forEach(elm => {
+              this.projectService.getProjectById(elm['project']).subscribe(project => {
+                this.projects.push(project);
+                },
+                err => {
+                  console.log(err);
+                }
+              );
+            });
+            
+          });
+      });
   }
 
    /**

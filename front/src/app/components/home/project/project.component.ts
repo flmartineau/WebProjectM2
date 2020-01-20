@@ -95,7 +95,6 @@ export class ProjectComponent implements OnInit {
           this.members = [this.project['owner']];
           
           data.forEach(element => {
-            console.log(element);
             this.authService.getUserById(element['user']).subscribe(user => {
               this.members.push(user);
               },

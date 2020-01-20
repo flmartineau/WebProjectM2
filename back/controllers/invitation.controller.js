@@ -123,7 +123,6 @@ module.exports.getUserInvitations = (req, res, next) => {
                     invitations.forEach((el => {
                         el.project = Project.findOne({_id: el.project});
                     }))
-                    console.log(invitations[0].project)
                     res.status(200).json(invitations);
                 }
             });

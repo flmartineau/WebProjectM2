@@ -10,10 +10,11 @@ const noteController = require('../controllers/note.controller');
 const invitationController = require('../controllers/invitation.controller');
 
 router.post('', projectController.addProject);
+router.get('/owned', projectController.getOwnProjects);
+router.get('/joined', projectController.getJoinedProjects);
 router.put('/:projectId', projectController.updateProject);
 router.get('/:projectId',projectController.getProjectById);
 router.delete('/:projectId', projectController.deleteProject);
-router.get('', projectController.getAllProjects);
 
 router.put('/:projectId/github', projectController.updateProjectGithub);
 
