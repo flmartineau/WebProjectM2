@@ -5,7 +5,6 @@ import { ContactService } from './contact.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 import { Contact } from '../models/contact.model';
-import { promise } from 'protractor';
 
 describe('ContactService', () => {
   let service, http, backend;
