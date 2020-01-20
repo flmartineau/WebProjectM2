@@ -1,15 +1,14 @@
-import { ProjetService } from './project.service';
-import { AuthService } from './auth.service';
+import { ProjectService } from './project.service';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Project } from '../models/project.model';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../models/user.model';
+import { Observable } from 'rxjs';
 
-describe('AuthService', () => {
+describe('ProjectService', () => {
   let service, http, backend;
-  let authService, authHttp, authBackend;
+
   let project: Project = {
     name: "projectTestName",
     description: "projectTestDesc",
@@ -17,22 +16,16 @@ describe('AuthService', () => {
     discord: "projectTestDiscord",
     trello: "projectTestTrello"
   }
-  let user: User = {
-    name: 'testingAcount',
-    email: 'testingAcount@test.test',
-    password: 'testingAcount'
-  }
-  let loginUser = {
-    email: 'testingAcount@test.test',
-    password: 'testingAcount'
-  }
+
+  
+
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule],
-    providers: [ProjetService]
+    providers: [ProjectService]
   }));
   
-  beforeEach(inject([ProjetService, HttpClient, HttpTestingController], (
-    conf: ProjetService,
+  beforeEach(inject([ProjectService, HttpClient, HttpTestingController], (
+    conf: ProjectService,
     _h: HttpClient,
     _b: HttpTestingController
   ) => {
@@ -41,68 +34,24 @@ describe('AuthService', () => {
     backend = _b;
   }));
 
-  beforeEach(inject([AuthService, HttpClient, HttpTestingController], (
-    conf: AuthService,
-    _h: HttpClient,
-    _b: HttpTestingController
-  ) => {
-    authService = conf;
-    authHttp = _h;
-    authBackend = _b;
-  }));
-
   it('should be created', () => {
-    const service: ProjetService = TestBed.get(ProjetService);
+    const service: ProjectService = TestBed.get(ProjectService);
     expect(service).toBeTruthy();
   });
 
   it('should get projects', () => {
-    let projectGet;
-    authService.addUser(user).subscribe(
-      res => {
-        authService.login(loginUser).subscribe(
-          res => {
-          service.addProject(project).subscribe(
-            res => {
-            service.getProjects().subscribe(result => {
-              console.log(result)
-              if(result){
-                projectGet = result[0].name
-              }
-            })
-          })
-        })
+    const spyProjectService = jasmine.createSpyObj('spyProjectService', ['getProjects']);
+    spyProjectService.getProjects.and.returnValue( Observable.create(project) );
+    service.getProjects().subscribe(result => {
+      expect(result.name).toBe("projectTestName");
     })
 
-    //expect(projectGet).toBe("projectTestName");
- 
-    const req = authBackend.expectOne({
-        url: environment.API_URL+'/user',
-        method: 'POST'
-    });
- 
-    req.flush("", { status: 200, statusText: 'ok' });
-
-    const req2 = authBackend.expectOne({
-        url: environment.API_URL+'/user/login',
-        method: 'POST'
-    });
-
-    req2.flush("", { status: 200, statusText: 'ok' });
-
-    const req3 = backend.expectOne({
-        url: environment.API_URL+'/project',
-        method: 'POST'
-    });
-
-    req3.flush("", { status: 200, statusText: 'ok' });
-
-    const req4 = backend.expectOne({
+    const req = backend.expectOne({
       url: environment.API_URL+'/project',
       method: 'GET'
     });
 
-    req4.flush("", { status: 200, statusText: 'ok' });
+    req.flush(project, { status: 200, statusText: 'ok' });
  
 });
 

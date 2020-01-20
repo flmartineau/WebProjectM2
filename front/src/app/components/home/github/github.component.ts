@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProjetService } from 'src/app/services/project.service';
+import { ProjectService } from 'src/app/services/project.service';
 import { Project } from 'src/app/models/project.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
@@ -29,7 +29,7 @@ export class GithubComponent implements OnInit, AfterViewInit {
   public errorMessage;
 
   constructor(private route: ActivatedRoute,
-              public projectService: ProjetService,
+              public projectService: ProjectService,
               public modalService: NgbModal,
               public githubService: GithubService) { }
 

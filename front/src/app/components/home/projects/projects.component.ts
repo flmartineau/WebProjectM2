@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjetService } from 'src/app/services/project.service';
+import { ProjectService } from 'src/app/services/project.service';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -10,7 +10,7 @@ export class ProjectsComponent implements OnInit {
 
   public projects = [];
 
-  constructor(private projectService: ProjetService) { }
+  constructor(private projectService: ProjectService) { }
 
   model = {
     name: '',

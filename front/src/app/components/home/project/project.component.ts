@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from 'src/app/models/project.model';
-import { ProjetService } from 'src/app/services/project.service';
+import { ProjectService } from 'src/app/services/project.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 
@@ -17,7 +17,7 @@ export class ProjectComponent implements OnInit {
   public project: Project;
 
 
-  constructor(private route: ActivatedRoute, public projectService: ProjetService, public modalService: NgbModal) { }
+  constructor(private route: ActivatedRoute, public projectService: ProjectService, public modalService: NgbModal) { }
   @ViewChild('popupUpdateProject', {static: false}) popupUpdateProject;
 
   model = {

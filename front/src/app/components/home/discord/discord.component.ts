@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProjetService } from 'src/app/services/project.service';
+import { ProjectService } from 'src/app/services/project.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -23,7 +23,7 @@ export class DiscordComponent implements OnInit {
   public errorStatus;
 
   constructor(private route: ActivatedRoute,
-              public projectService: ProjetService,
+              public projectService: ProjectService,
               public discordService: DiscordService,
               public modalService: NgbModal,
               public sanitizer : DomSanitizer) { }

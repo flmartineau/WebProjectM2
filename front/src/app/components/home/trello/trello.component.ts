@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TrelloService } from 'src/app/services/trello.service';
 import { NgForm } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProjetService } from 'src/app/services/project.service';
+import { ProjectService } from 'src/app/services/project.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -29,7 +29,7 @@ export class TrelloComponent implements OnInit {
 
   constructor(public trelloService : TrelloService,
               public modalService: NgbModal,
-              public projectService: ProjetService,
+              public projectService: ProjectService,
               private route: ActivatedRoute) { }
 
 
