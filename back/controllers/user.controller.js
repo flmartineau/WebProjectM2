@@ -57,6 +57,19 @@ module.exports.getUser = (req, res, next) => {
 };
 
 /**
+ * Get all users.
+ */
+module.exports.getUsers = (req, res, next) => {
+    User.find( (err, users) => {
+        if (!users) {
+            res.status(404).json({ status: false, message: 'Users not found.' });
+        } else {
+            res.status(200).json(users);
+        }
+    });
+};
+
+/**
  * Log out the current user.
  */
 module.exports.logoutUser = (req, res, next) => {

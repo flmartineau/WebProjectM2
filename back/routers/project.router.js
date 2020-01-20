@@ -7,6 +7,7 @@ const discordController = require('../controllers/discord.controller');
 const trelloController = require('../controllers/trello.controller');
 const contactController = require('../controllers/contact.controller');
 const noteController = require('../controllers/note.controller');
+const invitationController = require('../controllers/invitation.controller');
 
 router.post('', projectController.addProject);
 router.put('/:projectId', projectController.updateProject);
@@ -38,5 +39,10 @@ router.get('/:projectId/notes', noteController.getNotes);
 router.get('/:projectId/notes/:noteId', noteController.getNote);
 router.put('/:projectId/notes/:noteId', noteController.updateNote);
 router.delete('/:projectId/notes/:noteId', noteController.deleteNote);
+
+
+router.post('/:projectId/invit', invitationController.invitUserToProject);
+router.get('/:projectId/decline', invitationController.denyInvitation);
+router.get('/:projectId/accept', invitationController.acceptInvitation);
 
 module.exports = router;
