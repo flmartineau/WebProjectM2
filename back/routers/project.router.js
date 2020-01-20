@@ -41,8 +41,8 @@ router.put('/:projectId/notes/:noteId', noteController.updateNote);
 router.delete('/:projectId/notes/:noteId', noteController.deleteNote);
 
 
-router.post('/:projectId/invit', invitationController.invitUserToProject);
-router.get('/:projectId/decline', invitationController.denyInvitation);
-router.get('/:projectId/accept', invitationController.acceptInvitation);
+router.post('/:projectId/invitation', invitationController.invitUserToProject);
+router.get('/:projectId/invitation/deny', invitationController.denyInvitation);
+router.get('/:projectId/invitation/accept', invitationController.acceptInvitation);
 
 module.exports = router;

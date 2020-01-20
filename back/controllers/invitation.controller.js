@@ -26,11 +26,11 @@ module.exports.invitUserToProject = (req, res, next) => {
                         }
                     );
                 } else {
-                    res.status(400).json({ error: error });
+                    res.status(400).json({ error: err });
                 }
             });
         } else {
-            res.status(400).json({ error: error });
+            res.status(400).json({ error: err });
         }
     });
 };
@@ -60,19 +60,19 @@ module.exports.acceptInvitation = (req, res, next) => {
                                 }
                             ).catch(
                                 (error) => {
-                                    res.status(400).json({ error: error });
+                                    res.status(404).json({ error: error });
                                 }
                             );
                         } else {
-                            res.status(400).json({ error: error });
+                            res.status(403).json({ error: err });
                         }
                     });
                 } else {
-                    res.status(400).json({ error: error });
+                    res.status(402).json({ error: err });
                 }
             });
         } else {
-            res.status(400).json({ error: error });
+            res.status(401).json({ error: err });
         }
     });
 };
@@ -97,15 +97,15 @@ module.exports.denyInvitation = (req, res, next) => {
                             );
                                  
                         } else {
-                            res.status(400).json({ error: error });
+                            res.status(400).json({ error: err });
                         }
                     });
                 } else {
-                    res.status(400).json({ error: error });
+                    res.status(400).json({ error: err });
                 }
             });
         } else {
-            res.status(400).json({ error: error });
+            res.status(400).json({ error: err });
         }
     });
 };
@@ -125,7 +125,7 @@ module.exports.getUserInvitations = (req, res, next) => {
                 }
             });
         } else {
-            res.status(400).json({ error: error });
+            res.status(400).json({ error: err });
         }
     });
 };
